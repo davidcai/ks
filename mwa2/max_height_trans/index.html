@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>CSS max-height transition</title>
+
+    <style type="text/css">
+      .item {
+          width: 400px;
+      }
+
+      .content_w {
+          overflow: hidden;
+          max-height: 0;
+          -webkit-transition: max-height 0.5s;
+             -moz-transition: max-height 0.5s;
+               -o-transition: max-height 0.5s;
+                  transition: max-height 0.5s;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Expandable Box with max-height CSS Transition</h1>
+    <!--Item-->
+    <div class="item">
+
+      <!--Title-->
+      <h2>Click me to expand</h2>
+
+      <!--Content wrapper-->
+      <div class="content_w">
+
+        <!--Content-->
+        <div class="content">
+          "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      (function($) {
+
+        // max-height transition. 
+        // Inspired by http://jsfiddle.net/adambiggs/MAbD3/
+        function toggleContent($contentWrapper) {
+          var contentHeight = $('.content', $contentWrapper).outerHeight(true);
+
+          $contentWrapper.toggleClass('open');
+          if ($contentWrapper.hasClass('open')) {
+            $contentWrapper.css('max-height', contentHeight);
+          }
+          else {
+            $contentWrapper.css('max-height', 0);
+          }
+        }
+
+        $('.item').on('click', function(e) {
+          e.preventDefault();
+
+          toggleContent($('.content_w', this)); 
+        });
+
+      })(jQuery);
+    </script>
+  </body>
+</html>
