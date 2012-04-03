@@ -42,14 +42,18 @@ section.entries article h2 {
 
 section.entries article .content_w {
   overflow: hidden;
-  max-height: 0;
-  -webkit-transition: max-height 0.5s;
-     -moz-transition: max-height 0.5s;
-       -o-transition: max-height 0.5s;
-          transition: max-height 0.5s;
+  height: 0;
+}
+section.entries article .content_w.transition {
+  -webkit-transition: height 0.5s;
+     -moz-transition: height 0.5s;
+       -o-transition: height 0.5s;
+          transition: height 0.5s;
 }
 
 section.entries article .content {
   padding-top: 1em;
   line-height: 1.3;
 }
+
+

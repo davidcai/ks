@@ -1,23 +1,31 @@
 (function($) {
 
-  // max-height transition. 
-  // Inspired by http://jsfiddle.net/adambiggs/MAbD3/
-  function toggleContent($contentWrapper) {
-    var contentHeight = $('.content', $contentWrapper).outerHeight(true);
+  $('section.entries article').on('click', function() {
+    slide($('.content_w', this)); 
+  });
 
-    $contentWrapper.toggleClass('open');
-    if ($contentWrapper.hasClass('open')) {
-      $contentWrapper.css('max-height', contentHeight);
+  function slide($wrapper) {
+    var contentHeight = $('.content', $wrapper).outerHeight(true);
+    var height = $wrapper.height();
+
+    $wrapper.toggleClass('open');
+    if ($wrapper.hasClass('open')) {
+      setTimeout(function() {
+        $wrapper.addClass('transition').css('height', contentHeight);
+      }, 10);
     }
     else {
-      $contentWrapper.css('max-height', 0);
+      $wrapper.css('height', height);
+      setTimeout(function() {
+        $wrapper.addClass('transition').css('height', 0);
+      }, 10);
     }
+
+    $wrapper.one('transitionEnd webkitTransitionEnd transitionend oTransitionEnd msTransitionEnd', function() {
+      if($wrapper.hasClass('open')) {
+        $wrapper.removeClass('transition').css('height', 'auto');
+      }
+    });
   }
-
-  $('section.entries article').on('click', function(e) {
-    e.preventDefault();
-
-    toggleContent($('.content_w', this)); 
-  });
 
 })(jQuery);
