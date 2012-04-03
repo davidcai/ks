@@ -1,12 +1,13 @@
 (function($) {
 
   $('section.entries article').on('click', function() {
-    slide($('.content_w', this)); 
+    slide($('.content', this)); 
   });
 
-  function slide($wrapper) {
-    var contentHeight = $('.content', $wrapper).outerHeight(true);
-    var height = $wrapper.height();
+  function slide($content) {
+    var $wrapper = $content.parent();
+    var contentHeight = $content.outerHeight(true);
+    var wrapperHeight = $wrapper.height();
 
     $wrapper.toggleClass('open');
     if ($wrapper.hasClass('open')) {
@@ -15,9 +16,11 @@
       }, 10);
     }
     else {
-      $wrapper.css('height', height);
       setTimeout(function() {
-        $wrapper.addClass('transition').css('height', 0);
+        $wrapper./*removeClass('transition').*/css('height', wrapperHeight);
+        setTimeout(function() {
+          $wrapper.addClass('transition').css('height', 0);
+        }, 10);
       }, 10);
     }
 
