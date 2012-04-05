@@ -38,6 +38,15 @@ section.entries article:last-child {
 section.entries article h2 {
   color: #333;
   font-size: 1.2em;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+section.entries article.open h2 {
+  overflow: auto;
+  text-overflow: clip;
+  white-space: normal;
 }
 
 section.entries article .content_w {

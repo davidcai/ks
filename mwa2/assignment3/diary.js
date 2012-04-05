@@ -1,16 +1,17 @@
 (function($) {
 
   $('section.entries article').on('click', function() {
-    slide($('.content', this)); 
+    slide($(this)); 
   });
 
-  function slide($content) {
-    var $wrapper = $content.parent();
-    var contentHeight = $content.outerHeight(true);
+  function slide($article) {
+    var $wrapper = $('.content_w', $article);
+    var $content = $('.content', $wrapper);
     var wrapperHeight = $wrapper.height();
+    var contentHeight = $content.outerHeight(true);
 
-    $wrapper.toggleClass('open');
-    if ($wrapper.hasClass('open')) {
+    $article.toggleClass('open');
+    if ($article.hasClass('open')) {
       setTimeout(function() {
         $wrapper.addClass('transition').css('height', contentHeight);
       }, 10);
@@ -25,7 +26,7 @@
     }
 
     $wrapper.one('transitionEnd webkitTransitionEnd transitionend oTransitionEnd msTransitionEnd', function() {
-      if($wrapper.hasClass('open')) {
+      if ($article.hasClass('open')) {
         $wrapper.removeClass('transition').css('height', 'auto');
       }
     });
