@@ -1,0 +1,80 @@
+body {
+  color: #666;
+  font-family: "Lobster", Helvetica, Arial, cursive;
+}
+
+body[data-mode="list"] #page_list, 
+body[data-mode="add"] #page_add {
+  display: block;
+}
+body[data-mode="list"] #page_add,  
+body[data-mode="add"] #page_list {
+  display: none;
+}
+
+header {
+  position: relative;
+  background: #ED9017;
+  color: #fff;
+  height: 40px;
+}
+header h1 {
+  font-size: 1.4em;
+  line-height: 40px;
+  padding-left: 10px;
+}
+header .hd_buttons {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+header .hd_buttons a {
+  color: #fff;
+  text-decoration: none;
+  outline: none;
+  border-left: 1px solid #cacccb;
+  display: inline-block;
+  line-height: 40px;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+#page_list .entries article {
+  border-bottom: 1px solid #ccc;
+  padding: 1em 10px;
+  cursor: pointer;
+}
+#page_list .entries article:last-child {
+  border-bottom: 0 none;
+}
+
+#page_list .entries article h2 {
+  color: #333;
+  font-size: 1.2em;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#page_list .entries article.open h2 {
+  overflow: auto;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+#page_list .entries article .content_w {
+  overflow: hidden;
+  height: 0;
+}
+#page_list .entries article .content_w.transition {
+  -webkit-transition: height 0.5s;
+     -moz-transition: height 0.5s;
+       -o-transition: height 0.5s;
+          transition: height 0.5s;
+}
+
+#page_list .entries article .content {
+  padding-top: 1em;
+  line-height: 1.3;
+}
