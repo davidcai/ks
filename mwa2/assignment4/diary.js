@@ -1,10 +1,10 @@
 (function($) {
 
-  $('#page_list #btn_add').on('click', function(e) { add(); });
+  $('#page_list #btn_add').on('click', add);
 
-  $('#page_add #btn_save').on('click', function(e) { save(); });
+  $('#page_add #btn_save').on('click', save);
 
-  $('#page_add #btn_cancel').on('click', function(e) { cancel(); });
+  $('#page_add #btn_cancel').on('click', cancel);
 
   $('#page_list .entries article').on('click', function() { slide($(this)); });
 

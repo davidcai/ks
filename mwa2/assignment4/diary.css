@@ -1,6 +1,5 @@
-body {
-  color: #666;
-  font-family: "Lobster", Helvetica, Arial, cursive;
+body, input, textarea {
+  font-family: Trebuchet MS, Verdana, Arial, Helvetica, sans-serif;
 }
 
 body[data-mode="list"] #page_list, 
@@ -75,6 +74,20 @@ header .hd_buttons a {
 }
 
 #page_list .entries article .content {
+  color: #666;
   padding-top: 1em;
   line-height: 1.3;
+}
+
+#page_add .new_entry {
+  padding: 0 5px;
+}
+
+#page_add .new_entry input[type="text"], 
+#page_add .new_entry textarea {
+  display: block;
+  -moz-box-sizing: border-box;
+       box-sizing: border-box;
+  width: 100%;
+  margin-top: 10px;
 }
