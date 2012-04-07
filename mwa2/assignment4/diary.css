@@ -91,3 +91,13 @@ header .hd_buttons a {
   width: 100%;
   margin-top: 10px;
 }
+#page_add .new_entry #geo_status {
+  padding: 15px 0 5px;
+  color: #666;
+}
+
+#page_add .new_entry #geo_coords div {
+  padding-top: 0.5em;
+  color: #333;
+}
+

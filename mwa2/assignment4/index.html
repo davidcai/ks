@@ -21,8 +21,14 @@
       </header>
 
       <section class="new_entry">
-        <input type="text" placeholder="Title" autofocus></input>
-        <textarea placeholder="Write something..."></textarea>
+        <input type="text" id="new_entry_title" placeholder="Title" autofocus></input>
+        <textarea id="new_entry_body" placeholder="Write something..." rows="7"></textarea>
+        <div id="geo_status"></div>
+        <div id="geo_coords" style="display: none;">
+          <div id="geo_coords_latitude"></div>
+          <div id="geo_coords_longitude"></div>
+          <div id="geo_coords_altitude"></div>
+        </div>
       </section>
     </div>
 
