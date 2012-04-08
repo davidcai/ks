@@ -1,12 +1,30 @@
 (function($) {
 
-  $('#page_list #btn_add').on('click', add);
+  var TEMPLATE_ENTRY = 
+    '<article>' + 
+      '<h2>{title}</h2>' + 
+      '<div class="content_w">' + 
+        '<div class="content">{body}</div>' + 
+      '</div>' + 
+    '</article>';
 
-  $('#page_add #btn_save').on('click', save);
 
-  $('#page_add #btn_cancel').on('click', cancel);
+  function list() {
+    var lstEntries = JSON.parse(localStorage.getItem('entries')) || [];
+    var nLength = lstEntries.length;
 
-  $('#page_list .entries article').on('click', function() { slide($(this)); });
+    for(var i = 0; i < nLength; i++) {
+      show(lstEntries[i]);
+    }
+  }
+
+
+  function show(entry) {
+    var $section = $('section.entries');
+    var strEntry = TEMPLATE_ENTRY.replace('{title}', entry.title).replace('{body}', entry.body);
+
+    $section.prepend(strEntry);
+  }
 
 
   function add() {
@@ -23,7 +41,7 @@
         $('#geo_coords_altitude').html('Altitude: ' + (position.coords.altitude || 'unknown'));
       }
 
-      function error(msg) {
+      function error() {
         $statusBar.html('Cannot find your location');
         $('#geo_coords').hide();
       }
@@ -34,6 +52,17 @@
 
 
   function save() {
+    var entry = {
+      title: $('#new_entry_title').val() || 'empty', 
+      body: $('#new_entry_body').val() || 'empty'
+    };
+
+    var lstEntries = JSON.parse(localStorage.getItem('entries')) || [];
+    lstEntries.push(entry);
+    localStorage.setItem('entries', JSON.stringify(lstEntries));
+
+    show(entry);
+
     $('body').attr('class', 'mode_list');
     clearNewEntry();
   }
@@ -54,18 +83,18 @@
   function slide($article) {
     var $wrapper = $('.content_w', $article);
     var $content = $('.content', $wrapper);
-    var wrapperHeight = $wrapper.height();
-    var contentHeight = $content.outerHeight(true);
+    var strWrapperHeight = $wrapper.height();
+    var strContentHeight = $content.outerHeight(true);
 
     $article.toggleClass('open');
     if ($article.hasClass('open')) {
       setTimeout(function() {
-        $wrapper.addClass('transition').css('height', contentHeight);
+        $wrapper.addClass('transition').css('height', strContentHeight);
       }, 10);
     }
     else {
       setTimeout(function() {
-        $wrapper./*removeClass('transition').*/css('height', wrapperHeight);
+        $wrapper./*removeClass('transition').*/css('height', strWrapperHeight);
         setTimeout(function() {
           $wrapper.addClass('transition').css('height', 0);
         }, 10);
@@ -79,4 +108,17 @@
     });
   }
 
+
+  (function init() {
+    list();
+
+    $('#page_list #btn_add').on('click', add);
+
+    $('#page_add #btn_save').on('click', save);
+
+    $('#page_add #btn_cancel').on('click', cancel);
+
+    $('#page_list .entries article').live('click', function() { slide($(this)); });
+  })();
+  
 })(jQuery);
