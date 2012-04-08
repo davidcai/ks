@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="reset.css" type="text/css">
     <link rel="stylesheet" href="diary.css" type="text/css">
   </head>
-  <body data-mode="list">
+  <body class="mode_list">
 
     <!-- New entry page -->
     <div id="page_add">
@@ -21,10 +21,10 @@
       </header>
 
       <section class="new_entry">
-        <input type="text" id="new_entry_title" placeholder="Title" autofocus></input>
+        <input type="text" id="new_entry_title" placeholder="Title"></input>
         <textarea id="new_entry_body" placeholder="Write something..." rows="7"></textarea>
-        <div id="geo_status"></div>
-        <div id="geo_coords" style="display: none;">
+        <div id="geo_status">Detecting your location...</div>
+        <div id="geo_coords" style="display: block;">
           <div id="geo_coords_latitude"></div>
           <div id="geo_coords_longitude"></div>
           <div id="geo_coords_altitude"></div>

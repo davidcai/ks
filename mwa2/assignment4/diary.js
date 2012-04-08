@@ -10,21 +10,21 @@
 
 
   function add() {
-    $('body').attr('data-mode', 'add');
+    $('body').attr('class', 'mode_add');
 
     if (navigator.geolocation) {
-      var $status = $('#geo_status');
+      var $statusBar = $('#geo_status');
 
       function success(position) {
-        $status.text('Your location:');
+        $statusBar.html('Your location:');
         $('#geo_coords').show();
-        $('#geo_coords_latitude').text('Latitude: ' + (position.coords.latitude || 'unknown'));
-        $('#geo_coords_longitude').text('Longitude: ' + (position.coords.longitude || 'unknown'));
-        $('#geo_coords_altitude').text('Altitude: ' + (position.coords.altitude || 'unknown'));
+        $('#geo_coords_latitude').html('Latitude: ' + (position.coords.latitude || 'unknown'));
+        $('#geo_coords_longitude').html('Longitude: ' + (position.coords.longitude || 'unknown'));
+        $('#geo_coords_altitude').html('Altitude: ' + (position.coords.altitude || 'unknown'));
       }
 
       function error(msg) {
-        $status.text('Cannot locate your location');
+        $statusBar.html('Cannot find your location');
         $('#geo_coords').hide();
       }
 
@@ -34,13 +34,13 @@
 
 
   function save() {
-    $('body').attr('data-mode', 'list');
+    $('body').attr('class', 'mode_list');
     clearNewEntry();
   }
 
 
   function cancel() {
-    $('body').attr('data-mode', 'list');
+    $('body').attr('class', 'mode_list');
     clearNewEntry();
   }
 

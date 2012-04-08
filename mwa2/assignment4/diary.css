@@ -2,12 +2,12 @@ body, input, textarea {
   font-family: Trebuchet MS, Arial, Helvetica, sans-serif;
 }
 
-body[data-mode="list"] #page_list, 
-body[data-mode="add"] #page_add {
+body.mode_list #page_list, 
+body.mode_add #page_add {
   display: block;
 }
-body[data-mode="list"] #page_add,  
-body[data-mode="add"] #page_list {
+body.mode_list #page_add,  
+body.mode_add #page_list {
   display: none;
 }
 
@@ -80,7 +80,7 @@ header .hd_buttons a {
 }
 
 #page_add .new_entry {
-  padding: 0 5px;
+  padding: 0 10px 0 5px;
 }
 
 #page_add .new_entry input[type="text"], 
