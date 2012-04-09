@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
     <title>My Diary</title>
-    <link rel="stylesheet" href="reset.css" type="text/css">
-    <link rel="stylesheet" href="diary.css" type="text/css">
+    <link rel="stylesheet" href="reset.css" type="text/css" />
+    <link rel="stylesheet" href="diary.css" type="text/css" />
   </head>
   <body class="mode_list">
 
@@ -23,8 +24,8 @@
       <section class="new_entry">
         <input type="text" id="new_entry_title" placeholder="Title"></input>
         <textarea id="new_entry_body" placeholder="Write something..." rows="7"></textarea>
-        <div id="geo_status">Detecting your location...</div>
-        <div id="geo_coords" style="display: block;">
+        <div id="geo_status"></div>
+        <div id="geo_coords" style="display: none;">
           <div id="geo_coords_latitude"><label>Latitude: </label><span></span></div>
           <div id="geo_coords_longitude"><label>Longitude: </label><span></span></div>
           <!-- <div id="geo_coords_altitude"><label>Altitude: </label><span></span></div> -->
@@ -74,9 +75,10 @@
       </section>
     </div>
 
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="json2.js"></script>
-    <script type="text/javascript" src="diary.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="json2.js"></script>
+    <!-- <script src="http://jsconsole.com/remote.js?david-cai-hw4"></script> -->
+    <script src="diary.js"></script>
   </body>
 </html>
 

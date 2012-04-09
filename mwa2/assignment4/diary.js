@@ -18,8 +18,21 @@
   var bFoundLocation = false;
 
 
+  function getEntries() {
+    var lstEntries = [];
+
+    var strEntries = localStorage.getItem('entries');
+    if (strEntries) {
+      lstEntries = JSON.parse(strEntries) || [];
+    }
+
+    console.log('# of entries = ' + lstEntries.length);
+    return lstEntries;
+  }
+
+
   function list() {
-    var lstEntries = JSON.parse(localStorage.getItem('entries')) || [];
+    var lstEntries = getEntries();
     var nLength = lstEntries.length;
 
     for(var i = 0; i < nLength; i++) {
@@ -40,17 +53,21 @@
     var strEntry = TEMPLATE_ENTRY.replace('{title}', entry.title).replace('{body}', strBody);
 
     $('section.entries').prepend(strEntry);
+    console.log('Prepended entry: ' + entry.title);
   }
 
 
   function add() {
     $('body').attr('class', 'mode_add');
 
+    var $statusBar = $('#geo_status');
+    $statusBar.html('Detecting your location...');
+    console.log('Detecting loction...');
+
     bFoundLocation = false;
     if (navigator.geolocation) {
-      var $statusBar = $('#geo_status');
-
       function success(position) {
+        console.log('Found location');
         bFoundLocation = true;
         $statusBar.html('Your location:');
         $('#geo_coords').show();
@@ -60,6 +77,7 @@
       }
 
       function error() {
+        console.log('Cannot find location');
         bFoundLocation = false;
         $statusBar.html('Cannot find your location');
         $('#geo_coords').hide();
@@ -81,11 +99,14 @@
       entry.latitude = $('#geo_coords_latitude span').text();
       entry.longitude = $('#geo_coords_longitude span').text();
       // entry.altitude = $('#geo_coords_altitude span').text();
+
+      console.log('Saved location');
     }
 
-    var lstEntries = JSON.parse(localStorage.getItem('entries')) || [];
+    var lstEntries = getEntries();
     lstEntries.push(entry);
     localStorage.setItem('entries', JSON.stringify(lstEntries));
+    console.log('Saved new entry to localStorage');
 
     show(entry);
 
@@ -103,24 +124,26 @@
   function clearNewEntry() {
     $('#new_entry_title').val('');
     $('#new_entry_body').val('');
+    $('#geo_coords').hide();
   }
 
 
   function slide($article) {
     var $wrapper = $('.content_w', $article);
     var $content = $('.content', $wrapper);
-    var strWrapperHeight = $wrapper.height();
-    var strContentHeight = $content.outerHeight(true);
+    var nWrapperHeight = $wrapper.height();
+    var nContentHeight = $content.outerHeight(true);
+    console.log('Wrapper height = ' + nWrapperHeight + ' Content height = ' + nContentHeight);
 
     $article.toggleClass('open');
     if ($article.hasClass('open')) {
       setTimeout(function() {
-        $wrapper.addClass('transition').css('height', strContentHeight);
+        $wrapper.addClass('transition').css('height', nContentHeight);
       }, 10);
     }
     else {
       setTimeout(function() {
-        $wrapper./*removeClass('transition').*/css('height', strWrapperHeight);
+        $wrapper./*removeClass('transition').*/css('height', nWrapperHeight);
         setTimeout(function() {
           $wrapper.addClass('transition').css('height', 0);
         }, 10);
@@ -130,13 +153,15 @@
     $wrapper.one('transitionEnd webkitTransitionEnd transitionend oTransitionEnd msTransitionEnd', function() {
       if ($article.hasClass('open')) {
         $wrapper.removeClass('transition').css('height', 'auto');
+        console.log('Changed height back to auto');
       }
     });
   }
 
 
-  // (function init() {
+  (function init() {
     list();
+    console.log('Displayed all entries');
 
     $('#page_list #btn_add').on('click', add);
 
@@ -145,6 +170,6 @@
     $('#page_add #btn_cancel').on('click', cancel);
 
     $('#page_list .entries article').live('click', function() { slide($(this)); });
-  // })();
+  })();
   
 })(jQuery);
