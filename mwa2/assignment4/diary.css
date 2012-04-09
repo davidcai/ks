@@ -39,6 +39,7 @@ header .hd_buttons a {
   cursor: pointer;
 }
 
+
 #page_list .entries article {
   border-bottom: 1px solid #ccc;
   padding: 1em 10px;
@@ -77,6 +78,17 @@ header .hd_buttons a {
   color: #666;
   padding-top: 1em;
   line-height: 1.3;
+}
+
+#page_list .entries article .content .lbl_location {
+  font-size: 0.6em;
+  padding-top: 8px;
+  color: #777;
+  text-align: right;
+}
+
+#page_list .entries article .content .lbl_location span {
+  padding-right: 10px;
 }
 
 #page_add .new_entry {

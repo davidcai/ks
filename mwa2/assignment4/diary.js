@@ -8,6 +8,15 @@
       '</div>' + 
     '</article>';
 
+  var TEMPLATE_LOCATION = 
+    '<div class="lbl_location">' + 
+      '<label>Lati: </label><span>{latitude}</span>' + 
+      '<label>Lngti: </label><span>{longitude}</span>' + 
+      // '<label>Alti: </label><span>{altitude}</span>' + 
+    '</div>';
+
+  var bFoundLocation = false;
+
 
   function list() {
     var lstEntries = JSON.parse(localStorage.getItem('entries')) || [];
@@ -20,28 +29,38 @@
 
 
   function show(entry) {
-    var $section = $('section.entries');
-    var strEntry = TEMPLATE_ENTRY.replace('{title}', entry.title).replace('{body}', entry.body);
+    var strBody = entry.body;
+    if (entry.hasLocation === true) {
+      strBody += TEMPLATE_LOCATION
+        .replace('{latitude}', entry.latitude)
+        .replace('{longitude}', entry.longitude)
+        // .replace('{altitude}', entry.altitude);
+    }
 
-    $section.prepend(strEntry);
+    var strEntry = TEMPLATE_ENTRY.replace('{title}', entry.title).replace('{body}', strBody);
+
+    $('section.entries').prepend(strEntry);
   }
 
 
   function add() {
     $('body').attr('class', 'mode_add');
 
+    bFoundLocation = false;
     if (navigator.geolocation) {
       var $statusBar = $('#geo_status');
 
       function success(position) {
+        bFoundLocation = true;
         $statusBar.html('Your location:');
         $('#geo_coords').show();
         $('#geo_coords_latitude span').html(position.coords.latitude || 'unknown');
         $('#geo_coords_longitude span').html(position.coords.longitude || 'unknown');
-        $('#geo_coords_altitude span').html(position.coords.altitude || 'unknown');
+        // $('#geo_coords_altitude span').html(position.coords.altitude || 'unknown');
       }
 
       function error() {
+        bFoundLocation = false;
         $statusBar.html('Cannot find your location');
         $('#geo_coords').hide();
       }
@@ -56,6 +75,13 @@
       title: $('#new_entry_title').val() || 'empty'
     , body: $('#new_entry_body').val() || 'empty'
     };
+
+    if (bFoundLocation === true) {
+      entry.hasLocation = true;
+      entry.latitude = $('#geo_coords_latitude span').text();
+      entry.longitude = $('#geo_coords_longitude span').text();
+      // entry.altitude = $('#geo_coords_altitude span').text();
+    }
 
     var lstEntries = JSON.parse(localStorage.getItem('entries')) || [];
     lstEntries.push(entry);
