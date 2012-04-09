@@ -25,9 +25,9 @@
         <textarea id="new_entry_body" placeholder="Write something..." rows="7"></textarea>
         <div id="geo_status">Detecting your location...</div>
         <div id="geo_coords" style="display: block;">
-          <div id="geo_coords_latitude"></div>
-          <div id="geo_coords_longitude"></div>
-          <div id="geo_coords_altitude"></div>
+          <div id="geo_coords_latitude"><label>Latitude: </label><span></span></div>
+          <div id="geo_coords_longitude"><label>Longitude: </label><span></span></div>
+          <div id="geo_coords_altitude"><label>Altitude: </label><span></span></div>
         </div>
       </section>
     </div>
@@ -75,6 +75,7 @@
     </div>
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="json2.js"></script>
     <script type="text/javascript" src="diary.js"></script>
   </body>
 </html>

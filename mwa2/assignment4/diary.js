@@ -36,9 +36,9 @@
       function success(position) {
         $statusBar.html('Your location:');
         $('#geo_coords').show();
-        $('#geo_coords_latitude').html('Latitude: ' + (position.coords.latitude || 'unknown'));
-        $('#geo_coords_longitude').html('Longitude: ' + (position.coords.longitude || 'unknown'));
-        $('#geo_coords_altitude').html('Altitude: ' + (position.coords.altitude || 'unknown'));
+        $('#geo_coords_latitude span').html(position.coords.latitude || 'unknown');
+        $('#geo_coords_longitude span').html(position.coords.longitude || 'unknown');
+        $('#geo_coords_altitude span').html(position.coords.altitude || 'unknown');
       }
 
       function error() {
@@ -53,8 +53,8 @@
 
   function save() {
     var entry = {
-      title: $('#new_entry_title').val() || 'empty', 
-      body: $('#new_entry_body').val() || 'empty'
+      title: $('#new_entry_title').val() || 'empty'
+    , body: $('#new_entry_body').val() || 'empty'
     };
 
     var lstEntries = JSON.parse(localStorage.getItem('entries')) || [];
@@ -109,7 +109,7 @@
   }
 
 
-  (function init() {
+  // (function init() {
     list();
 
     $('#page_list #btn_add').on('click', add);
@@ -119,6 +119,6 @@
     $('#page_add #btn_cancel').on('click', cancel);
 
     $('#page_list .entries article').live('click', function() { slide($(this)); });
-  })();
+  // })();
   
 })(jQuery);
