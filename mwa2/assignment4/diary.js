@@ -10,9 +10,8 @@
 
   var TEMPLATE_LOCATION = 
     '<div class="lbl_location">' + 
-      '<label>Lati: </label><span>{latitude}</span>' + 
-      '<label>Lngti: </label><span>{longitude}</span>' + 
-      // '<label>Alti: </label><span>{altitude}</span>' + 
+      '<label>Lat: </label><span>{latitude}</span>' + 
+      '<label>Lng: </label><span>{longitude}</span>' + 
     '</div>';
 
   var bFoundLocation = false;
@@ -46,8 +45,7 @@
     if (entry.hasLocation === true) {
       strBody += TEMPLATE_LOCATION
         .replace('{latitude}', entry.latitude)
-        .replace('{longitude}', entry.longitude)
-        // .replace('{altitude}', entry.altitude);
+        .replace('{longitude}', entry.longitude);
     }
 
     var strEntry = TEMPLATE_ENTRY.replace('{title}', entry.title).replace('{body}', strBody);
@@ -73,7 +71,6 @@
         $('#geo_coords').show();
         $('#geo_coords_latitude span').html(position.coords.latitude || 'unknown');
         $('#geo_coords_longitude span').html(position.coords.longitude || 'unknown');
-        // $('#geo_coords_altitude span').html(position.coords.altitude || 'unknown');
       }
 
       function error() {
@@ -98,7 +95,6 @@
       entry.hasLocation = true;
       entry.latitude = $('#geo_coords_latitude span').text();
       entry.longitude = $('#geo_coords_longitude span').text();
-      // entry.altitude = $('#geo_coords_altitude span').text();
 
       console.log('Saved location');
     }
