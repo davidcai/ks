@@ -49,3 +49,8 @@ header h1 {
   padding-top: 0.3em;
 }
 
+#results article p a {
+  color: #0084B4;
+  text-decoration: none;
+}
+
