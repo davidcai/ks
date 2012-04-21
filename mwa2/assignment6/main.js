@@ -50,7 +50,7 @@
       for (var i = 0; i < length; i++) {
         var url = result.entities.urls[i]; 
         var strLink = 
-          '<a href=\u0022' + url.expanded_url + '\u0022 target=\u002_blank\u00222>' + 
+          '<a href="' + url.expanded_url + '" target="_blank">' + 
             url.display_url + 
           '</a>';
 
