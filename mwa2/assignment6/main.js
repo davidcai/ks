@@ -27,6 +27,10 @@
   var $btnCancel = $('#btn_city_cancel');
 
 
+  // Start rolling
+  main();
+
+
   /**
    * Main function
    * @method main
@@ -47,7 +51,7 @@
       console.log(strMessage);
 
       // [start] For testing only
-      // __findCity({
+      // findCityByLatLng({
       //     lat: 37.441883 
       //   , lng: -122.143019
       //   , success: search
@@ -83,7 +87,7 @@
 
 
   /**
-   * Get geo location to find city.
+   * Use geolocation to find city.
    * @method findCity
    * @param {function} fnSuccess  Success callback. Accepts a city name.
    * @param {function} fnError    Error callback. Accepts an error message.
@@ -91,10 +95,12 @@
   function findCity(fnSuccess, fnError) {
     if (navigator.geolocation) {
 
+      navigator.geolocation.getCurrentPosition(success, error);
+
       function success(position) {
         console.log('Found location');
         
-        __findCity({
+        findCityByLatLng({
             lat: position.coords.latitude
           , lng: position.coords.longitude
           , success: fnSuccess
@@ -105,12 +111,58 @@
       function error() {
         fnError('Cannot find location');
       }
-
-      navigator.geolocation.getCurrentPosition(success, error);
     }
     else {
       fnError('No geolocation support');
     }
+  }
+
+
+  /**
+   * Find city name by latitude and longitude.
+   * @method findCityByLatLng
+   * @param {object} cfg  Configuration object. 
+   *  <ul>
+   *    <li>{float} lat         Latitude</li>
+   *    <li>{float} lng         Longitude</li>
+   *    <li>{function} success  Success callback. Accepts a city name.</li>
+   *    <li>{function} error    Error callback. Accepts an error message.</li>
+   *  </ul>
+   */
+  function findCityByLatLng(cfg) {
+    var latlng = new google.maps.LatLng(cfg.lat, cfg.lng);
+
+    geocoder.geocode({latLng: latlng}, function(lstResults, status) {
+      var strCity;
+
+      if (status === google.maps.GeocoderStatus.OK) {
+        console.log(lstResults);
+
+        // Looking for address component with type='locality'
+        if (lstResults[0]) {
+          var lstAddrComps = lstResults[0].address_components;
+          for (var i = 0; i < lstAddrComps.length; i++) {
+
+            var lstTypes = lstAddrComps[i].types;
+            for (var j = 0; j < lstTypes.length; j++) {
+              if (lstTypes[j] === 'locality') {
+                strCity = lstAddrComps[i].long_name;
+                break;
+              } 
+            } // /for j
+          } // /for i
+
+        } // /if (lstResults[0])
+      } // /if (status === ...)
+
+      if (strCity) {
+        cfg.success(strCity);
+      }
+      else {
+        cfg.error('Cannot find city');
+      }
+
+    }); // /geocoder.geocode
   }
 
 
@@ -154,55 +206,6 @@
   function showPage(strPageId) {
     $lstPages.hide();
     $mapPages[strPageId].show();
-  }
-
-
-  /**
-   * Find city name by latitude and longitude.
-   * @method __findCity
-   * @private
-   * @param {object} cfg  Configuration object. 
-   *  <ul>
-   *    <li>{float} lat         Latitude</li>
-   *    <li>{float} lng         Longitude</li>
-   *    <li>{function} success  Success callback. Accepts a city name.</li>
-   *    <li>{function} error    Error callback. Accepts an error message.</li>
-   *  </ul>
-   */
-  function __findCity(cfg) {
-    var latlng = new google.maps.LatLng(cfg.lat, cfg.lng);
-
-    geocoder.geocode({latLng: latlng}, function(lstResults, status) {
-      var strCity;
-
-      if (status === google.maps.GeocoderStatus.OK) {
-        console.log(lstResults);
-
-        // Looking for address component with type='locality'
-        if (lstResults[0]) {
-          var lstAddrComps = lstResults[0].address_components;
-          for (var i = 0; i < lstAddrComps.length; i++) {
-
-            var lstTypes = lstAddrComps[i].types;
-            for (var j = 0; j < lstTypes.length; j++) {
-              if (lstTypes[j] === 'locality') {
-                strCity = lstAddrComps[i].long_name;
-                break;
-              } 
-            } // /for j
-          } // /for i
-
-        } // /if (lstResults[0])
-      } // /if (status === ...)
-
-      if (strCity) {
-        cfg.success(strCity);
-      }
-      else {
-        cfg.error('Cannot find city');
-      }
-
-    }); // /geocoder.geocode
   }
 
 
@@ -280,10 +283,5 @@
       .replace('{text}', strText)
     );
   }
-
-
-  // Start rolling
-  main();
-
 
 })(jQuery);
