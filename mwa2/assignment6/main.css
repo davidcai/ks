@@ -3,6 +3,10 @@ body {
 }
 
 
+/**
+ * Headers
+ */
+
 header {
   position: relative;
   background: #0095C3;
@@ -16,6 +20,10 @@ header h1 {
   padding-left: 10px;
 }
 
+
+/**
+ * Buttons
+ */
 
 .button { 
   background: -moz-linear-gradient(top,  rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 100%); 
@@ -35,6 +43,7 @@ header h1 {
   cursor: pointer;
   height: 30px;
   line-height: 30px;
+  text-decoration: none;
 }
 
 .button_save {
@@ -44,6 +53,10 @@ header h1 {
   background-color: #6E6E6E;
 }
 
+
+/**
+ * Page: list
+ */
 
 #page_list section#city {
   position: relative;
@@ -62,6 +75,7 @@ header h1 {
   right: 10px;
   color: #0080A6;
   cursor: pointer;
+  text-decoration: none;
 }
 
 #page_list section#results article {
@@ -103,6 +117,19 @@ header h1 {
   text-decoration: none;
 }
 
+#page_list section#loading {
+  background: transparent url('waiting.gif') no-repeat center bottom;
+  width: 90%;
+  height: 70px;
+  margin: 40px auto 0 auto;
+  text-align: center;
+  color: #555;
+}
+
+
+/**
+ * Page: edit city
+ */
 
 #page_edit_city input[type="text"], 
 #page_edit_city a.button {
@@ -118,4 +145,3 @@ header h1 {
   margin-bottom: 30px;
   text-align: center;
 }
-

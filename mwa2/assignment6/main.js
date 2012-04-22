@@ -21,6 +21,7 @@
   var $lblCity = $('#city_name');
   var $lnkEdit = $('#lnk_city_edit');
   var $results = $('#results');
+  var $loading = $('#loading');
   var $txtCity = $('#txt_city');
   var $btnSave = $('#btn_city_save');
   var $btnCancel = $('#btn_city_cancel');
@@ -31,23 +32,35 @@
    * @method main
    */
   function main() {
+    $loading.text('Detecting location').show();
+
     findCity(success, error);
 
     // Found city
     function success(strCity) {
+      $loading.hide();
       updateCity(strCity);
     }
     
     // Cannot find city
     function error(strMessage) {
       console.log(strMessage);
-      askCity();
+
+      // [start] For testing only
+      // __findCity({
+      //     lat: 37.441883 
+      //   , lng: -122.143019
+      //   , success: search
+      //   , error: function() { console.log('Cannot find city'); }
+      // });
+      // [end]
+      
+      $loading.hide();
+      editCity();
     }
 
     // Edit city
-    $lnkEdit.on('click', function() {
-      showPage('page_edit_city');
-    });
+    $lnkEdit.on('click', editCity);
 
     // Save city
     $btnSave.on('click', function() {
@@ -55,9 +68,7 @@
       console.log('Save city: ' + strCity);
 
       if (!!strCity.match(/\S/)) { // City name is not empty
-        showPage('page_list');
         updateCity(strCity);
-        // updateCity(strCity, true);
 
         // TODO: Save city in localstorage
       }
@@ -66,7 +77,7 @@
     // Cancel editing city
     $btnCancel.on('click', function() {
       $txtCity.val('');
-      showPage('page_list');
+      updateCity();
     });
   }
 
@@ -105,19 +116,10 @@
 
   /**
    * Prompt user to input a city name.
-   * @method askCity
+   * @method editCity
    */
-  function askCity() {
+  function editCity() {
     showPage('page_edit_city');
-
-    // [start] For testing only
-    // __findCity({
-    //     lat: 37.441883 
-    //   , lng: -122.143019
-    //   , success: search
-    //   , error: function() { console.log('Cannot find city'); }
-    // });
-    // [end]
   }
 
 
@@ -129,6 +131,7 @@
    */
   function updateCity(strCity, bSilent) {
     console.log('City = ' + strCity);
+    showPage('page_list');
 
     if (strCity && !!strCity.match(/\S/)) { // City name is not empty
       $lblCity.text(strCity);
@@ -209,6 +212,8 @@
    * @param {string} strCity  City name.
    */
   function search(strCity) {
+    $loading.text('Loading tweets').show();
+
     $.ajax({
         url: 'http://search.twitter.com/search.json?q=' + 
           encodeURIComponent(strCity) + 
@@ -218,6 +223,7 @@
       , error: function($xhr, stat, err) {
           console.log(stat);
           console.log(err);
+          $loading.hide();
         }
     });
   }
@@ -233,6 +239,7 @@
 
     var lstResults = data.results;
 
+    $loading.hide(); 
     $results.empty();
 
     if (lstResults) {
@@ -240,7 +247,7 @@
         var result = lstResults[i];
 
         // console.log('from: ' + result.from_user_name + ' text: ' + result.text);
-        prepend($results, result);
+        prepend(result);
       }
     }
   }
@@ -249,10 +256,9 @@
   /** 
    * Create HTML element for each result and prepend it to the results list.
    * @method prepend
-   * @param {object} $results   The jQuery enhanced results list.
    * @param {object} result     The tweet result to prepend.
    */
-  function prepend($results, result) {
+  function prepend(result) {
     var strText = result.text;
     
     if (result.entities && result.entities.urls) {
