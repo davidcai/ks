@@ -1,5 +1,6 @@
 (function($) {
 
+  // Tweet HTML template
   var TEMPLATE_ARTICLE =
     '<article>' + 
       '<img src="{image}"></img>' + 
@@ -8,7 +9,21 @@
       '</div>' + 
     '</article>';
 
+  // Google Geocoder
   var geocoder = new google.maps.Geocoder();
+
+  // jQuery DOM nodes
+  var $lstPages = $('.page');
+  var $mapPages = {
+      'page_list':      $('#page_list')
+    , 'page_edit_city': $('#page_edit_city')
+  }
+  var $lblCity = $('#city_name');
+  var $lnkEdit = $('#lnk_city_edit');
+  var $results = $('#results');
+  var $txtCity = $('#txt_city');
+  var $btnSave = $('#btn_city_save');
+  var $btnCancel = $('#btn_city_cancel');
 
 
   /**
@@ -16,16 +31,42 @@
    * @method main
    */
   function main() {
-    findCity({
-        success: function(strCityName) {
-          console.log('City = ' + strCityName);
-          search(strCityName);
-        }
-      , error: function(strMessage) {
-          console.log(strMessage);
-          var strCityName = promptForCityName();
-          // search(strCityName);
-        }
+    findCity(success, error);
+
+    // Found city
+    function success(strCity) {
+      updateCity(strCity);
+    }
+    
+    // Cannot find city
+    function error(strMessage) {
+      console.log(strMessage);
+      askCity();
+    }
+
+    // Edit city
+    $lnkEdit.on('click', function() {
+      showPage('page_edit_city');
+    });
+
+    // Save city
+    $btnSave.on('click', function() {
+      var strCity = $txtCity.val();
+      console.log('Save city: ' + strCity);
+
+      if (!!strCity.match(/\S/)) { // City name is not empty
+        showPage('page_list');
+        updateCity(strCity);
+        // updateCity(strCity, true);
+
+        // TODO: Save city in localstorage
+      }
+    });
+
+    // Cancel editing city
+    $btnCancel.on('click', function() {
+      $txtCity.val('');
+      showPage('page_list');
     });
   }
 
@@ -33,55 +74,83 @@
   /**
    * Get geo location to find city.
    * @method findCity
-   * @param {object} cfg  Configuration object.
-   *  <ul>
-   *    <li>{function} success  Success callback. Accepts a city name.</li>
-   *    <li>{function} error    Error callback. Accepts an error message.</li>
-   *  </ul>
+   * @param {function} fnSuccess  Success callback. Accepts a city name.
+   * @param {function} fnError    Error callback. Accepts an error message.
    */
-  function findCity(cfg) {
+  function findCity(fnSuccess, fnError) {
     if (navigator.geolocation) {
+
       function success(position) {
         console.log('Found location');
         
         __findCity({
             lat: position.coords.latitude
           , lng: position.coords.longitude
-          , success: cfg.success
-          , error: cfg.error
+          , success: fnSuccess
+          , error: fnError
         });
       }
 
       function error() {
-        cfg.error('Cannot find location');
+        fnError('Cannot find location');
       }
 
       navigator.geolocation.getCurrentPosition(success, error);
     }
     else {
-      cfg.error('No geolocation support');
+      fnError('No geolocation support');
     }
   }
 
 
   /**
    * Prompt user to input a city name.
-   * @method promptForCityName
-   * @return {string} City name
+   * @method askCity
    */
-  function promptForCityName() {
-    var strCityName;
+  function askCity() {
+    showPage('page_edit_city');
 
     // [start] For testing only
-    __findCity({
-        lat: 37.441883 
-      , lng: -122.143019
-      , success: search
-      , error: function() { console.log('Cannot find city'); }
-    });
+    // __findCity({
+    //     lat: 37.441883 
+    //   , lng: -122.143019
+    //   , success: search
+    //   , error: function() { console.log('Cannot find city'); }
+    // });
     // [end]
+  }
 
-    return strCityName;
+
+  /**
+   * Update city. If bSilent is false or not specified, start a new search for the city.
+   * @method updateCity
+   * @param {string} strCity    City name.
+   * @param {boolean} bSilent   A flag indicating whether to suppress a new search.
+   */
+  function updateCity(strCity, bSilent) {
+    console.log('City = ' + strCity);
+
+    if (strCity && !!strCity.match(/\S/)) { // City name is not empty
+      $lblCity.text(strCity);
+      
+      if (!!bSilent === false) {
+        console.log('Starting a new search ...');
+        search(strCity);
+      }
+      else {
+        console.log('bSilent = true. Will not kick off a new search');
+      }
+    }
+  }
+
+
+  /**
+   * @method showPage
+   * @param {string} strPageId  Page ID.
+   */
+  function showPage(strPageId) {
+    $lstPages.hide();
+    $mapPages[strPageId].show();
   }
 
 
@@ -101,7 +170,7 @@
     var latlng = new google.maps.LatLng(cfg.lat, cfg.lng);
 
     geocoder.geocode({latLng: latlng}, function(lstResults, status) {
-      var strCityName;
+      var strCity;
 
       if (status === google.maps.GeocoderStatus.OK) {
         console.log(lstResults);
@@ -114,7 +183,7 @@
             var lstTypes = lstAddrComps[i].types;
             for (var j = 0; j < lstTypes.length; j++) {
               if (lstTypes[j] === 'locality') {
-                strCityName = lstAddrComps[i].long_name;
+                strCity = lstAddrComps[i].long_name;
                 break;
               } 
             } // /for j
@@ -123,8 +192,8 @@
         } // /if (lstResults[0])
       } // /if (status === ...)
 
-      if (strCityName) {
-        cfg.success(strCityName);
+      if (strCity) {
+        cfg.success(strCity);
       }
       else {
         cfg.error('Cannot find city');
@@ -137,12 +206,12 @@
   /**
    * Search twitter by city name.
    * @method search
-   * @param {string} strCityName  City name.
+   * @param {string} strCity  City name.
    */
-  function search(strCityName) {
+  function search(strCity) {
     $.ajax({
         url: 'http://search.twitter.com/search.json?q=' + 
-          encodeURIComponent(strCityName) + 
+          encodeURIComponent(strCity) + 
           '&rpp=20&result_type=recent&include_entities=true'
       , dataType: 'jsonp'
       , success: list
@@ -162,7 +231,6 @@
   function list(data) {
     console.log(data);
 
-    var $results = $('#results');
     var lstResults = data.results;
 
     $results.empty();
