@@ -6,6 +6,7 @@ reset.css
 main.css
 main.js
 http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js
+http://maps.googleapis.com/maps/api/js?sensor=false
 
 NETWORK:
 *
