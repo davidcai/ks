@@ -1,6 +1,64 @@
 (function($) {
 
-  // Tweet HTML template
+  /* ************************************************************************ */
+  /* Page model                                                               */
+  /* ************************************************************************ */
+
+  var Model = function() {
+    this.city = null;
+    this.twitterMaxId = null;
+  };
+
+  Model.prototype.load = function() {
+    var model = {};
+    if (window.localStorage) {
+      console.log('Has localStorage');
+      var strModel = localStorage.getItem('mwa2.hw6.model');
+      if (strModel) {
+        model = JSON.parse(strModel) || {};
+      }
+    }
+    else {
+      console.log('No localStorage');
+    }
+
+    this.reset();
+    if (model.city) {
+      this.city = model.city;
+    }
+    if (model.twitterMaxId) {
+      this.twitterMaxId = model.twitterMaxId;
+    }
+    console.log('Loaded model');
+  };
+
+  Model.prototype.save = function() {
+    if (window.localStorage) {
+      console.log('Has localStorage');
+      var model = {
+          'city': this.city
+        , 'twitterMaxId': this.twitterMaxId
+      };
+      var strModel = JSON.stringify(model);
+      localStorage.setItem('mwa2.hw6.model', strModel);
+      console.log('Saved model');
+    }
+    else {
+      console.log('No localStorage');
+    }
+  };
+
+  Model.prototype.reset = function() {
+    this.city = 'Waikiki';
+    this.twitterMaxId = '0';
+    console.log('Reset model');
+  }
+
+
+  /* ************************************************************************ */
+  /* Tweet HTML template                                                      */
+  /* ************************************************************************ */
+
   var TEMPLATE_ARTICLE =
     '<article>' + 
       '<img src="{image}"></img>' + 
@@ -9,130 +67,191 @@
       '</div>' + 
     '</article>';
 
-  // Google Geocoder
-  var geocoder = new google.maps.Geocoder();
 
-  // jQuery DOM nodes
+  /* ************************************************************************ */
+  /* jQuery DOM nodes and other shared variables                              */
+  /* ************************************************************************ */
+
   var $lstPages = $('.page');
   var $mapPages = {
       'page_list':      $('#page_list')
     , 'page_edit_city': $('#page_edit_city')
+    , 'page_loading':   $('#page_loading')
   }
   var $lblCity = $('#city_name');
   var $lnkEdit = $('#lnk_city_edit');
   var $results = $('#results');
   var $loading = $('#loading');
   var $txtCity = $('#txt_city');
+  var $btnAuto = $('#btn_city_auto');
   var $btnSave = $('#btn_city_save');
   var $btnCancel = $('#btn_city_cancel');
 
+  var strCurrentPageId;
+  var geocoder = new google.maps.Geocoder();
+  var model = new Model();
 
-  // Start rolling
-  main();
+
+  /* ************************************************************************ */
+  /* Main function                                                            */
+  /* ************************************************************************ */
+
+  (function main() {
+    model.load();
+
+    // Update the list page 
+    console.log('Updating list with stored model');
+    updateList();
+
+    // Event handling
+    $lnkEdit.on('click', function() { editCity(); });
+    $btnAuto.on('click', function() { findCity(); });
+    $btnSave.on('click', function() { saveCity(); });
+    $btnCancel.on('click', function() { updateList(true); });
+
+    // Check appcache updates every 24 hours
+    monitorAppCache();
+  })();
+
+
+  /* ************************************************************************ */
+  /* Functions                                                                */
+  /* ************************************************************************ */
+
+  /**
+   * Prompt user to input a city name.
+   * @method editCity
+   */
+  function editCity() {
+    $txtCity.val('');
+    showPage('page_edit_city');
+  }
 
 
   /**
-   * Main function
-   * @method main
+   * Save user input, and update the list page.
+   * @saveCity
    */
-  function main() {
-    $loading.text('Detecting location').show();
+  function saveCity() {
+    var strCity = $txtCity.val();
+    console.log('Save city: ' + strCity);
 
-    findCity(success, error);
+    if (!!strCity.match(/\S/)) { // City name cannot be empty
+      model.reset();
+      model.city = strCity;
+      model.save();
 
-    // Found city
-    function success(strCity) {
-      $loading.hide();
-      updateCity(strCity);
+      updateList();
     }
+  }
+
+
+  /**
+   * Update the list page. If bSilent is false or not specified, start a new search for the city.
+   * @method updateList
+   * @param {boolean} bSilent   A flag indicating whether to suppress a new search.
+   */
+  function updateList(bSilent) {
+    console.log('Updating list for city ' + model.city);
+    showPage('page_list');
+
+    $lblCity.text(model.city);
     
-    // Cannot find city
-    function error(strMessage) {
-      console.log(strMessage);
-
-      // [start] For testing only
-      // findCityByLatLng({
-      //     lat: 37.441883 
-      //   , lng: -122.143019
-      //   , success: search
-      //   , error: function() { console.log('Cannot find city'); }
-      // });
-      // [end]
-      
-      $loading.hide();
-      editCity();
+    if (!!bSilent === false) {
+      console.log('Starting a new search ...');
+      search(model.city);
     }
-
-    // Edit city
-    $lnkEdit.on('click', editCity);
-
-    // Save city
-    $btnSave.on('click', function() {
-      var strCity = $txtCity.val();
-      console.log('Save city: ' + strCity);
-
-      if (!!strCity.match(/\S/)) { // City name is not empty
-        updateCity(strCity);
-
-        // TODO: Save city in localstorage
-      }
-    });
-
-    // Cancel editing city
-    $btnCancel.on('click', function() {
-      $txtCity.val('');
-      updateCity();
-    });
-
-    // Check appcache updates every 24 hours
-    if (window.applicationCache) {
-      console.log('Has applicationCache');
-      
-      $(document).ready(function() {
-        applicationCache.addEventListener('updateready', function(e) {
-          console.log('applicationCache: updateready');
-          applicationCache.swapCache();
-          console.log('applicationCache: swapped cache');
-          if (confirm('A new version of this application is available. Do you want to use it?')) {
-            location.reload();
-          }
-        }, false);
-      });
-
-      setInterval(function() { applicationCache.update() }, 24 * 60 * 60 * 1000);
+    else {
+      console.log('bSilent = true. Will not kick off a new search');
     }
+  }
 
-  } // /function main()
+
+  /**
+   * @method showPage
+   * @param {string} strPageId  Page ID.
+   */
+  function showPage(strPageId) {
+    console.log('Show page ' + strPageId);
+    $lstPages.hide();
+    $mapPages[strPageId].show();
+    strCurrentPageId = strPageId;
+  }
+
+
+  /**
+   * Display a loading page with specified message.
+   * @method showLoading
+   * @param {string} strMessage   Message.
+   */
+  function showLoading(strMessage) {
+    console.log('Show loading page with message ' + strMessage);
+    $lstPages.hide();
+    $mapPages['page_loading'].show();
+    $loading.text(strMessage);
+  }
+
+
+  /**
+   * Hide the loading page.
+   * @method hideLoading
+   */
+  function hideLoading() {
+    console.log('Hide loading page');
+    showPage(strCurrentPageId);
+    $loading.text('');
+  }
 
 
   /**
    * Use geolocation to find city.
    * @method findCity
-   * @param {function} fnSuccess  Success callback. Accepts a city name.
-   * @param {function} fnError    Error callback. Accepts an error message.
    */
-  function findCity(fnSuccess, fnError) {
+  function findCity() {
+    showLoading('Detecting location');
+
     if (navigator.geolocation) {
 
-      navigator.geolocation.getCurrentPosition(success, error);
+      navigator.geolocation.getCurrentPosition(
 
-      function success(position) {
-        console.log('Found location');
-        
-        findCityByLatLng({
-            lat: position.coords.latitude
-          , lng: position.coords.longitude
-          , success: fnSuccess
-          , error: fnError
-        });
-      }
+          // Success
+          function(position) {
+            console.log('Found geo location');
+            var fLat = position.coords.latitude;
+            var fLng = position.coords.longitude;
+            console.log('(lat, lng) = (' + fLat + ', ' + fLng + ')');
+            
+            findCityByLatLng({
+                lat: fLat
+              , lng: fLng
+              , success: findCitySuccess
+              , error: findCityError
+            });
+          }
 
-      function error() {
-        fnError('Cannot find location');
-      }
+          // Error
+        , function() {
+            findCityError('Cannot find location');
+          }
+      );
+
     }
     else {
-      fnError('No geolocation support');
+      findCityError('No geolocation support');
+    }
+
+    function findCitySuccess(strCity) {
+      console.log('Found city: ' + strCity);
+      hideLoading();
+      $txtCity.val(strCity);
+    }
+
+    function findCityError(strError) {
+      console.log(strError);
+      hideLoading();
+      $txtCity.val('Cannot find your location').one('click', function() {
+        $txtCity.val('');
+      });
     }
   }
 
@@ -186,66 +305,23 @@
 
 
   /**
-   * Prompt user to input a city name.
-   * @method editCity
-   */
-  function editCity() {
-    showPage('page_edit_city');
-  }
-
-
-  /**
-   * Update city. If bSilent is false or not specified, start a new search for the city.
-   * @method updateCity
-   * @param {string} strCity    City name.
-   * @param {boolean} bSilent   A flag indicating whether to suppress a new search.
-   */
-  function updateCity(strCity, bSilent) {
-    console.log('City = ' + strCity);
-    showPage('page_list');
-
-    if (strCity && !!strCity.match(/\S/)) { // City name is not empty
-      $lblCity.text(strCity);
-      
-      if (!!bSilent === false) {
-        console.log('Starting a new search ...');
-        search(strCity);
-      }
-      else {
-        console.log('bSilent = true. Will not kick off a new search');
-      }
-    }
-  }
-
-
-  /**
-   * @method showPage
-   * @param {string} strPageId  Page ID.
-   */
-  function showPage(strPageId) {
-    $lstPages.hide();
-    $mapPages[strPageId].show();
-  }
-
-
-  /**
    * Search twitter by city name.
    * @method search
    * @param {string} strCity  City name.
    */
   function search(strCity) {
-    $loading.text('Loading tweets').show();
+    showLoading('Loading tweets');
 
     $.ajax({
         url: 'http://search.twitter.com/search.json?q=' + 
           encodeURIComponent(strCity) + 
-          '&rpp=20&result_type=recent&include_entities=true'
+          '&rpp=25&result_type=recent&include_entities=true'
       , dataType: 'jsonp'
       , success: list
       , error: function($xhr, stat, err) {
           console.log(stat);
           console.log(err);
-          $loading.hide();
+          hideLoading();
         }
     });
   }
@@ -260,8 +336,10 @@
     console.log(data);
 
     var lstResults = data.results;
+    var strMaxId = data.max_id_str;
+    console.log('max_id_str = ' + strMaxId);
 
-    $loading.hide(); 
+    hideLoading();
     $results.empty();
 
     if (lstResults) {
@@ -301,6 +379,30 @@
       .replace('{from}', result.from_user_name)
       .replace('{text}', strText)
     );
+  }
+
+
+  /**
+   * Monitor application cache updates every 24 hours. Prompt users if updates are found.
+   * @method monitorAppCache
+   */
+  function monitorAppCache() {
+    if (window.applicationCache) {
+      console.log('Has applicationCache');
+      
+      $(document).ready(function() {
+        applicationCache.addEventListener('updateready', function(e) {
+          console.log('applicationCache: updateready');
+          applicationCache.swapCache();
+          console.log('applicationCache: swapped cache');
+          if (confirm('A new version of this application is available. Do you want to use it?')) {
+            location.reload();
+          }
+        }, false);
+      });
+
+      setInterval(function() { applicationCache.update() }, 24 * 60 * 60 * 1000);
+    }
   }
 
 })(jQuery);

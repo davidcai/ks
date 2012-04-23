@@ -18,13 +18,11 @@
       <header><h1>local tweets</h1></header>
 
       <section id="city">
-        <span id="city_name">location: unknown</span>
-        <a id="lnk_city_edit" href="javascript:void(0);">change</a>
+        <span id="city_name"></span>
+        <a id="lnk_city_edit">change</a>
       </section>
       
       <section id="results"></section>
-
-      <section id="loading" style="display: none;"></section>
     </div>
 
 
@@ -37,14 +35,26 @@
 
       <section>
         <input type="text" id="txt_city" placeholder="What is your city?"></input>
-        <a id="btn_city_save" href="javascript:void(0);" class="button button_save">Save</a>
-        <a id="btn_city_cancel" href="javascript:void(0);" class="button button_cancel">Cancel</a>
+        <a id="btn_city_save" class="button button_save">Save</a>
+        <a id="btn_city_auto" class="button button_auto">Auto Detect</a>
+        <a id="btn_city_cancel" class="button button_cancel">Cancel</a>
       </section>
     </div>
 
 
+    <!-- ================================================================ -->
+    <!-- Page: loading                                                    -->
+    <!-- ================================================================ -->
+
+    <div id="page_loading" class="page" style="display: none;">
+      <header><h1>local tweets</h1></header>
+
+      <section id="loading"></section>
+    </div>
+
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script src="json2.js"></script>
     <script src="main.js"></script>
   </body>
 </html>
