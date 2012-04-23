@@ -83,7 +83,26 @@
       $txtCity.val('');
       updateCity();
     });
-  }
+
+    // Check appcache updates every 24 hours
+    if (window.applicationCache) {
+      console.log('Has applicationCache');
+      
+      $(document).ready(function() {
+        applicationCache.addEventListener('updateready', function(e) {
+          console.log('applicationCache: updateready');
+          applicationCache.swapCache();
+          console.log('applicationCache: swapped cache');
+          if (confirm('A new version of this application is available. Do you want to use it?')) {
+            location.reload();
+          }
+        }, false);
+      });
+
+      setInterval(function() { applicationCache.update() }, 24 * 60 * 60 * 1000);
+    }
+
+  } // /function main()
 
 
   /**
