@@ -25,7 +25,7 @@ def count_words(string)
   counts = {}
 
   string.downcase.split(/\b/).each do |w|
-    if (w =~ /\w/) 
+    if w =~ /\w/ 
       counts[w] = (counts[w].nil?) ? 1 : counts[w] + 1
     end
   end
