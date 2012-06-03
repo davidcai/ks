@@ -92,8 +92,8 @@ puts "\n(c)"
 
 module Enumerable
   def palindrome?
-    return false if self.is_a? Hash
-    (self.length / 2).to_i.times.all? { |i| self[i] == self[self.length - 1 - i] }
+    a = self.to_a
+    (a.length / 2).to_i.times.all? { |i| a[i] == a[a.length - 1 - i] }
   end
 end
 
@@ -103,3 +103,4 @@ puts [1, 2, 3, 4].palindrome?
 puts [1, [1, 2], 3, [1, 2], 1].palindrome?
 puts [1].palindrome?
 puts ({"a" => 1, "b" => 2, "c" => 3}.palindrome?)
+puts (0..8).palindrome?
