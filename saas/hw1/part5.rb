@@ -70,3 +70,36 @@ puts 5.dollars.in(:euros)
 puts 10.euros.in(:rupees)
 puts 1.dollar.in(:rupees)
 puts 10.rupees.in(:euro)
+
+
+puts "\n(b)"
+
+
+class String
+  def palindrome?
+    s = self.gsub(/\W/, "").downcase
+    s == s.reverse
+  end
+end
+
+
+puts "foo".palindrome?
+puts "oofoo".palindrome?
+
+
+puts "\n(c)"
+
+
+module Enumerable
+  def palindrome?
+    return false if self.is_a? Hash
+    (self.length / 2).to_i.times.all? { |i| self[i] == self[self.length - 1 - i] }
+  end
+end
+
+
+puts [1, 2, 3, 2, 1].palindrome?
+puts [1, 2, 3, 4].palindrome?
+puts [1, [1, 2], 3, [1, 2], 1].palindrome?
+puts [1].palindrome?
+puts ({"a" => 1, "b" => 2, "c" => 3}.palindrome?)
