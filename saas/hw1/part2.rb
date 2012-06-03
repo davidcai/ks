@@ -15,7 +15,7 @@ def rps_game_winner(game)
   s1 = game[0][1].upcase
   s2 = game[1][1].upcase
 
-  raise NoSuchStrategyError unless strategies.include?(s1) || strategies.include?(s2)
+  raise NoSuchStrategyError unless strategies.include?(s1) && strategies.include?(s2)
 
   delta = strategies.index(s1) - strategies.index(s2)
   if delta == 0 || delta == -1 || delta == 2
@@ -28,6 +28,8 @@ def rps_game_winner(game)
 end
 
 
+# rps_game_winner([ ["Armando", "P"] ])
+# rps_game_winner([ ["Armando", "P"], ["Dave", "x"] ])
 winner = rps_game_winner([ ["Armando", "P"], ["Dave", "S"] ])
 puts %[#{winner} wins]
 
@@ -36,13 +38,26 @@ puts "\n(b)"
 
 
 def rps_tournament_winner(tournament)
-  rps_game_winner([
-    rps_game_winner([ rps_game_winner(tournament[0][0]), rps_game_winner(tournament[0][1]) ]), 
-    rps_game_winner([ rps_game_winner(tournament[1][0]), rps_game_winner(tournament[1][1]) ])
-  ])
+  if tournament[0][0].kind_of?(String)
+    rps_game_winner(tournament)
+  else
+    rps_game_winner([
+      rps_tournament_winner(tournament[0]), 
+      rps_tournament_winner(tournament[1])
+    ])
+  end
 end
 
 
+# winner = rps_tournament_winner(
+#   [ ["Armando", "P"], ["Dave", "S"] ],
+# )
+# winner = rps_tournament_winner(
+#   [
+#     [ ["Armando", "P"], ["Dave", "S"] ],
+#     [ ["Richard", "R"],  ["Michael", "S"] ],
+#   ]
+# )
 winner = rps_tournament_winner(
   [
     [
