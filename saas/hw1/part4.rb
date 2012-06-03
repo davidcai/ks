@@ -26,11 +26,7 @@ class JellyBean < Dessert
   end
   
   def delicious?
-    if @flavor == "black licorice"
-      false
-    else
-      super
-    end
+    (@flavor == "black licorice") ? false : super
   end
 
   attr_accessor :flavor
