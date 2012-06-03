@@ -5,8 +5,8 @@ puts "\n(a)"
 
 
 def palindrome?(string)
- s = string.gsub(/\W/, "").downcase
- s == s.reverse
+  s = string.gsub(/\W/, "").downcase
+  s == s.reverse
 end
 
 
