@@ -1,0 +1,400 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <style>
+            body {
+                overflow-x: hidden;
+                margin: 10px 20px 10px 15px;
+                width: 380px;
+            }
+
+            div {
+                font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+            }
+
+            div#help {
+                font-size: 11px;
+                color: #D2D1D1;
+                margin-bottom: 10px;
+            }
+
+            div.field {
+                padding: 1px 5px;
+                margin: 1px 0;
+            }
+            div.field.text {
+                background-color: #FBFAFA;
+            }
+            div.field.name-value {
+                background-color: #E5EECC;
+            }
+
+            input[type="text"] {
+                width: 100%;
+                border: 0;
+                padding: 2px 0;
+                background-color: transparent;
+                outline-style: none;
+            }
+            input[type="text"].name {
+                width: 25%;
+            }
+            div.field.name-value span {
+                padding-right: 2px;
+            }
+            input[type="text"].value {
+                width: 70%;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <div id="help">
+            *Tab or shift+tab to nagivate. Type to edit. Enter to load new URL.
+        </div>
+
+        <script>
+            var DEBUG_ON = true, 
+                HOST_DELIM = '://', 
+                PATH_DELIM = '/', 
+                QUERY_DELIM = '?', 
+                FRAG_DELIM = '#', 
+                PARAM_DELIM = '&', 
+                NAME_DELIM = '=';
+
+
+            function log(strMsg) {
+                if (DEBUG_ON === true) {
+                    console.log(strMsg);
+                }
+            }
+
+
+            chrome.tabs.getSelected(null, function(tab) {
+                var strUrl = tab.url, 
+                    strHost, 
+                    strQuery, 
+                    strFrag, 
+                    aPaths, 
+                    aQueryParams, 
+                    aFrags, 
+                    nPos,
+                    bFoundQueryDelim, 
+                    bFoundFragDelim, 
+                    aComps = []; // URL components
+
+                // Get host
+                nPos = strUrl.indexOf(HOST_DELIM);
+                if (nPos != -1) {
+                    nPos = nPos + HOST_DELIM.length;
+
+                    strHost = strUrl.substring(0, nPos);
+                    log('host = ' + strHost);
+
+                    // Strip host
+                    strUrl = strUrl.substring(nPos);
+                }
+
+                // Get fragment
+                nPos = strUrl.indexOf(FRAG_DELIM);
+                if (nPos != -1) {
+                    bFoundFragDelim = true;
+                    nPos = nPos + FRAG_DELIM.length;
+
+                    strFrag = strUrl.substring(nPos);
+                    log('fragment = ' + strFrag);
+
+                    aFrags = getFragments(strFrag);
+                    log('Parsed fragment'); 
+
+                    // Strip fragment
+                    strUrl = strUrl.substring(0, nPos - 1);
+                }
+
+                // Get query
+                nPos = strUrl.indexOf(QUERY_DELIM);
+                if (nPos != -1) {
+                    bFoundQueryDelim = true;
+                    nPos = nPos + QUERY_DELIM.length;
+
+                    strQuery = strUrl.substring(nPos);
+                    log('query = ' + strQuery);
+
+                    aQueryParams = getQueryParams(strQuery);
+                    log('Parsed query params');
+
+                    // Strip query
+                    strUrl = strUrl.substring(0, nPos - 1);
+                }
+
+                // Get paths
+                aPaths = getPaths(strUrl);
+                log('aPaths = ' + aPaths.join());
+
+                // Assemble all components
+                if (strHost) {
+                    aComps.push(strHost);
+                }
+                if (aPaths && aPaths.length) {
+                    aComps = aComps.concat(aPaths);
+                }
+                if (bFoundQueryDelim === true) {
+                    aComps.push(QUERY_DELIM);
+                    if (aQueryParams && aQueryParams.length) {
+                        aComps = aComps.concat(aQueryParams);
+                    }
+                }
+                if (bFoundFragDelim === true) {
+                    aComps.push(FRAG_DELIM);
+                    if (aFrags && aFrags.length) {
+                        aComps = aComps.concat(aFrags);
+                    }
+                }
+
+                // Render all components
+                renderComponents(aComps);
+            });
+
+
+            function getFragments(strFrag) {
+                var aFrags = []; 
+
+                if (strFrag && strFrag.length) {
+                    if (strFrag.indexOf(NAME_DELIM) != -1) {
+                        // Fragment string has name value pair
+                        // Treat it as query string
+                        aFrags = getQueryParams(strFrag);
+                    }
+                    else {
+                        aFrags.push(strFrag);
+                    }
+                }
+
+                return aFrags;
+            }
+
+
+            function getQueryParams(strQuery) {
+                var aNewParams = [], 
+                    aParams,  
+                    i, 
+                    nCount, 
+                    nameValue;
+
+                if (strQuery && strQuery.length) {
+                    aParams = strQuery.split(PARAM_DELIM);
+
+                    nCount = aParams.length;
+                    if (nCount > 1) {
+                        // Sort params by name
+                        aParams.sort();
+                    }
+
+                    for (i = 0; i < nCount; i++) {
+                        nameValue = getNameValue(aParams[i]);
+                        aNewParams.push(nameValue);
+                    }
+                }
+
+                return aNewParams;
+            }
+
+
+            function getNameValue(strParam) {
+                var a = strParam.split(NAME_DELIM);
+
+                return {
+                    'name': (a[0]) ? a[0] : '', 
+                    'value': (a[1]) ? a[1] : ''
+                };
+            }
+
+
+            function getPaths(strUrl) {
+                var aNewPaths = [], 
+                    aPaths,
+                    i, 
+                    nCount, 
+                    strPath, 
+                    bFirst = true;
+
+                if (strUrl && strUrl.length) {
+                    aPaths = strUrl.split(PATH_DELIM);
+
+                    nCount = aPaths.length;
+                    for (i = 0; i < nCount; i++) {
+                        strPath = aPaths[i];
+                        if (bFirst === false) {
+                            strPath = PATH_DELIM + strPath;
+                        }
+                            
+                        aNewPaths.push(strPath);
+
+                        bFirst = false;
+                    }
+                }
+
+                return aNewPaths;
+            }
+
+
+            function renderComponents(aComps) {
+                var i, 
+                    nCount = aComps.length, 
+                    comp; 
+
+                log('Start to render components');
+
+                for (i = 0; i < nCount; i++) {
+                    comp = aComps[i];
+
+                    if (typeof comp === 'string') {
+                        createTextField(comp);
+                    }
+                    else if (typeof comp === 'object') {
+                        createNameValueField(comp);
+                    }
+                }
+            }
+
+            
+            function collectComponents() {
+                var strUrl = '', 
+                    aInputs = document.getElementsByTagName('input'), 
+                    i, 
+                    nCount = aInputs.length, 
+                    elInput, 
+                    strClass, 
+                    strComp, 
+                    strParamName, 
+                    bFirstParam = true;
+
+                log('Start to collect components');
+
+                // Iterate over all INPUT elements
+                for (i = 0; i < nCount; i++) {
+                    elInput = aInputs[i];
+
+                    // Get component text
+                    strComp = trim(elInput.value);
+
+                    strClass = elInput.getAttribute('class');
+                    if (!strClass) {
+                        strUrl += strComp;
+
+                        if (strComp === FRAG_DELIM) {
+                            // Reset first param flag when fragment delim is found
+                            bFirstParam = true;
+                        }
+                    }
+                    else if (strClass === 'name') {
+                        // Query param name
+                        if (strComp) {
+                            if (bFirstParam === false) {
+                                strUrl += PARAM_DELIM;
+                            }
+
+                            bFirstParam = false;
+                            strUrl = strUrl + strComp + NAME_DELIM;
+                        }
+
+                        // Remember the param name
+                        strParamName = strComp;
+                    }
+                    else if (strClass === 'value') {
+                        // Query param value
+                        if (strParamName) {
+                            // Append param value only when param name exists
+                            strUrl += strComp;
+                        }
+
+                        // Clear param name
+                        strParamName = null;
+                    }
+                }
+
+                log('New URL = ' + strUrl);
+
+                return strUrl;
+            }
+
+
+            function onTextClicked(elText) {
+                elText.select();
+            }
+
+
+            function onKeyPressed(e) {
+                if (e.which == 13) {
+                    var strUrl;
+
+                    log('Captured enter key');
+
+                    // Collect all URL components
+                    strUrl = collectComponents();
+
+                    // Navigate the selcted tab to the new URL
+                    log('Navigate to new URL');
+                    chrome.tabs.getSelected(null, function(tab) {
+                        chrome.tabs.update(tab.id, { url: strUrl });
+                    });
+                }
+            }
+
+
+            function createTextField(strText) {
+                var elField = document.createElement('div'), 
+                    elInput = document.createElement('input'), 
+                    elFieldsContainer = document.getElementById('fields-c');
+
+                elInput.setAttribute('type', 'text');
+                elInput.setAttribute('onclick', 'onTextClicked(this)');
+                elInput.setAttribute('onkeyup', 'onKeyPressed(event)');
+                elInput.value = strText;
+
+                elField.setAttribute('class', 'field text');
+                elField.appendChild(elInput);
+
+                document.body.appendChild(elField);
+            }
+
+
+            function createNameValueField(nameValue) {
+                var elField = document.createElement('div'), 
+                    elName = document.createElement('input'), 
+                    elEqual = document.createElement('span'), 
+                    elValue = document.createElement('input'),
+                    elFieldsContainer = document.getElementById('fields-c');
+
+                elName.setAttribute('type', 'text');
+                elName.setAttribute('class', 'name');
+                elName.setAttribute('onclick', 'onTextClicked(this)');
+                elName.setAttribute('onkeyup', 'onKeyPressed(event)');
+                elName.value = (nameValue.name) ? nameValue.name : '';
+
+                elEqual.innerHTML = '=';
+                
+                elValue.setAttribute('type', 'text');
+                elValue.setAttribute('class', 'value');
+                elValue.setAttribute('onclick', 'onTextClicked(this)');
+                elValue.setAttribute('onkeyup', 'onKeyPressed(event)');
+                elValue.value = (nameValue.value) ? nameValue.value : '';
+
+                elField.setAttribute('class', 'field name-value');
+                elField.appendChild(elName);
+                elField.appendChild(elEqual);
+                elField.appendChild(elValue);
+
+                document.body.appendChild(elField);
+            }
+
+
+            function trim(str) {
+                return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+            }
+        </script>
+
+    </body>
+</html>
