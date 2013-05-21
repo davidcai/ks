@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Story Point Gauge</title>
+  <link rel="stylesheet" href="css/normalize.css"/>
+  <link rel="stylesheet" href="css/app.css"/>
+</head>
+
+<body id="ng-app" ng-app="app">
+  <div ng-controller="CalCtrl" class="main ng-cloak">
+
+    <div class="scale">
+      <h1>Story point gauge</h1>
+      <a href="javascript:void(0);" class="clear_all" 
+        ng-click="clearAll()" title="clear all">x</a>
+      <div class="scale_rail">
+        <div class="scale_notch" ng-style="{ width: getScaleX(pointIndex) }"></div>
+      </div>
+      <div class="scale_values">
+        <div ng-repeat="value in scale" class="scale_value" 
+          ng-show="$middle" ng-style="{ left: getScaleX($index) }">{{value}}</div>
+      </div>
+    </div>
+
+    <div ng-repeat="group in groups" class="group">
+      <div class="group_hd">
+        <div class="group_name">{{group.name}}</div>
+        <a href="javascript:void(0);" class="clear_group" 
+          ng-click="clearGroup(group)" title="clear all in group">x</a>
+      </div>
+
+      <div class="group_bd">
+        <div ng-repeat="item in group.items" class="item_c">
+
+          <div class="item" ng-click="toggleItem(item)" 
+            ng-class="{selected: item.selected}">
+
+            <div class="item_name">{{item.name}}</div>
+
+            <div class="item_diff" 
+              ng-show="item.selected" ng-click="$event.stopPropagation()">
+
+              <a href="javascript:void(0);" class="decrease_diff" 
+                ng-click="decreaseDiff(item); $event.stopPropagation()">-</a>
+                level: {{getDiffName(item)}}
+              <a href="javascript:void(0);" class="increase_diff" 
+                ng-click="increaseDiff(item); $event.stopPropagation()">+</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="js/angular.min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="data.js"></script>
+</body>
+</html>
