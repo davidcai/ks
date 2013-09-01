@@ -1,0 +1,5 @@
+= David C =
+
+* Angular JS's IE8 support
+* DB strategy. Mongo DB?
+* Nodejs?
