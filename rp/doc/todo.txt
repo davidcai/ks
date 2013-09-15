@@ -1,5 +1,21 @@
-= David C =
+= Data model =
 
-* Angular JS's IE8 support
-* DB strategy. Mongo DB?
-* Nodejs?
+Story
+  description :string
+  owner :string
+  theme :object
+  initiative :object
+  team :object
+  release :date
+  notes :string
+
+Team
+  product_owner :string
+  scrum_master :string
+
+Theme
+  color :string
+
+Initiative
+  name :string
+  theme :object
