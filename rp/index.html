@@ -15,13 +15,32 @@
 			document.createElement('ng:view');
 		</script>
 	<![endif]-->
-  <link ref="stylesheet" href="lib/css/normalize.css" />
-  <link ref="stylesheet" href="css/app.css" />
+  <link rel="stylesheet" type="text/css" href="lib/css/normalize.css" />
+  <link rel="stylesheet" type="text/css" href="css/app.css" />
 </head>
 
 <body>
+
+  <!-- Nav bar -->
+  <div id="navbar" ng-controller="NavCtrl">
+    <h3>Group By</h3>
+    <ul>
+      <li><a href="javascript:void(0);">Team</a></li>
+      <li><a href="javascript:void(0);">Theme</a></li>
+      <li><a href="javascript:void(0);">Initiative</a></li>
+      <li><a href="javascript:void(0);">Release</a></li>
+    </ul>
+    <h3>Create</h3>
+    <ul>
+      <li><a href="javascript:void(0);">New Team</a></li>
+      <li><a href="javascript:void(0);">New Theme</a></li>
+      <li><a href="javascript:void(0);">New Initiative</a></li>
+      <li><a href="javascript:void(0);">New Story</a></li>
+    </ul>
+  </div>
+
 	<div ng-controller="MainCtrl" class="ng-cloak">
-		Data: {{data}}
+
 	</div>
 
 	<script src="lib/js/angular.min.js"></script>

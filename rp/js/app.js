@@ -1,5 +1,14 @@
 angular.module('app', [])
-	.controller('MainCtrl', ['$scope', '$log', function($scope, $log) {
-		$log.log('This is a test');
+
+  .controller('NavCtrl', 
+    ['$scope', '$log', function($scope, $log) {
+    
+    $log.log('NavCtrl');
+  }])
+
+	.controller('MainCtrl', 
+    ['$scope', '$log', function($scope, $log) {
+		
+    $log.log('MainCtrl');
 		$scope.data = "hello";
 	}]);

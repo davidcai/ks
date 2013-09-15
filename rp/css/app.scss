@@ -1,0 +1,46 @@
+html, 
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#navbar {
+  $nav-bg-color: #ccc;
+  $nav-item-bg-color: #eee;
+  $nav-item-color: #555;
+
+  width: 10em;
+  height: 100%;
+  background: $nav-bg-color;
+  border-right: 1px solid darken($nav-bg-color, 9%);
+
+  .nav-item {
+    padding-left: 1em;
+    display: block;
+    line-height: 2.5;
+    color: $nav-item-color;
+    border-bottom: 1px solid darken($nav-bg-color, 9%);
+  }
+
+  h3 {
+    @extend .nav-item;
+    margin: 0;
+    font-size: 1em;
+  }
+
+  ul {
+    list-style: none inside;
+    margin: 0;
+    padding: 0;
+
+    a {
+      @extend .nav-item;
+      text-decoration: none;
+      background: linear-gradient(to bottom,  
+        lighten($nav-item-bg-color, 5%) 0%, 
+        $nav-item-bg-color 37%, 
+        darken($nav-item-bg-color, 10%) 100%);
+    }
+  }
+}
