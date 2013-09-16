@@ -19,15 +19,15 @@
   <link rel="stylesheet" type="text/css" href="css/app.css" />
 </head>
 
-<body>
+<body ng-controller="MainCtrl">
 
   <!-- Nav bar -->
   <div id="navbar" ng-controller="NavCtrl">
     <h3>Group By</h3>
     <ul>
-      <li><a href="javascript:void(0);">Team</a></li>
+      <li><a ui-sref="teams">Team</a></li>
       <li><a href="javascript:void(0);">Theme</a></li>
-      <li><a href="javascript:void(0);">Initiative</a></li>
+      <li><a ui-sref="initiatives">Initiative</a></li>
       <li><a href="javascript:void(0);">Release</a></li>
     </ul>
     <h3>Create</h3>
@@ -39,11 +39,10 @@
     </ul>
   </div>
 
-	<div ng-controller="MainCtrl" class="ng-cloak">
-
-	</div>
+	<div ui-view></div>
 
 	<script src="lib/js/angular.min.js"></script>
+  <script src="lib/js/angular-ui-router.min.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
