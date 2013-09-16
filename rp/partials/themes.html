@@ -1,0 +1,10 @@
+<div class="listview">
+  <div ng-repeat="theme in data.themes | orderBy: 'name'" class="group">
+    <div class="group-hd">{{initiative.name}}</div>
+    <div class="group-bd">
+      <div ng-repeat="story in data.stories | filter: { theme_id: theme.id } | orderBy: 'description'" class="story-card">
+        {{story.description}}
+      </div>
+    </div>
+  </div>
+</div>
