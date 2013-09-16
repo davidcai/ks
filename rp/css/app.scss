@@ -1,3 +1,24 @@
+$navbar-width: 170px;
+$group-hd-width: 120px;
+
+$lbl-color: #555;
+$lbl-active-color: #fff;
+
+$pnl-bg-color: #eee;
+$pnl-border-color: darken($pnl-bg-color, 20%);
+
+$nav-item-bg-color: #eee;
+$nav-item-border-color: darken($nav-item-bg-color, 20%);
+$nav-item-active-color: #fff;
+$nav-item-active-bg-color: #4589f7;
+
+
+@mixin float($dir) {
+  float: $dir;
+  overflow: hidden;
+}
+
+
 html, 
 body {
   margin: 0;
@@ -6,21 +27,20 @@ body {
 }
 
 #navbar {
-  $nav-bg-color: #ccc;
-  $nav-item-bg-color: #eee;
-  $nav-item-color: #555;
-
-  width: 10em;
-  height: 100%;
-  background: $nav-bg-color;
-  border-right: 1px solid darken($nav-bg-color, 9%);
+  position: absolute; 
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: $navbar-width;
+  background: darken($pnl-bg-color, 10%);
+  border-right: 1px solid $nav-item-border-color;
 
   .nav-item {
     padding-left: 1em;
     display: block;
     line-height: 2.5;
-    color: $nav-item-color;
-    border-bottom: 1px solid darken($nav-bg-color, 9%);
+    color: $lbl-color;
+    border-bottom: 1px solid $nav-item-border-color;
   }
 
   h3 {
@@ -41,6 +61,54 @@ body {
         lighten($nav-item-bg-color, 5%) 0%, 
         $nav-item-bg-color 37%, 
         darken($nav-item-bg-color, 10%) 100%);
+
+      &.active {
+        color: $nav-item-active-color;
+        background: linear-gradient(to bottom,  
+          lighten($nav-item-active-bg-color, 10%) 0%, 
+          $nav-item-active-bg-color 37%, 
+          darken($nav-item-active-bg-color, 10%) 100%);
+      }
+    }
+  }
+}
+
+#mainview {
+  position: absolute;
+  left: $navbar-width + 1;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: $pnl-bg-color;
+  overflow: auto;
+
+  .listview {
+    padding: 1em;
+
+    .group {
+      clear: both;
+      overflow: hidden;
+      padding: 1em;
+      border: 1px solid $pnl-border-color;
+      color: $lbl-color;
+      margin-bottom: 1em;
+
+      .group-hd {
+        width: $group-hd-width;
+        @include float(left);
+      }
+
+      .group-bd {
+        @include float(left);
+
+        .story-card {
+          @include float(left);
+
+          padding: 1em;
+          margin-left: 1em;
+          border: 1px solid $pnl-border-color;
+        }
+      }
     }
   }
 }

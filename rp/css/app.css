@@ -5,16 +5,19 @@ body {
   height: 100%; }
 
 #navbar {
-  width: 10em;
-  height: 100%;
-  background: #cccccc;
-  border-right: 1px solid #b5b5b5; }
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 170px;
+  background: #d4d4d4;
+  border-right: 1px solid #bbbbbb; }
   #navbar .nav-item, #navbar h3, #navbar ul a {
     padding-left: 1em;
     display: block;
     line-height: 2.5;
     color: #555555;
-    border-bottom: 1px solid #b5b5b5; }
+    border-bottom: 1px solid #bbbbbb; }
   #navbar h3 {
     margin: 0;
     font-size: 1em; }
@@ -25,3 +28,37 @@ body {
     #navbar ul a {
       text-decoration: none;
       background: linear-gradient(to bottom, #fbfbfb 0%, #eeeeee 37%, #d4d4d4 100%); }
+      #navbar ul a.active {
+        color: white;
+        background: linear-gradient(to bottom, #76a8f9 0%, #4589f7 37%, #146af5 100%); }
+
+#mainview {
+  position: absolute;
+  left: 171px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: #eeeeee;
+  overflow: auto; }
+  #mainview .listview {
+    padding: 1em; }
+    #mainview .listview .group {
+      clear: both;
+      overflow: hidden;
+      padding: 1em;
+      border: 1px solid #bbbbbb;
+      color: #555555;
+      margin-bottom: 1em; }
+      #mainview .listview .group .group-hd {
+        width: 120px;
+        float: left;
+        overflow: hidden; }
+      #mainview .listview .group .group-bd {
+        float: left;
+        overflow: hidden; }
+        #mainview .listview .group .group-bd .story-card {
+          float: left;
+          overflow: hidden;
+          padding: 1em;
+          margin-left: 1em;
+          border: 1px solid #bbbbbb; }

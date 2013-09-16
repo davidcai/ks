@@ -1,3 +1,10 @@
-Initiatives
-
-{{data}}
+<div class="listview">
+  <div ng-repeat="initiative in data.initiatives | orderBy: 'name'" class="group">
+    <div class="group-hd">{{initiative.name}}</div>
+    <div class="group-bd">
+      <div ng-repeat="story in data.stories | filter: { initiative_id: initiative.id } | orderBy: 'description'" class="story-card">
+        {{story.description}}
+      </div>
+    </div>
+  </div>
+</div>

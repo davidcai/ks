@@ -11,9 +11,20 @@ angular.module('app', ['ui.router'])
       .state('teams', {
         url: '/teams', templateUrl: 'partials/teams.html', controller: 'TeamsCtrl'
       })
+      .state('themes', {
+        url: '/themes', templateUrl: 'partials/themes.html', controller: 'ThemesCtrl'
+      })
       .state('initiatives', {
         url: '/initiatives', templateUrl: 'partials/initiatives.html', controller: 'InitiativesCtrl'
       });
+  }])
+
+
+  .run(['$rootScope', '$state', '$stateParams', 
+    function($rootScope, $state, $stateParams) {
+
+    $rootScope.$state = $state;
+    $rootScope.$stateParams = $stateParams;
   }])
 
 
@@ -24,8 +35,6 @@ angular.module('app', ['ui.router'])
     $log.log('MainCtrl');
 
     $scope.data = dataModel;
-
-    $scope.groupBy = 'initiatives';
   }])
 
 
@@ -39,17 +48,25 @@ angular.module('app', ['ui.router'])
 
   // Teams view controller
   .controller('TeamsCtrl', 
-    ['$scope', function($scope) {
+    ['$scope','$log', function($scope, $log) {
 
-    $scope.data = 'teams';
+    $log.log('TeamsCtrl');
+  }])
+
+
+  // Themes view controller
+  .controller('ThemesCtrl', 
+    ['$scope','$log', function($scope, $log) {
+
+    $log.log('ThemesCtrl');
   }])
 
 
   // Initiatives view controller
   .controller('InitiativesCtrl', 
-    ['$scope', function($scope) {
+    ['$scope','$log', function($scope, $log) {
 
-    $scope.data = 'initiatives';
+    $log.log('InitiativesCtrl');
   }])
 
 
@@ -171,7 +188,7 @@ angular.module('app', ['ui.router'])
       , { id: 1, name: 'Team 2', product_owner: 'Jane', scrum_master: 'Kevin' }
       , { id: 2, name: 'Team 3', product_owner: 'Wendy', scrum_master: 'Tim' }
       , { id: 3, name: 'Team 4', product_owner: 'Sussie', scrum_master: 'Tim' }
-      , { id: 4, name: 'Team 5', product_owner: 'Tom', scrum_master: 'Michael' }
+      , { id: 4, name: 'Team 3.5', product_owner: 'Tom', scrum_master: 'Michael' }
       , { id: 5, name: 'Team 6', product_owner: 'Joe', scrum_master: 'Michael' }
     ]
 

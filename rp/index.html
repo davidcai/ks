@@ -25,9 +25,9 @@
   <div id="navbar" ng-controller="NavCtrl">
     <h3>Group By</h3>
     <ul>
-      <li><a ui-sref="teams">Team</a></li>
-      <li><a href="javascript:void(0);">Theme</a></li>
-      <li><a ui-sref="initiatives">Initiative</a></li>
+      <li><a ui-sref="teams" ng-class="{ active: $state.is('teams') }">Team</a></li>
+      <li><a ui-sref="themes" ng-class="{ active: $state.is('themes') }">Theme</a></li>
+      <li><a ui-sref="initiatives" ng-class="{ active: $state.is('initiatives') }">Initiative</a></li>
       <li><a href="javascript:void(0);">Release</a></li>
     </ul>
     <h3>Create</h3>
@@ -39,7 +39,7 @@
     </ul>
   </div>
 
-	<div ui-view></div>
+	<div id="mainview" ui-view></div>
 
 	<script src="lib/js/angular.min.js"></script>
   <script src="lib/js/angular-ui-router.min.js"></script>
