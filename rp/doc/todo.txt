@@ -4,7 +4,6 @@ Story
   description :string
   owner :string
   theme :object
-  initiative :object
   team :object
   release :date
   notes :string
@@ -14,8 +13,10 @@ Team
   scrum_master :string
 
 Theme
+  name: string
   color :string
 
-Initiative
-  name :string
-  theme :object
+= Todos (9/22/2013) =
+
+- [Done] Group by release
+- Story color

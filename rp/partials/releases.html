@@ -1,0 +1,10 @@
+<div class="listview">
+  <div ng-repeat="release in data.releases | orderBy: 'date'" class="group">
+    <div class="group-hd">{{release.value}}</div>
+    <div class="group-bd">
+      <div ng-repeat="story in data.stories | filter: { release: release.value } | orderBy: 'description'" class="story-card">
+        {{story.description}}
+      </div>
+    </div>
+  </div>
+</div>

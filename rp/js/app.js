@@ -2,8 +2,7 @@ angular.module('app', ['ui.router'])
 
 
   // State/URL routing
-  .config(['$stateProvider', '$urlRouterProvider', 
-    function($stateProvider, $urlRouterProvider) {
+  .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
     
     $urlRouterProvider.otherwise("/initiatives");
 
@@ -14,14 +13,13 @@ angular.module('app', ['ui.router'])
       .state('themes', {
         url: '/themes', templateUrl: 'partials/themes.html', controller: 'ThemesCtrl'
       })
-      .state('initiatives', {
-        url: '/initiatives', templateUrl: 'partials/initiatives.html', controller: 'InitiativesCtrl'
+      .state('releases', {
+        url: '/releases', templateUrl: 'partials/releases.html', controller: 'ReleasesCtrl'
       });
   }])
 
 
-  .run(['$rootScope', '$state', '$stateParams', 
-    function($rootScope, $state, $stateParams) {
+  .run(['$rootScope', '$state', '$stateParams', function($rootScope, $state, $stateParams) {
 
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
@@ -29,44 +27,46 @@ angular.module('app', ['ui.router'])
 
 
   // Main controller
-  .controller('MainCtrl', 
-    ['$scope', '$log', 'dataModel', function($scope, $log, dataModel) {
+  .controller('MainCtrl', ['$scope', '$log', 'dataModel', function($scope, $log, dataModel) {
     
     $log.log('MainCtrl');
 
     $scope.data = dataModel;
+    
+    // Releases
+    var releases = _.uniq(_.pluck($scope.data.stories, 'release'));
+    releases = _.map(releases, function(release) {
+      return { date: new Date(release), value: release };
+    });
+    $scope.data.releases = releases;
   }])
 
 
   // Navigation bar controller
-  .controller('NavCtrl', 
-    ['$scope', '$log', function($scope, $log) {
+  .controller('NavCtrl', ['$scope', '$log', function($scope, $log) {
     
     $log.log('NavCtrl');
   }])
 
 
   // Teams view controller
-  .controller('TeamsCtrl', 
-    ['$scope','$log', function($scope, $log) {
+  .controller('TeamsCtrl', ['$scope','$log', function($scope, $log) {
 
     $log.log('TeamsCtrl');
   }])
 
 
   // Themes view controller
-  .controller('ThemesCtrl', 
-    ['$scope','$log', function($scope, $log) {
+  .controller('ThemesCtrl', ['$scope','$log', function($scope, $log) {
 
     $log.log('ThemesCtrl');
   }])
 
 
-  // Initiatives view controller
-  .controller('InitiativesCtrl', 
-    ['$scope','$log', function($scope, $log) {
+  // Releases view controller
+  .controller('ReleasesCtrl', ['$scope','$log', function($scope, $log) {
 
-    $log.log('InitiativesCtrl');
+    $log.log('ReleasesCtrl');
   }])
 
 
@@ -77,110 +77,100 @@ angular.module('app', ['ui.router'])
         id: 0
         , description: 'story 1'
         , owner: 'David'
-        , theme_id: null
-        , initiative_id: 0
+        , theme_id: 0
         , team_id: 0
-        , release: 'Sep 2013'
+        , release: '2013/12'
         , notes: 'Notes go here'
       }
       , {
         id: 1
         , description: 'story 2'
         , owner: 'David'
-        , theme_id: null
-        , initiative_id: 1
+        , theme_id: 1
         , team_id: 1
-        , release: 'Oct 2013'
+        , release: '2013/10'
         , notes: 'Notes go here'
       }
       , {
         id: 2
         , description: 'story 3'
         , owner: 'Patrick'
-        , theme_id: null
-        , initiative_id: 2
+        , theme_id: 2
         , team_id: 3
-        , release: 'Sep 2013'
+        , release: '2013/9'
         , notes: 'Notes go here'
       }
       , {
         id: 3
         , description: 'story 4'
         , owner: 'David'
-        , theme_id: null
-        , initiative_id: 1
+        , theme_id: 1
         , team_id: 0
-        , release: 'Oct 2013'
+        , release: '2013/10'
         , notes: 'Notes go here'
       }
       , {
         id: 4
         , description: 'story 5'
         , owner: 'Patrick'
-        , theme_id: null
-        , initiative_id: 3
+        , theme_id: 3
         , team_id: 2
-        , release: 'Nov 2013'
+        , release: '2013/11'
         , notes: 'Notes go here'
       }
       , {
         id: 5
         , description: 'story 6'
         , owner: 'Ellen'
-        , theme_id: null
-        , initiative_id: 2
+        , theme_id: 2
         , team_id: 4
-        , release: 'Nov 2013'
+        , release: '2013/11'
         , notes: 'Notes go here'
       }
       , {
         id: 6
         , description: 'story 7'
         , owner: 'Patrick'
-        , theme_id: null
-        , initiative_id: 1
+        , theme_id: 1
         , team_id: 3
-        , release: 'Sep 2013'
+        , release: '2013/9'
         , notes: 'Notes go here'
       }
       , {
         id: 7
         , description: 'story 8'
         , owner: 'David'
-        , theme_id: null
-        , initiative_id: 0
+        , theme_id: 0
         , team_id: 1
-        , release: 'Sep 2013'
+        , release: '2013/9'
         , notes: 'Notes go here'
       }
       , {
         id: 8
         , description: 'story 9'
         , owner: 'David'
-        , theme_id: null
-        , initiative_id: 2
+        , theme_id: 2
         , team_id: 4
-        , release: 'Oct 2013'
+        , release: '2013/10'
         , notes: 'Notes go here'
       }
       , {
         id: 9
         , description: 'story 10'
         , owner: 'Ellen'
-        , theme_id: null
-        , initiative_id: 1
+        , theme_id: 1
         , team_id: 5
-        , release: 'Sep 2013'
+        , release: '2013/9'
         , notes: 'Notes go here'
       }
     ]
     
     , themes: [
-      { id: 0, name: 'yellow' }
-      , { id: 1, name: 'green' }
-      , { id: 2, name: 'orange' }
-      , { id: 3, name: 'red' }
-      , { id: 4, name: 'cyan' }
+      { id: 0, name: 'Current business', color: "yellow" }
+      , { id: 1, name: 'IRA', color: 'green' }
+      , { id: 2, name: 'Technology debt', color: 'orange' }
+      , { id: 3, name: 'Theme 1', color: 'red' }
+      , { id: 4, name: 'Theme 2', color: 'cyan' }
     ]
 
     , teams: [
@@ -190,11 +180,6 @@ angular.module('app', ['ui.router'])
       , { id: 3, name: 'Team 4', product_owner: 'Sussie', scrum_master: 'Tim' }
       , { id: 4, name: 'Team 3.5', product_owner: 'Tom', scrum_master: 'Michael' }
       , { id: 5, name: 'Team 6', product_owner: 'Joe', scrum_master: 'Michael' }
-    ]
-
-    , initiatives: [
-      { id: 0, name: 'Current business', theme_id: 0 }
-      , { id: 1, name: 'IRA', theme_id: 1 }
-      , { id: 2, name: 'Technology debt', theme_id: 2 }
+      , { id: 6, name: 'Team nada', product_owner: 'Joe', scrum_master: 'Michael' }
     ]
   });
