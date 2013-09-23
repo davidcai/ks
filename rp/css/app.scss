@@ -107,6 +107,21 @@ body {
           padding: 1em;
           margin-left: 1em;
           border: 1px solid $pnl-border-color;
+
+          &.yellow {
+            background: #f8e15d;
+          }
+          &.green {
+            background: #73b736;
+          }
+          &.red {
+            background: #d0402f;
+            color: $lbl-active-color;
+          }
+          &.orange {
+            background: #f7941d;
+            color: $lbl-active-color;
+          }
         }
       }
     }

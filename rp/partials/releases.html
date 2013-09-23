@@ -2,7 +2,9 @@
   <div ng-repeat="release in data.releases | orderBy: 'date'" class="group">
     <div class="group-hd">{{release.value}}</div>
     <div class="group-bd">
-      <div ng-repeat="story in data.stories | filter: { release: release.value } | orderBy: 'description'" class="story-card">
+      <div 
+        ng-repeat="story in data.stories | filter: { release: release.value } | orderBy: 'description'" 
+        ng-class="['story-card', getThemeById(story.theme_id).color]">
         {{story.description}}
       </div>
     </div>

@@ -19,4 +19,4 @@ Theme
 = Todos (9/22/2013) =
 
 - [Done] Group by release
-- Story color
+- [Done] Story color

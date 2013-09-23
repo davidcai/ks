@@ -39,6 +39,12 @@ angular.module('app', ['ui.router'])
       return { date: new Date(release), value: release };
     });
     $scope.data.releases = releases;
+
+    //
+    $scope.getThemeById = function(themeId) {
+      $log.log(themeId);
+      return _.findWhere($scope.data.themes, { id: themeId });
+    }
   }])
 
 
