@@ -1,9 +1,22 @@
-var MongoClient = require('mongodb').MongoClient
-  , Server = require('mongodb').Server;
+var MongoClient = require('mongodb').MongoClient;
 
-var mongoClient = new MongoClient(new Server('localhost', 27017));
-mongoClient.open(function(err, mongoClient) {
-  var db1 = mongoClient.db("mydb");
+MongoClient.connect("mongodb://localhost:27017/rp", function(err, db) {
 
-  mongoClient.close();
+  if(err) { 
+    return console.dir(err); 
+  }
+
+  db.collection("test_collection").update({a: 1}, {b: 1}, {upsert: true}, function(err, result) {
+    if(err) { 
+      return console.dir(err); 
+    }
+
+    db.collection("test_collection").drop(function(err, reply) {
+      if(err) { 
+        return console.dir(err); 
+      }
+
+      db.close();
+    });
+  });
 });
