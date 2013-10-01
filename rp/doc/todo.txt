@@ -16,7 +16,27 @@ Theme
   name: string
   color :string
 
+
 = Todos (9/22/2013) =
 
 - [Done] Group by release
 - [Done] Story color
+
+
+= Data model (9/23/2013) =
+
+- Theme -->* Initiative -->* Story
+- Team -->* Story
+
+
+= Todos (9/30/2013) =
+
+- Rewire data to group by UIs (2 days)
+- UI for group by initiatives (2 days)
+- Create/Edit Team (5 days)
+- Create/Edit Theme (2 days)
+- Create/Edit Initiative (2 days)
+- Create/Edit Story (2 days)
+- Server-side code to handle business logics (7 days)
+- Hook up database (5 days)
+- Fit and finish (5 days)
