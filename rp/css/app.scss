@@ -108,18 +108,22 @@ body {
           margin-left: 1em;
           border: 1px solid $pnl-border-color;
 
-          &.yellow {
-            background: #f8e15d;
+          &.blue {
+            background: #2d7af6;
+            color: $lbl-active-color;
           }
           &.green {
             background: #73b736;
-          }
-          &.red {
-            background: #d0402f;
             color: $lbl-active-color;
+          }
+          &.yellow {
+            background: #f8e15d;
           }
           &.orange {
             background: #f7941d;
+          }
+          &.red {
+            background: #d0402f;
             color: $lbl-active-color;
           }
         }

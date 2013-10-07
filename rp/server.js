@@ -1,4 +1,5 @@
-var express = require('express')
+var _ = require('underscore')
+  , express = require('express')
   , assert = require('assert')
   , sql = require('sql')
   , pg = require('pg')
@@ -7,6 +8,7 @@ var express = require('express')
   , tblTeams
   , tblStories
   , app = express();
+
 
 //
 // App config
@@ -17,6 +19,7 @@ app.configure(function(){
   app.use(express.static(__dirname + '/'));
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
+
 
 //
 // DB connection
@@ -46,6 +49,27 @@ tblTeams = sql.define({
   ]
 });
 
+tblThemes = sql.define({
+  name: 'themes', 
+  columns: [
+    'id', 
+    'name', 
+    'color'
+  ]
+});
+
+tblInitiatives = sql.define({
+  name: 'initiatives', 
+  columns: [
+    'id', 
+    {
+      name: 'theme_id', 
+      property: 'themeId'
+    }, 
+    'name'
+  ]
+});
+
 tblStories = sql.define({
   name: 'stories', 
   columns: [
@@ -64,6 +88,7 @@ tblStories = sql.define({
     'notes'
   ]
 });
+
 
 //
 // Routes
@@ -88,44 +113,82 @@ app.get('/stories/:storyId', function(req, res) {
 
 
 app.get('/stories', function(req, res) {
-  var group = req.param('group')
-    , by = req.param('by')
+  var groupBy = req.param('groupBy')
     , q;
 
-  if (group && by) {
-    if ('team' === by) {
+  if (groupBy === 'team') {
 
-      q = tblTeams
-        .select(
-          tblTeams.id.as('teamId'), 
-          tblTeams.name.as('teamName'),
-          tblTeams.po, 
-          tblTeams.sm, 
-          tblStories.id.as('storyId'), 
-          tblStories.name.as('storyName'), 
-          tblStories.initiativeId, 
-          tblStories.owner, 
-          tblStories.release,
-          tblStories.notes
-        )
-        .from(
-          tblTeams.leftJoin(tblStories)
-            .on(tblTeams.id.equals(tblStories.teamId)))
-        .toQuery();
+    // Group stories by teams
 
-      console.log(q);
+    q = tblTeams
+      .select(
+        tblTeams.id.as('teamId'), 
+        tblTeams.name.as('teamName'),
+        tblTeams.po, 
+        tblTeams.sm, 
+        tblStories.id, 
+        tblStories.name, 
+        tblStories.initiativeId, 
+        tblStories.owner, 
+        tblStories.release,
+        tblStories.notes, 
+        tblThemes.id.as('themeId'), 
+        tblThemes.name.as('themeName'), 
+        tblThemes.color.as('themeColor')
+      )
+      .from(
+        tblTeams
+          .leftJoin(tblStories)
+            .on(tblTeams.id.equals(tblStories.teamId))
+          .leftJoin(tblInitiatives)
+            .on(tblInitiatives.id.equals(tblStories.initiativeId))
+          .leftJoin(tblThemes)
+            .on(tblThemes.id.equals(tblInitiatives.themeId))
+      )
+      .toQuery();
 
-      client.query(q, function(err, result) {
-        assert.equal(null, err);
+    console.log(q);
 
-        res.json(result.rows);
-      });
-    }
-    else if ('initiative' === by) {
-      //
-    }
+    client.query(q, function(err, result) {
+      assert.equal(null, err);
+
+      res.json(result.rows);
+    });
+  }
+  else if (groupBy === 'initiative') {
+    
+    // Group stories by initiatives
+
+    q = tblInitiatives
+      .select(
+        tblInitiatives.id.as('initiativeId'), 
+        tblInitiatives.themeId, 
+        tblInitiatives.name.as('initiativeName'), 
+        tblStories.id, 
+        tblStories.name, 
+        tblStories.teamId, 
+        tblStories.owner, 
+        tblStories.release,
+        tblStories.notes
+      )
+      .from(
+        tblInitiatives
+          .leftJoin(tblStories)
+            .on(tblInitiatives.id.equals(tblStories.initiativeId))
+      )
+      .toQuery();
+
+    console.log(q);
+
+    client.query(q, function(err, result) {
+      assert.equal(null, err);
+
+      res.json(result.rows);
+    });
   }
   else {
+
+    // Find all stories
 
     q = tblStories
       .select(tblStories.star())
@@ -141,6 +204,7 @@ app.get('/stories', function(req, res) {
     });
   }
 });
+
 
 //
 // Start listening

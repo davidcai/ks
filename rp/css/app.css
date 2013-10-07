@@ -62,13 +62,16 @@ body {
           padding: 1em;
           margin-left: 1em;
           border: 1px solid #bbbbbb; }
+          #mainview .listview .group .group-bd .story-card.blue {
+            background: #2d7af6;
+            color: white; }
+          #mainview .listview .group .group-bd .story-card.green {
+            background: #73b736;
+            color: white; }
           #mainview .listview .group .group-bd .story-card.yellow {
             background: #f8e15d; }
-          #mainview .listview .group .group-bd .story-card.green {
-            background: #73b736; }
+          #mainview .listview .group .group-bd .story-card.orange {
+            background: #f7941d; }
           #mainview .listview .group .group-bd .story-card.red {
             background: #d0402f;
-            color: white; }
-          #mainview .listview .group .group-bd .story-card.orange {
-            background: #f7941d;
             color: white; }
