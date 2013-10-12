@@ -61,6 +61,7 @@ angular.module('app', ['ui.router', 'model'])
     var stories = Story.query({groupBy: 'team'}, function() {
 
       var teams = {};
+      var releases = {};
 
       _.each(stories, function(story) {
         var team = teams[story.teamId];
@@ -77,11 +78,13 @@ angular.module('app', ['ui.router', 'model'])
 
         if (story.id) {
           team.stories.push(story);
+          releases[story.release] = new Date(story.release);
         }
       });
 
       $scope.teams = teams;
       $log.log(teams);
+      $log.log(releases);
     });
 
     // var story = Story.get({ storyId: 14 }, function() {
