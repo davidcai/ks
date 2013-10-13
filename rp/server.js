@@ -116,7 +116,7 @@ app.get('/stories', function(req, res) {
   var groupBy = req.param('groupBy')
     , q;
 
-  if (groupBy === 'team') {
+  if (groupBy === 'teams') {
 
     // Group stories by teams
 
@@ -152,10 +152,32 @@ app.get('/stories', function(req, res) {
     client.query(q, function(err, result) {
       assert.equal(null, err);
 
-      res.json(result.rows);
+      var teams = {};
+      // var releases = {};
+
+      _.each(result.rows, function(story) {
+        var team = teams[story.teamId];
+        if (!team) {
+          team = {
+            id: story.teamId, 
+            name: story.teamName, 
+            po: story.po, 
+            sm: story.sm, 
+            stories: []
+          };
+          teams[story.teamId] = team;
+        }
+
+        if (story.id) {
+          team.stories.push(story);
+          // releases[story.release] = new Date(story.release);
+        }
+      });
+
+      res.json(teams);
     });
   }
-  else if (groupBy === 'initiative') {
+  else if (groupBy === 'initiatives') {
     
     // Group stories by initiatives
 
@@ -169,12 +191,17 @@ app.get('/stories', function(req, res) {
         tblStories.teamId, 
         tblStories.owner, 
         tblStories.release,
-        tblStories.notes
+        tblStories.notes, 
+        tblThemes.id.as('themeId'), 
+        tblThemes.name.as('themeName'), 
+        tblThemes.color.as('themeColor')
       )
       .from(
         tblInitiatives
           .leftJoin(tblStories)
             .on(tblInitiatives.id.equals(tblStories.initiativeId))
+          .leftJoin(tblThemes)
+            .on(tblThemes.id.equals(tblInitiatives.themeId))
       )
       .toQuery();
 
@@ -183,7 +210,26 @@ app.get('/stories', function(req, res) {
     client.query(q, function(err, result) {
       assert.equal(null, err);
 
-      res.json(result.rows);
+      var initiatives = {};
+
+      _.each(result.rows, function(story) {
+        var initiative = initiatives[story.initiativeId];
+        if (!initiative) {
+          initiative = {
+            id: story.initiativeId, 
+            name: story.initiativeName, 
+            stories: []
+          };
+          initiatives[story.initiativeId] = initiative;
+        }
+
+        if (story.id) {
+          initiative.stories.push(story);
+          // releases[story.release] = new Date(story.release);
+        }
+      });
+
+      res.json(initiatives);
     });
   }
   else {

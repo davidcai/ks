@@ -1,4 +1,4 @@
-angular.module('app', ['ui.router', 'model'])
+angular.module('app', ['ui.router', 'app.services'])
 
 
   // State/URL routing
@@ -9,12 +9,12 @@ angular.module('app', ['ui.router', 'model'])
     $stateProvider
       .state('teams', {
         url: '/teams', templateUrl: 'partials/teams.html', controller: 'TeamsCtrl'
+      })
+      .state('initiatives', {
+        url: '/initiatives', templateUrl: 'partials/initiatives.html', controller: 'InitiativesCtrl'
       });
       // .state('themes', {
       //   url: '/themes', templateUrl: 'partials/themes.html', controller: 'ThemesCtrl'
-      // })
-      // .state('releases', {
-      //   url: '/releases', templateUrl: 'partials/releases.html', controller: 'ReleasesCtrl'
       // });
   }])
 
@@ -30,19 +30,6 @@ angular.module('app', ['ui.router', 'model'])
   .controller('MainCtrl', ['$scope', '$log', function($scope, $log) {
     
     $log.log('MainCtrl');
-    
-    // // Releases
-    // var releases = _.uniq(_.pluck($scope.data.stories, 'release'));
-    // releases = _.map(releases, function(release) {
-    //   return { date: new Date(release), value: release };
-    // });
-    // $scope.data.releases = releases;
-
-    // //
-    // $scope.getThemeById = function(themeId) {
-    //   $log.log(themeId);
-    //   return _.findWhere($scope.data.themes, { id: themeId });
-    // }
   }])
 
 
@@ -54,42 +41,30 @@ angular.module('app', ['ui.router', 'model'])
 
 
   // Teams view controller
-  .controller('TeamsCtrl', ['Story', '$scope', '$log', function(Story, $scope, $log) {
+  .controller('TeamsCtrl', ['storyService', '$scope', '$log', function(storyService, $scope, $log) {
 
     $log.log('TeamsCtrl');
 
-    var stories = Story.query({groupBy: 'team'}, function() {
+    storyService.groupByTeams().then(function(result) {
 
-      var teams = {};
-      var releases = {};
+      $log.log(result.data);
 
-      _.each(stories, function(story) {
-        var team = teams[story.teamId];
-        if (!team) {
-          team = {
-            id: story.teamId, 
-            name: story.teamName, 
-            po: story.po, 
-            sm: story.sm, 
-            stories: []
-          };
-          teams[story.teamId] = team;
-        }
-
-        if (story.id) {
-          team.stories.push(story);
-          releases[story.release] = new Date(story.release);
-        }
-      });
-
-      $scope.teams = teams;
-      $log.log(teams);
-      $log.log(releases);
+      $scope.teams = result.data;
     });
+  }])
 
-    // var story = Story.get({ storyId: 14 }, function() {
-    //   $log.log(story);
-    // });
+
+  // Initiatives view controller
+  .controller('InitiativesCtrl', ['storyService', '$scope', '$log', function(storyService, $scope, $log) {
+
+    $log.log('InitiativesCtrl');
+
+    storyService.groupByInitiatives().then(function(result) {
+
+      $log.log(result.data);
+
+      $scope.initiatives = result.data;
+    });
   }])
 
 
@@ -97,11 +72,4 @@ angular.module('app', ['ui.router', 'model'])
   .controller('ThemesCtrl', ['$scope', '$log', function($scope, $log) {
 
     $log.log('ThemesCtrl');
-  }])
-
-
-  // Releases view controller
-  .controller('ReleasesCtrl', ['$scope', '$log', function($scope, $log) {
-
-    $log.log('ReleasesCtrl');
   }]);

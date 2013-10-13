@@ -1,0 +1,11 @@
+<div class="listview">
+  <div ng-repeat="initiative in initiatives | orderBy: 'name'" class="group">
+    <div class="group-hd">{{initiative.name}}</div>
+    <div class="group-bd">
+      <div ng-repeat="story in initiative.stories | orderBy: 'name'" 
+        ng-class="['story-card', story.themeColor]">
+        {{story.name}}
+      </div>
+    </div>
+  </div>
+</div>
