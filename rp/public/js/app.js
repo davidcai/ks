@@ -4,7 +4,7 @@ angular.module('app', ['ui.router', 'app.services'])
   // State/URL routing
   .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
     
-    $urlRouterProvider.otherwise("/initiatives");
+    $urlRouterProvider.otherwise("/teams");
 
     $stateProvider
       .state('teams', {
@@ -20,7 +20,6 @@ angular.module('app', ['ui.router', 'app.services'])
 
 
   .run(['$rootScope', '$state', '$stateParams', function($rootScope, $state, $stateParams) {
-
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
   }])
@@ -28,48 +27,43 @@ angular.module('app', ['ui.router', 'app.services'])
 
   // Main controller
   .controller('MainCtrl', ['$scope', '$log', function($scope, $log) {
-    
     $log.log('MainCtrl');
   }])
 
 
   // Navigation bar controller
   .controller('NavCtrl', ['$scope', '$log', function($scope, $log) {
-    
     $log.log('NavCtrl');
   }])
 
 
   // Teams view controller
   .controller('TeamsCtrl', ['storyService', '$scope', '$log', function(storyService, $scope, $log) {
-
     $log.log('TeamsCtrl');
 
-    storyService.groupByTeams().then(function(result) {
+    storyService.groupByTeams()
+      .then(function(result) {
 
-      $log.log(result.data);
-
-      $scope.teams = result.data;
-    });
+        $log.log(result.data);
+        $scope.teams = result.data;
+      });
   }])
 
 
   // Initiatives view controller
   .controller('InitiativesCtrl', ['storyService', '$scope', '$log', function(storyService, $scope, $log) {
-
     $log.log('InitiativesCtrl');
 
-    storyService.groupByInitiatives().then(function(result) {
+    storyService.groupByInitiatives()
+      .then(function(result) {
 
-      $log.log(result.data);
-
-      $scope.initiatives = result.data;
-    });
+        $log.log(result.data);
+        $scope.initiatives = result.data;
+      });
   }])
 
 
   // Themes view controller
   .controller('ThemesCtrl', ['$scope', '$log', function($scope, $log) {
-
     $log.log('ThemesCtrl');
   }]);

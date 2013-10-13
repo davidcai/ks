@@ -7,6 +7,7 @@
      "express": "3.x", 
      "pg": "2.x", 
      "sql": "0.x", 
-     "underscore": "1.x"
+     "underscore": "1.x", 
+     "q": "0.x"
   }
 }
