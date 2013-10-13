@@ -1,11 +1,10 @@
 <div class="listview">
-  <div ng-repeat="theme in data.themes | orderBy: 'name'" class="group">
+  <div ng-repeat="theme in themes | orderBy: 'name'" class="group">
     <div class="group-hd">{{theme.name}}</div>
     <div class="group-bd">
-      <div 
-        ng-repeat="story in data.stories | filter: { theme_id: theme.id } | orderBy: 'description'" 
-        ng-class="['story-card', getThemeById(story.theme_id).color]">
-        {{story.description}}
+      <div ng-repeat="story in theme.stories | orderBy: 'name'" 
+        ng-class="['story-card', story.themeColor]">
+        {{story.name}}
       </div>
     </div>
   </div>

@@ -146,3 +146,67 @@ exports.groupStoriesByInitiatives = function() {
   return deferred.promise;
 };
 
+
+//
+// groupStoriesByThemes
+//
+
+exports.groupStoriesByThemes = function() {
+
+  var deferred = Q.defer()
+    , query;
+
+  query = tblInitiatives
+    .select(
+      tblStories.id, 
+      tblStories.name, 
+      tblStories.teamId, 
+      tblStories.owner, 
+      tblStories.release,
+      tblStories.notes, 
+      tblThemes.id.as('themeId'), 
+      tblThemes.name.as('themeName'), 
+      tblThemes.color.as('themeColor')
+    )
+    .from(
+      tblInitiatives
+        .leftJoin(tblStories)
+          .on(tblInitiatives.id.equals(tblStories.initiativeId))
+        .leftJoin(tblThemes)
+          .on(tblThemes.id.equals(tblInitiatives.themeId))
+    )
+    .toQuery();
+
+  console.log(query);
+
+  model.client.query(query, function(err, result) {
+    if (err) {
+      deferred.reject(err);
+    }
+
+    var themes = {};
+
+    _.each(result.rows, function(story) {
+      var theme = themes[story.themeId];
+      if (!theme) {
+        theme = {
+          id: story.themeId, 
+          name: story.themeName, 
+          color: story.themeColor, 
+          stories: []
+        };
+        themes[story.themeId] = theme;
+      }
+
+      if (story.id) {
+        theme.stories.push(story);
+        // releases[story.release] = new Date(story.release);
+      }
+    });
+
+    deferred.resolve(themes);
+  });
+
+  return deferred.promise;
+};
+

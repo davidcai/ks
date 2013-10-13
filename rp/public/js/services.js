@@ -12,6 +12,10 @@ angular.module('app.services', [])
 
       groupByInitiatives: function() {
         return $http({ method: 'GET', url: '/stories/', params: { groupBy: 'initiatives'} });
+      }, 
+
+      groupByThemes: function() {
+        return $http({ method: 'GET', url: '/stories/', params: { groupBy: 'themes'} });
       }
     }
   }]);

@@ -53,6 +53,13 @@ app.get('/stories', function(req, res) {
       })
       .done();
   }
+  else if (groupBy === 'themes') {
+    service.groupStoriesByThemes()
+      .then(function(themes) {
+        res.json(themes);
+      })
+      .done();
+  }
   else {
 
     // // Find all stories

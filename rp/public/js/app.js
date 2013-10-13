@@ -12,10 +12,10 @@ angular.module('app', ['ui.router', 'app.services'])
       })
       .state('initiatives', {
         url: '/initiatives', templateUrl: 'partials/initiatives.html', controller: 'InitiativesCtrl'
+      })
+      .state('themes', {
+        url: '/themes', templateUrl: 'partials/themes.html', controller: 'ThemesCtrl'
       });
-      // .state('themes', {
-      //   url: '/themes', templateUrl: 'partials/themes.html', controller: 'ThemesCtrl'
-      // });
   }])
 
 
@@ -64,6 +64,13 @@ angular.module('app', ['ui.router', 'app.services'])
 
 
   // Themes view controller
-  .controller('ThemesCtrl', ['$scope', '$log', function($scope, $log) {
+  .controller('ThemesCtrl', ['storyService', '$scope', '$log', function(storyService, $scope, $log) {
     $log.log('ThemesCtrl');
+
+    storyService.groupByThemes()
+      .then(function(result) {
+
+        $log.log(result.data);
+        $scope.themes = result.data;
+      });
   }]);
