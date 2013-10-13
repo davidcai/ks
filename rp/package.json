@@ -9,5 +9,9 @@
      "sql": "0.x", 
      "underscore": "1.x", 
      "q": "0.x"
+  }, 
+  "engines": {
+    "node": "0.10.x", 
+    "npm": "1.3.x"
   }
 }
