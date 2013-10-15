@@ -41,22 +41,22 @@ app.get('/stories', function(req, res) {
 
   if (groupBy === 'teams') {
     service.groupStoriesByTeams()
-      .then(function(teams) {
-        res.json(teams);
+      .then(function(result) {
+        res.json(result);
       })
       .done();
   }
   else if (groupBy === 'initiatives') {
     service.groupStoriesByInitiatives()
-      .then(function(initiatives) {
-        res.json(initiatives);
+      .then(function(result) {
+        res.json(result);
       })
       .done();
   }
   else if (groupBy === 'themes') {
     service.groupStoriesByThemes()
-      .then(function(themes) {
-        res.json(themes);
+      .then(function(result) {
+        res.json(result);
       })
       .done();
   }

@@ -82,6 +82,34 @@ body {
   background: $pnl-bg-color;
   overflow: auto;
 
+  .releases-tabs {
+    .nav-tabs {
+      padding: 1em;
+      margin: 0;
+      overflow: hidden;
+
+      li {
+        list-style: none;
+        display: inline-block;
+
+        a {
+          padding: 5px 1em;
+          margin: 2px;
+          border: 1px solid #bcbcbc;
+          text-decoration: none;
+
+          &.active {
+            color: $nav-item-active-color;
+            background: linear-gradient(to bottom,  
+              lighten($nav-item-active-bg-color, 10%) 0%, 
+              $nav-item-active-bg-color 37%, 
+              darken($nav-item-active-bg-color, 10%) 100%);
+          }
+        }
+      }
+    }
+  }
+
   .listview {
     padding: 1em;
 

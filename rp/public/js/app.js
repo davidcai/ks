@@ -28,6 +28,10 @@ angular.module('app', ['ui.router', 'app.services'])
   // Main controller
   .controller('MainCtrl', ['$scope', '$log', function($scope, $log) {
     $log.log('MainCtrl');
+
+    $scope.selectRelease = function(release) {
+      $scope.selectedRelease = release;
+    };
   }])
 
 
@@ -45,7 +49,8 @@ angular.module('app', ['ui.router', 'app.services'])
       .then(function(result) {
 
         $log.log(result.data);
-        $scope.teams = result.data;
+        $scope.teams = result.data.teams;
+        $scope.releases = result.data.releases;
       });
   }])
 
@@ -58,7 +63,8 @@ angular.module('app', ['ui.router', 'app.services'])
       .then(function(result) {
 
         $log.log(result.data);
-        $scope.initiatives = result.data;
+        $scope.initiatives = result.data.initiatives;
+        $scope.releases = result.data.releases;
       });
   }])
 
@@ -71,6 +77,7 @@ angular.module('app', ['ui.router', 'app.services'])
       .then(function(result) {
 
         $log.log(result.data);
-        $scope.themes = result.data;
+        $scope.themes = result.data.themes;
+        $scope.releases = result.data.releases;
       });
   }]);

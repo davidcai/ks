@@ -9,6 +9,19 @@ var _ = require('underscore')
   , tblStories = model.stories;
 
 
+function _getReleases(stories) {
+  return _.sortBy(
+    _.uniq(
+      _.pluck(
+        _.filter(stories, function(story) { return _.isNumber(story.id); }), 
+        'release'
+      )
+    ), 
+    function(release) { return release; }
+  );
+}
+
+
 //
 // groupStoriesByTeams
 //
@@ -52,8 +65,8 @@ exports.groupStoriesByTeams = function() {
       deferred.reject(err);
     }
 
-    var teams = {};
-    // var releases = {};
+    var teams = {}
+      , releases;
 
     _.each(result.rows, function(story) {
       var team = teams[story.teamId];
@@ -68,13 +81,17 @@ exports.groupStoriesByTeams = function() {
         teams[story.teamId] = team;
       }
 
-      if (story.id) {
+      if (_.isNumber(story.id)) {
         team.stories.push(story);
-        // releases[story.release] = new Date(story.release);
       }
     });
 
-    deferred.resolve(teams);
+    releases = _getReleases(result.rows);
+
+    deferred.resolve({
+      'teams': teams, 
+      'releases': releases
+    });
   });
 
   return deferred.promise;
@@ -121,7 +138,8 @@ exports.groupStoriesByInitiatives = function() {
       deferred.reject(err);
     }
 
-    var initiatives = {};
+    var initiatives = {}
+      , releases;
 
     _.each(result.rows, function(story) {
       var initiative = initiatives[story.initiativeId];
@@ -140,7 +158,12 @@ exports.groupStoriesByInitiatives = function() {
       }
     });
 
-    deferred.resolve(initiatives);
+    releases = _getReleases(result.rows);
+
+    deferred.resolve({
+      'initiatives': initiatives, 
+      'releases': releases
+    });
   });
 
   return deferred.promise;
@@ -204,7 +227,12 @@ exports.groupStoriesByThemes = function() {
       }
     });
 
-    deferred.resolve(themes);
+    releases = _getReleases(result.rows);
+
+    deferred.resolve({
+      'themes': themes, 
+      'releases': releases
+    });
   });
 
   return deferred.promise;

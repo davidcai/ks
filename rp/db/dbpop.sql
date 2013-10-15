@@ -28,7 +28,7 @@ CREATE TABLE stories (
   initiative_id integer references initiatives(id), 
   name varchar(200) not null, 
   owner varchar(30), 
-  release date, 
+  release varchar(20), 
   notes text
 );
 
@@ -55,22 +55,22 @@ INSERT INTO teams (name, product_owner, scrum_master) VALUES ('team 4', 'Michael
 INSERT INTO teams (name, product_owner, scrum_master) VALUES ('team 5', 'Brian', 'William');
 INSERT INTO teams (name, product_owner, scrum_master) VALUES ('team 6', 'George', 'William');
 
-INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 1a1', 'David', '2013-12-01', 1, 1);
-INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 1b1', 'Michelle', '2013-12-01', 1, 1);
-INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 1c1', 'Peter', '2013-11-01', 1, 1);
-INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 1d6', 'Allen', '2014-01-01', 1, 6);
-INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 2a2', 'Patrick', '2013-12-01', 2, 2);
-INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 2b3', 'Nancy', '2013-11-01', 2, 3);
-INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 2c8', 'Nathon', '2013-12-01', 2, 8);
-INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 3a3', 'Daniel', '2013-12-01', 3, 3);
-INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 3b4', 'Luiz', '2014-01-01', 3, 4);
-INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 3c5', 'Steve', '2014-02-01', 3, 5);
-INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 4a6', 'Diana', '2014-01-01', 4, 6);
-INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 4b7', 'Leih', '2014-03-01', 4, 7);
-INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 4c8', 'Zivi', '2013-12-01', 4, 8);
-INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 4d9', 'Diana', '2013-11-01', 4, 9);
-INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 4e4', 'Mark', '2013-11-01', 4, 4);
-INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 5a4', 'Joe', '2014-02-01', 5, 4);
-INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 5b7', 'Adam', '2014-01-01', 5, 7);
-INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 5c9', 'Eric', '2014-03-01', 5, 9);
+INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 1a1', 'David', '2013-12', 1, 1);
+INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 1b1', 'Michelle', '2013-12', 1, 1);
+INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 1c1', 'Peter', '2013-11', 1, 1);
+INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 1d6', 'Allen', '2014-01', 1, 6);
+INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 2a2', 'Patrick', '2013-12', 2, 2);
+INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 2b3', 'Nancy', '2013-11', 2, 3);
+INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 2c8', 'Nathon', '2013-12', 2, 8);
+INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 3a3', 'Daniel', '2013-12', 3, 3);
+INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 3b4', 'Luiz', '2014-01', 3, 4);
+INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 3c5', 'Steve', '2014-02', 3, 5);
+INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 4a6', 'Diana', '2014-01', 4, 6);
+INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 4b7', 'Leih', '2014-03', 4, 7);
+INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 4c8', 'Zivi', '2013-12', 4, 8);
+INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 4d9', 'Diana', '2013-11', 4, 9);
+INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 4e4', 'Mark', '2013-11', 4, 4);
+INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 5a4', 'Joe', '2014-02', 5, 4);
+INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 5b7', 'Adam', '2014-01', 5, 7);
+INSERT INTO stories (name, owner, release, team_id, initiative_id) VALUES ('story 5c9', 'Eric', '2014-03', 5, 9);
 

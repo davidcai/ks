@@ -1,8 +1,17 @@
+<div class="releases-tabs">
+  <ul class="nav-tabs">
+    <li ng-repeat="release in releases">
+      <a href="javascript:void(0);" ng-click="selectRelease(release)" 
+        ng-class="{ active: selectedRelease == release }">{{release}}</a>
+    </li>
+  </ul>
+</div>
+
 <div class="listview">
   <div ng-repeat="team in teams | orderBy: 'name'" class="group">
     <div class="group-hd">{{team.name}}</div>
     <div class="group-bd">
-      <div ng-repeat="story in team.stories | orderBy: 'name'" 
+      <div ng-repeat="story in team.stories | filter: { release: selectedRelease } | orderBy: 'name'" 
         ng-class="['story-card', story.themeColor]">
         {{story.name}}
       </div>

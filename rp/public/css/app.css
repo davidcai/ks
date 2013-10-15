@@ -40,6 +40,21 @@ body {
   bottom: 0;
   background: #eeeeee;
   overflow: auto; }
+  #mainview .releases-tabs .nav-tabs {
+    padding: 1em;
+    margin: 0;
+    overflow: hidden; }
+    #mainview .releases-tabs .nav-tabs li {
+      list-style: none;
+      display: inline-block; }
+      #mainview .releases-tabs .nav-tabs li a {
+        padding: 5px 1em;
+        margin: 2px;
+        border: 1px solid #bcbcbc;
+        text-decoration: none; }
+        #mainview .releases-tabs .nav-tabs li a.active {
+          color: white;
+          background: linear-gradient(to bottom, #76a8f9 0%, #4589f7 37%, #146af5 100%); }
   #mainview .listview {
     padding: 1em; }
     #mainview .listview .group {
