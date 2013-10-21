@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bar Chart</title>
+</head>
+<body>
+  <div id="canvas"></div>
+  <br><br>
+  <input type="button" id="btn-show-details" name="showDetails" value="Show details" />
+  <input type="button" id="btn-show-bubble" name="showBubble" value="Show bubble" />
+
+  <script src="js/jquery-1.10.2.min.js"></script>
+  <script src="js/raphael-2.1.2.min.js"></script>
+
+  <script>
+  $(function() {
+
+    //
+    // BarChart
+    //
+
+    function BarChart(id, width, height, config) {
+
+      var config = config || {}
+        
+        , CHART_W = width
+        , CHART_H = height
+        
+        , XAXES_H = 60
+        , XAXES_CAT_H = Math.floor(XAXES_H / config.axesX.length)
+        , XAXES_FONT_SIZE = 12
+
+        , YAXIS_W = 90
+        , YAXIS_MARK_H
+        , YAXIS_FONT_SIZE = 15
+        , YAXIS_MARK_PADDING_BOT = 5
+
+        , BUBBLE_MARGIN_W = 5
+        , BUBBLE_MARGIN_H = 5
+        , BUBBLE_PADDING_W = 10
+        , BUBBLE_PADDING_H = 0
+        , BUBBLE_RADIUS = 5
+        , BUBBLE_ARROW_W = 16
+        , BUBBLE_ARROW_H = 10
+        , BUBBLE_FONT_SIZE = 14
+        , BUBBLE_ACCENT_FONT_SIZE = 18
+        , BUBBLE_LINE_HEIGHT = 1.3
+
+
+        , BARS_CONTAINER_W = CHART_W - YAXIS_W
+        , BARS_CONTAINER_H = CHART_H - XAXES_H
+
+        , BARS_BODY_MARGIN_TOP
+        , BARS_BODY_W = BARS_CONTAINER_W
+        , BARS_BODY_H
+
+        , BARS_COUNT = (function() {
+            var count = 0;
+            for(var i = 0, ii = config.series.length; i < ii; i++) {
+              count = Math.max(count, config.series[i].data.length);
+            }
+            return count;
+          })()
+
+        , BAR_GAP = 2
+        , BAR_W = (BARS_BODY_W - (BARS_COUNT - 1) * BAR_GAP) / BARS_COUNT
+
+        , Paper = Raphael(id, CHART_W, CHART_H);
+
+      
+      //Paper.renderfix();
+
+      this.bubble;
+      this.bars = []; // 2-dimension array. 1st dimension is bars, 2nd is segments in a bar. 
+
+
+      this.create = function() {
+        // Create bubble first. Bubble's height will be used to calculate bar body height and mark height.
+        this.bubble = this.createBubble();
+        this.hideBubble();
+        
+        BARS_BODY_MARGIN_TOP = this.bubble.getBBox().height + BUBBLE_MARGIN_H * 2;
+        BARS_BODY_H = BARS_CONTAINER_H - BARS_BODY_MARGIN_TOP;
+        YAXIS_MARK_H = Math.floor(BARS_BODY_H / config.axisY.marks.length);
+
+        this.createXAxes();
+        this.createYAxis();
+
+        this.bars = this.createBars();
+        this.hideSeriesColor();
+      };
+
+
+      this.createBubble = function() {
+        var x = CHART_W - BUBBLE_MARGIN_W
+          , y = BUBBLE_MARGIN_H
+          , w = 0
+          , h = 0
+          , labels
+          , border
+          , glow
+          , bubble;
+
+        bubble = Paper.set();
+        labels = Paper.set();
+
+        for (var i = 0, ii = config.bubble.labels.length; i < ii; i++) {
+          var text = config.bubble.labels[i]
+            , yOffset
+            , fontSize = (i == 0) ? BUBBLE_ACCENT_FONT_SIZE : BUBBLE_FONT_SIZE
+            , labelW
+            , labelH
+            , label;
+
+          // We will adjust x and y later
+          label = Paper.text(x, y + BUBBLE_PADDING_H, text);
+          label.attr({ 'text-anchor': 'middle', 'font-size': fontSize, 'fill': '#333' });
+
+          labelW = label.getBBox().width;
+          labelH = label.getBBox().height * BUBBLE_LINE_HEIGHT;
+          yOffset = labelH * (i + 0.5);
+          label.transform(['t', 0, yOffset]);
+
+          labels.push(label);
+
+          w = Math.max(w, labelW);
+          h += labelH;
+        }
+
+        w += BUBBLE_PADDING_W * 2;
+        h += BUBBLE_PADDING_H * 2;
+
+        // Align labels to the center (vertically) of the bubble
+        labels.attr({ 'x': CHART_W - 2 - w / 2 });
+
+        // Draw bubble border
+        border = Paper.path([
+          'M', x, y + BUBBLE_RADIUS, 
+          'a', BUBBLE_RADIUS, BUBBLE_RADIUS, 0, 0, 0, -BUBBLE_RADIUS, -BUBBLE_RADIUS, 
+          'h', -(w - 2 * BUBBLE_RADIUS), 
+          'a', BUBBLE_RADIUS, BUBBLE_RADIUS, 0, 0, 0, -BUBBLE_RADIUS, BUBBLE_RADIUS, 
+          'v', h - 2 * BUBBLE_RADIUS, 
+          'a', BUBBLE_RADIUS, BUBBLE_RADIUS, 0, 0, 0, BUBBLE_RADIUS, BUBBLE_RADIUS, 
+          'h', (w - BUBBLE_ARROW_W) / 2 - BUBBLE_RADIUS, 
+          'l', BUBBLE_ARROW_W / 2, BUBBLE_ARROW_H, 
+          'l', BUBBLE_ARROW_W / 2, -BUBBLE_ARROW_H, 
+          'h', (w - BUBBLE_ARROW_W) / 2 - BUBBLE_RADIUS, 
+          'a', BUBBLE_RADIUS, BUBBLE_RADIUS, 0, 0, 0, BUBBLE_RADIUS, -BUBBLE_RADIUS, 
+          'z'
+        ]);
+        border.attr({ 'fill': '#fff', 'stroke': '#000', 'stroke-width': 1, 'stroke-opacity': 0.7 });
+
+        labels.toFront();
+
+        glow = border.glow({ 'width': 5 });
+
+        bubble.push(labels, border, glow);
+
+        return bubble;
+      };
+
+
+      this.createXAxes = function() {
+        var xAxis = Paper.path([
+          'M', YAXIS_W, CHART_H - XAXES_H + 0.5, 
+          'h', BARS_CONTAINER_W
+        ]);
+        xAxis.attr({ 'stroke': '#bbb', 'stroke-width': 1 });
+
+        for (var i = 0, ii = config.axesX.length; i < ii; i++) {
+          var y = BARS_CONTAINER_H + XAXES_CAT_H * i
+            , yOffset
+            , name
+            , text = config.axesX[i].name;
+
+          name = Paper.text(0, y, text);
+          name.attr({ 'text-anchor': 'start', 'font-size': XAXES_FONT_SIZE, 'fill': '#444' });
+          yOffset = Math.floor((i == 0) ? name.getBBox().height : name.getBBox().height / 2);
+          name.transform(['t', 0, yOffset]);
+
+          for (var j = 0, jj = config.axesX[i].categories.length; j < jj; j++) {
+            var x = YAXIS_W + (BAR_W + BAR_GAP) * j + BAR_W / 2
+              , cat;
+
+            cat = Paper.text(x, y, config.axesX[i].categories[j]);
+            cat.attr({ 'text-anchor': 'middle', 'font-size': XAXES_FONT_SIZE, 'fill': '#444' });
+            cat.transform(['t', 0, yOffset]);
+          }
+
+          // Shorten long names
+          if (text.length > 3) {
+            while (name.getBBox().width > YAXIS_W) {
+              text = text.substring(0, text.length - 4) + '...';
+              name.attr('text', text);
+            }
+          }
+        }
+      };
+
+
+      this.createYAxis = function() {
+        var yAxis
+          , lines;
+
+        yAxis = Paper.path([
+          'M', YAXIS_W - 0.5, 0, 
+          'v', BARS_CONTAINER_H
+        ]);
+        yAxis.attr({ 'stroke': '#bbb', 'stroke-width': 1 });
+
+        lines = Paper.set();
+
+        for (var i = 0, ii = config.axisY.marks.length; i < ii; i++) {
+          var y = BARS_CONTAINER_H - (i + 1) * YAXIS_MARK_H + 0.5
+            , line
+            , text;
+          
+          line = Paper.path([
+            'M', 0, y, 
+            'h', CHART_W
+          ]);
+          line.attr({ 'stroke': '#bbb', 'stroke-width': 1, 'opacity': 0.5 });
+
+          lines.push(line);
+
+          text = Paper.text(0, y, config.axisY.marks[i]);
+          text.attr({ 'text-anchor': 'start', 'font-size': YAXIS_FONT_SIZE, 'fill': '#555' });
+          text.transform(['t', 0, -(text.getBBox().height / 2 + YAXIS_MARK_PADDING_BOT)]);
+        }
+
+        lines.toBack();
+      };
+
+
+      this.createBars = function() {
+        var bars = []; // 2-dimension array. 1st dimension is bars, 2nd is segments in a bar.
+
+        for (var i = 0, ii = config.series.length; i < ii; i++) {
+          var series = config.series[i];
+
+          for (var j = 0, jj = series.data.length; j < jj; j++) {
+            var data = series.data[j]
+              , x = YAXIS_W + (BAR_W + BAR_GAP) * j
+              , y
+              , w = BAR_W
+              , h;
+
+            h = Math.ceil(data / (config.axisY.max - config.axisY.min) * BARS_BODY_H);
+
+            y = BARS_CONTAINER_H - h;
+            if (bars[j]) {
+              if (bars[j].length > 0) {
+                y = bars[j][bars[j].length - 1].getBBox().y - h;
+              }
+            }
+            else {
+              bars[j] = [];
+            }
+
+            seg = this.createSegment(x, y, w, h, series.name, series.data[j]);
+
+            bars[j].push(seg);
+          }
+        }
+
+        return bars;
+      };
+
+
+      this.createSegment = function(x, y, w, h, type, amount) {
+        var seg = Paper.rect(x, y + 0.5, w, h);
+        seg.attr({
+          'stroke-width': 0
+        });
+        seg.data('type', type);
+        seg.data('amount', amount);
+
+        return seg;
+      };
+
+
+      function _setSegColor(seg, color, animate) {
+        if (seg && color) {
+          if (animate) {
+            seg.animate({ 'fill': color }, 500);
+          }
+          else {
+            seg.attr({ 'fill': color });
+          }
+        }
+      }
+
+
+      this.setSeriesColor = function(colors, animate) {
+        var segs = this.bars;
+        
+        if (typeof colors === 'string') {
+
+          for (var i = 0, ii = segs.length; i < ii; i++) {
+            for (var j = 0, jj = segs[i].length; j < jj; j++) {
+              _setSegColor(segs[i][j], colors, animate);
+            }
+          }
+        }
+        else if ($.isPlainObject(colors)) {
+
+          for (var i = 0, ii = segs.length; i < ii; i++) {
+            for (var j = 0, jj = segs[i].length; j < jj; j++) {
+              var seg = segs[i][j]
+                , color = colors[seg.data('type')];
+
+              _setSegColor(seg, color, animate);
+            }
+          }
+        }
+      };
+
+
+      this.showSeriesColor = function(animate) {
+        var colors = {};
+        for (var i = 0, ii = config.series.length; i < ii; i++) {
+          colors[config.series[i].name] = config.series[i].color;
+        }
+
+        this.setSeriesColor(colors, animate);
+      };
+
+
+      this.hideSeriesColor = function(animate) {
+        this.setSeriesColor(config.barColor, animate);
+      };
+
+
+      this.showBubble = function() {
+        this.bubble.show();
+      };
+
+
+      this.hideBubble = function() {
+        this.bubble.hide();
+      };
+    }
+
+
+    BarChart.prototype.render = function() {
+      this.create();
+    };
+
+    BarChart.prototype.showSeriesColor = function(animate) {
+      this.showSeriesColor(animate);
+    };
+
+    BarChart.prototype.hideSeriesColor = function(animate) {
+      this.hideSeriesColor(animate);
+    };
+
+    BarChart.prototype.showBubble = function() {
+      this.showBubble();
+    };
+
+    BarChart.prototype.hideBubble = function() {
+      this.hideBubble();
+    };
+
+
+    //
+    // Application code
+    //
+
+    var config = {
+      "axesX":[
+        {
+          "categories":[
+            "66",
+            "67",
+            "68",
+            "69",
+            "70",
+            "71",
+            "72",
+            "73",
+            "74"
+          ],
+          "name":"Davidayjdefghijklmno"
+        },
+        {
+          "categories":[
+            "64",
+            "65",
+            "66",
+            "67",
+            "68",
+            "69",
+            "70",
+            "71",
+            "72"
+          ],
+          "name":"Serena"
+        }
+      ],
+      "axisY":{
+        "marks":[
+          "$12,640",
+          "$25,280",
+          "$37,920",
+          "$50,560",
+          "$63,200"
+        ],
+        "max":63200,
+        "min":0
+      },
+      "bubble":{
+        "labels":[
+          "$49,300",
+          "per year"
+        ]
+      },
+      "barColor":"#32cd33",
+      "series":[
+        {
+          "data":[
+            16600,
+            30300,
+            30300,
+            30300,
+            30300,
+            30300,
+            30300,
+            30300,
+            30300
+          ],
+          "name":"participant_earned", 
+          "color":"#9e38b1"
+        },
+        {
+          "data":[
+            0,
+            0,
+            0,
+            19000,
+            19000,
+            19000,
+            19000,
+            19000,
+            19000
+          ],
+          "name":"spouse_or_partner_earned", 
+          "color":"#58a1e6"
+        },
+        {
+          "data":[
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "name":"participant_spousal", 
+          "color":"#fa4b34"
+        },
+        {
+          "data":[
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "name":"spouse_or_partner_spousal", 
+          "color":"#fc8923"
+        }
+      ]
+    };
+
+    var barchart = new BarChart('canvas', 350, 300, config)
+      , showDetails = false
+      , showBubble = false;
+
+    barchart.render();
+
+    $('#btn-show-details').on('click', function(e) {
+      e.preventDefault();
+
+      showDetails = !showDetails;
+      if (showDetails) {
+        barchart.showSeriesColor(true);
+      }
+      else {
+        barchart.hideSeriesColor(true);
+      }
+    });
+
+    $('#btn-show-bubble').on('click', function(e) {
+      e.preventDefault();
+
+      showBubble = !showBubble;
+      if (showBubble) {
+        barchart.showBubble();
+      }
+      else {
+        barchart.hideBubble();
+      }
+    });
+
+  });
+  </script>
+</body>
+</html>
