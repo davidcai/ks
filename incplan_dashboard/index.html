@@ -1,0 +1,100 @@
+<!doctype html>
+<html xmlns:ng="http://angularjs.org" id="ng-app" ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>Income Planner Dashboard</title>
+  <!--[if lte IE 8]>
+    <script>
+      document.createElement('ng-include');
+      document.createElement('ng-pluralize');
+      document.createElement('ng-view');
+
+      // Optionally these for CSS
+      document.createElement('ng:include');
+      document.createElement('ng:pluralize');
+      document.createElement('ng:view');
+    </script>
+  <![endif]-->
+  <link rel="stylesheet" type="text/css" href="lib/css/normalize.css" />
+  <link rel="stylesheet" type="text/css" href="css/app.css" />
+</head>
+
+<body ng-controller="MainCtrl" ng-cloak>
+
+  <div id="ctn-main">
+
+    <h1>Your income plan</h1>
+
+    <div class="panel-rcs">
+
+      <div class="left-vs-right">
+
+        <div class="grid-row">
+          <div id="ctn-left" class="grid-4">
+
+            <ol class="plain list-view income">
+              <li class="category">
+                <span class="title">Total Income</span>
+                <span class="amount">{{ incomePlan.totalIncome }}</span>
+                <span class="note">annual income when you're {{ incomePlan.retAge }}</span>
+              </li>
+              <li class="savings-income">
+                <span class="legend"></span>
+                <span class="title">Savings income</span>
+                <span class="amount">{{ incomePlan.savingsIncome }}</span>
+              </li>
+              <li class="other-income">
+                <span class="legend"></span>
+                <span class="title">Other income</span>
+                <span class="amount">{{ incomePlan.otherIncome }}</span>
+              </li>
+              <li class="work-income">
+                <span class="legend"></span>
+                <span class="title">Work income</span>
+                <span class="amount">{{ incomePlan.workIncome }}</span>
+              </li>
+              <li class="socsec-income">
+                <span class="legend"></span>
+                <span class="title">Social Security income</span>
+                <span class="amount">{{ incomePlan.socSecIncome }}</span>
+              </li>
+            </ol>
+
+            <ol class="plain list-view savings">
+              <li class="category">
+                <span class="title">Total Savings</span>
+                <span class="amount">{{ incomePlan.totalSavings }}</span>
+                <span class="note">as of today</span>
+              </li>
+              <li class="jcp-savings">
+                <span class="legend"></span>
+                <span class="title">JCPenney Savings Plan</span>
+                <span class="amount">{{ incomePlan.jcpSavings }}</span>
+              </li>
+            </ol>
+
+          </div>
+
+          <div id="ctn-right" class="grid-8">
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="lib/js/lodash.min.js"></script>
+  <script src="lib/js/angular.min.js"></script>
+  <script src="lib/js/angular-resource.min.js"></script>
+  <script src="lib/js/angular-ui-router.min.js"></script>
+  <script src="js/app.js"></script>
+  <!--
+  <script src="js/controllers.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/services.js"></script>
+  -->
+</body>
+</html>

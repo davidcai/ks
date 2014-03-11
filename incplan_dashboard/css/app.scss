@@ -1,0 +1,156 @@
+@mixin float($dir) {
+  float: $dir;
+  overflow: hidden;
+}
+
+$pnl-bg-color: #f2f2f2;
+$pnl-border-color: darken($pnl-bg-color, 10%);
+$txt-light-color: #999;
+$savings-income-color: #93db93;
+$work-income-color: #999;
+$other-income-color: #00c0ee;
+$socsec-income-color: #4e86ae;
+
+
+/*******************************************************************************************
+ * 12-Column Grid
+ *******************************************************************************************/
+.grid-1, .grid-2, .grid-3, .grid-4, .grid-5, .grid-6, 
+.grid-7, .grid-8, .grid-9, .grid-10, .grid-11, .grid-12 {
+    float: left;
+    display: inline;
+    overflow: hidden;
+    *zoom: 1;
+}
+.grid-row { 
+  clear: both; 
+  overflow: hidden;
+}
+.grid-1 { width: 8%; }
+.grid-2 { width: 16%; }
+.grid-3 { width: 25%; }
+.grid-4 { width: 33%; }
+.grid-5 { width: 41%; }
+.grid-6 { width: 50%; }
+.grid-7 { width: 58%; }
+.grid-8 { width: 66%; }
+.grid-9 { width: 75%; }
+.grid-10 { width: 83%; }
+.grid-11 { width: 91%; }
+.grid-12 { width: 100%; }
+
+
+html, 
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+ol, 
+ul, 
+li {
+  overflow: hidden;
+}
+
+ol.plain {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ol.list-view {
+
+  li {
+
+    margin: 1em 0;
+    padding: 0 0.85em;
+    line-height: 1.4;
+
+    .legend {
+      @include float(left);
+      width: 1em;
+      height: 1em;
+      margin-right: 0.35em;
+    }
+    &.savings-income .legend {
+      background-color: $savings-income-color;
+    }
+    &.work-income .legend {
+      background-color: $work-income-color;
+    }
+    &.other-income .legend {
+      background-color: $other-income-color;
+    }
+    &.socsec-income .legend {
+      background-color: $socsec-income-color;
+    }
+
+    .title {
+      @include float(left);
+    }
+
+    .amount {
+      @include float(right);
+      font-weight: bold;
+    }
+
+    .note {
+      @include float(left);
+      clear: both;
+      color: $txt-light-color;
+      font-size: 0.95em;
+    }
+
+    &.category {
+
+      border-bottom: 1px solid $pnl-border-color;
+      padding-bottom: 0.5em;
+
+      .title {
+        font-weight: bold;
+        font-size: 1.45em;
+      }
+
+      .amount {
+        font-size: 1.45em;
+      }
+    }
+  }
+
+  &.savings li .note {
+    @include float(right);
+  }
+}
+
+#ctn-main {
+
+  padding: 1em;
+  width: 950px;
+  margin: 0 auto;
+
+  .panel-rcs {
+
+    background-color: $pnl-bg-color;
+    border: 4px solid #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(50, 50, 50, 0.3);
+
+    .left-vs-right {
+
+      background-color: #fff;
+      border: 1px solid #d7d7d7;
+      border-radius: 7px;
+
+      #ctn-left {
+        background-color: $pnl-bg-color;
+      }
+
+      #ctn-right {
+
+      }
+
+    }
+
+  }
+}

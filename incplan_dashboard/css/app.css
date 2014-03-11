@@ -1,0 +1,124 @@
+/*******************************************************************************************
+ * 12-Column Grid
+ *******************************************************************************************/
+.grid-1, .grid-2, .grid-3, .grid-4, .grid-5, .grid-6,
+.grid-7, .grid-8, .grid-9, .grid-10, .grid-11, .grid-12 {
+  float: left;
+  display: inline;
+  overflow: hidden;
+  *zoom: 1; }
+
+.grid-row {
+  clear: both;
+  overflow: hidden; }
+
+.grid-1 {
+  width: 8%; }
+
+.grid-2 {
+  width: 16%; }
+
+.grid-3 {
+  width: 25%; }
+
+.grid-4 {
+  width: 33%; }
+
+.grid-5 {
+  width: 41%; }
+
+.grid-6 {
+  width: 50%; }
+
+.grid-7 {
+  width: 58%; }
+
+.grid-8 {
+  width: 66%; }
+
+.grid-9 {
+  width: 75%; }
+
+.grid-10 {
+  width: 83%; }
+
+.grid-11 {
+  width: 91%; }
+
+.grid-12 {
+  width: 100%; }
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%; }
+
+ol,
+ul,
+li {
+  overflow: hidden; }
+
+ol.plain {
+  list-style: none;
+  margin: 0;
+  padding: 0; }
+
+ol.list-view li {
+  margin: 1em 0;
+  padding: 0 0.85em;
+  line-height: 1.4; }
+  ol.list-view li .legend {
+    float: left;
+    overflow: hidden;
+    width: 1em;
+    height: 1em;
+    margin-right: 0.35em; }
+  ol.list-view li.savings-income .legend {
+    background-color: #93db93; }
+  ol.list-view li.work-income .legend {
+    background-color: #999999; }
+  ol.list-view li.other-income .legend {
+    background-color: #00c0ee; }
+  ol.list-view li.socsec-income .legend {
+    background-color: #4e86ae; }
+  ol.list-view li .title {
+    float: left;
+    overflow: hidden; }
+  ol.list-view li .amount {
+    float: right;
+    overflow: hidden;
+    font-weight: bold; }
+  ol.list-view li .note {
+    float: left;
+    overflow: hidden;
+    clear: both;
+    color: #999999;
+    font-size: 0.95em; }
+  ol.list-view li.category {
+    border-bottom: 1px solid #d8d8d8;
+    padding-bottom: 0.5em; }
+    ol.list-view li.category .title {
+      font-weight: bold;
+      font-size: 1.45em; }
+    ol.list-view li.category .amount {
+      font-size: 1.45em; }
+ol.list-view.savings li .note {
+  float: right;
+  overflow: hidden; }
+
+#ctn-main {
+  padding: 1em;
+  width: 950px;
+  margin: 0 auto; }
+  #ctn-main .panel-rcs {
+    background-color: #f2f2f2;
+    border: 4px solid #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(50, 50, 50, 0.3); }
+    #ctn-main .panel-rcs .left-vs-right {
+      background-color: #fff;
+      border: 1px solid #d7d7d7;
+      border-radius: 7px; }
+      #ctn-main .panel-rcs .left-vs-right #ctn-left {
+        background-color: #f2f2f2; }
