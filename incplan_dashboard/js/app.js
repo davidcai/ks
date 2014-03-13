@@ -39,7 +39,7 @@ angular.module('app.directives', [])
           $element.html('');
 
           var id = $attrs.id
-            , paper = Raphael(id, 400, 300)
+            , paper = Raphael(id, 550, 300)
             , text = paper.text(50, 50, ngModel.$viewValue || '');
 
           text.attr({
