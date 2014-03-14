@@ -61,6 +61,8 @@ ol.plain {
 
 ol.list-view {
 
+  @extend ol.plain;
+
   li {
 
     margin: 1em 0;
@@ -73,46 +75,53 @@ ol.list-view {
       height: 1em;
       margin-right: 0.35em;
     }
-    &.savings-income .legend {
+    &.investments_top_up_income_bridge .legend {
       background-color: $savings-income-color;
     }
-    &.work-income .legend {
+    &.jobs .legend {
       background-color: $work-income-color;
     }
-    &.other-income .legend {
+    &.other .legend {
       background-color: $other-income-color;
     }
-    &.socsec-income .legend {
+    &.social_security .legend {
       background-color: $socsec-income-color;
     }
 
-    .title {
+    .left-title {
       @include float(left);
     }
 
-    .amount {
+    .right-title {
       @include float(right);
       font-weight: bold;
     }
 
-    .note {
+    .left-subtitle {
       @include float(left);
-      clear: both;
+      clear: left;
       color: $txt-light-color;
       font-size: 0.95em;
     }
 
-    &.category {
+    .right-subtitle {
+      @include float(right);
+      clear: right;
+      color: $txt-light-color;
+      font-size: 0.95em;
+    }
+
+    &.header {
 
       border-bottom: 1px solid $pnl-border-color;
       padding-bottom: 0.5em;
 
-      .title {
+      .left-title {
         font-weight: bold;
         font-size: 1.45em;
       }
 
-      .amount {
+      .right-title {
         font-size: 1.45em;
       }
     }

@@ -1,8 +1,8 @@
 angular.module('app', [])
 
-  .controller('MainCtrl', 
+  .controller('MainCtrl', [
 
-    ['incomeSourceMap', 'savingSources', '$scope', '$log', 
+    'incomeSourceMap', 'savingSources', '$scope', '$log',
     function(incomeSourceMap, savingSources, $scope, $log) {
 
     var strPctKey = '50'
@@ -28,6 +28,7 @@ angular.module('app', [])
 
     $scope.setBarchartConfig = function(config) {
       $scope.incomePlan.barchartConfig = config;
+      //$scope.incomeSources = incomeSourceMap[strPctKey][++nBarIndex];
     };
 
   }]);

@@ -3,20 +3,20 @@ angular.module('app')
   .directive('stackedBarchart', ['$log', function($log) {
 
     return {
-      restrict: 'A', 
-      require: 'ngModel', 
-      // scope: {
-      //   'config': '@config'
-      // }, 
-      link: function($scope, $element, $attrs, ngModel) {
+      restrict: 'AE', 
+      
+      scope: {
+        'config': '='
+      }, 
 
-        ngModel.$render = function() {
+      link: function(scope, element, attrs) {
 
-          $element.html('');
+        function updateUi() {
+          element.html('');
 
-          var id = $attrs.id
+          var id = attrs.id
             , paper = Raphael(id, 550, 300)
-            , text = paper.text(50, 50, ngModel.$viewValue || '');
+            , text = paper.text(50, 50, scope.config || '');
 
           text.attr({
             'text-anchor': 'start', 
@@ -24,8 +24,24 @@ angular.module('app')
             'font-weight': 'bold', 
             'fill': '#4c4c4c'
           });
-        };
-      }
+        }
+
+        //updateUi();
+
+        scope.$watch(
+          
+          function() { return scope.config; },
+
+          function(newVal, oldVal) {
+            $log.log(newVal + ' : ' + oldVal);
+
+            //if (newVal !== oldVal) {
+              updateUi();
+            //}
+          }
+        ); // end of $watch
+
+      } // end of link
     };
     
   }]);

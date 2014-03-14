@@ -28,72 +28,27 @@
     <div class="panel-rcs">
 
       <div class="left-vs-right">
-
         <div class="grid-row">
+
           <div id="ctn-left" class="grid-4">
 
-            <ol list-view id="savings-list-view" 
-              list="savingSources"></ol>
+            <!-- Incomes list view -->
+            <list-view id="incomes-list-view" list="incomeSources"></list-view>
 
-            <ol list-view id="incomes-list-view" 
-              list="incomeSources"></ol>
-
-
-
-            <ol class="plain list-view income">
-              <li class="category">
-                <span class="title">Total Income</span>
-                <span class="amount">{{ incomePlan.totalIncome }}</span>
-                <span class="note">annual income when you're {{ incomePlan.retAge }}</span>
-              </li>
-              <li class="savings-income">
-                <span class="legend"></span>
-                <span class="title">Savings income</span>
-                <span class="amount">{{ incomePlan.savingsIncome }}</span>
-              </li>
-              <li class="other-income">
-                <span class="legend"></span>
-                <span class="title">Other income</span>
-                <span class="amount">{{ incomePlan.otherIncome }}</span>
-              </li>
-              <li class="work-income">
-                <span class="legend"></span>
-                <span class="title">Work income</span>
-                <span class="amount">{{ incomePlan.workIncome }}</span>
-              </li>
-              <li class="socsec-income">
-                <span class="legend"></span>
-                <span class="title">Social Security income</span>
-                <span class="amount">{{ incomePlan.socSecIncome }}</span>
-              </li>
-            </ol>
-
-            <ol class="plain list-view savings">
-              <li class="category">
-                <span class="title">Total Savings</span>
-                <span class="amount">{{ incomePlan.totalSavings }}</span>
-                <span class="note">as of today</span>
-              </li>
-              <li class="jcp-savings">
-                <span class="legend"></span>
-                <span class="title">JCPenney Savings Plan</span>
-                <span class="amount">{{ incomePlan.jcpSavings }}</span>
-              </li>
-            </ol>
-
+            <!-- Savings list view -->
+            <list-view id="savings-list-view" list="savingSources"></list-view>
           </div>
 
           <div id="ctn-right" class="grid-8">
-            <div stacked-barchart id="my-barchart" 
-              ng-model="incomePlan.barchartConfig"></div>
+            <stacked-barchart id="my-barchart" config="incomePlan.barchartConfig"></stacked-barchart>
           </div>
 
           <button ng-click="setBarchartConfig('Hello!')">Click me!</button>
+
         </div>
+      </div> <!-- end of div.left-vs-right -->
 
-      </div>
-
-    </div>
+    </div> <!-- end of div.panel-rcs -->
 
   </div>
 

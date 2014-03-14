@@ -59,7 +59,7 @@ ul,
 li {
   overflow: hidden; }
 
-ol.plain {
+ol.plain, ol.list-view {
   list-style: none;
   margin: 0;
   padding: 0; }
@@ -74,34 +74,40 @@ ol.list-view li {
     width: 1em;
     height: 1em;
     margin-right: 0.35em; }
-  ol.list-view li.savings-income .legend {
+  ol.list-view li.investments_top_up_income_bridge .legend {
     background-color: #93db93; }
-  ol.list-view li.work-income .legend {
+  ol.list-view li.jobs .legend {
     background-color: #999999; }
-  ol.list-view li.other-income .legend {
+  ol.list-view li.other .legend {
     background-color: #00c0ee; }
-  ol.list-view li.socsec-income .legend {
+  ol.list-view li.social_security .legend {
     background-color: #4e86ae; }
-  ol.list-view li .title {
+  ol.list-view li .left-title {
     float: left;
     overflow: hidden; }
-  ol.list-view li .amount {
+  ol.list-view li .right-title {
     float: right;
     overflow: hidden;
     font-weight: bold; }
-  ol.list-view li .note {
+  ol.list-view li .left-subtitle {
     float: left;
     overflow: hidden;
-    clear: both;
+    clear: left;
     color: #999999;
     font-size: 0.95em; }
-  ol.list-view li.category {
+  ol.list-view li .right-subtitle {
+    float: right;
+    overflow: hidden;
+    clear: right;
+    color: #999999;
+    font-size: 0.95em; }
+  ol.list-view li.header {
     border-bottom: 1px solid #d8d8d8;
     padding-bottom: 0.5em; }
-    ol.list-view li.category .title {
+    ol.list-view li.header .left-title {
       font-weight: bold;
       font-size: 1.45em; }
-    ol.list-view li.category .amount {
+    ol.list-view li.header .right-title {
       font-size: 1.45em; }
 ol.list-view.savings li .note {
   float: right;
