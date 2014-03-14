@@ -32,6 +32,14 @@
         <div class="grid-row">
           <div id="ctn-left" class="grid-4">
 
+            <ol list-view id="savings-list-view" 
+              list="savingSources"></ol>
+
+            <ol list-view id="incomes-list-view" 
+              list="incomeSources"></ol>
+
+
+
             <ol class="plain list-view income">
               <li class="category">
                 <span class="title">Total Income</span>
@@ -79,7 +87,7 @@
             <div stacked-barchart id="my-barchart" 
               ng-model="incomePlan.barchartConfig"></div>
           </div>
-          
+
           <button ng-click="setBarchartConfig('Hello!')">Click me!</button>
         </div>
 
@@ -98,6 +106,11 @@
   <script src="lib/js/angular-ui-router.min.js"></script>
   <script src="lib/js/raphael-min.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/directives/list-view.js"></script>
+  <script src="js/directives/stacked-barchart.js"></script>
+  <script src="js/data/income-source-map.js"></script>
+  <script src="js/data/saving-sources.js"></script>
+
   <!--
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>

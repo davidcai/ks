@@ -1,5 +1,15 @@
-angular.module('app', ['app.directives'])
-  .controller('MainCtrl', ['$scope', '$log', function($scope, $log) {
+angular.module('app', [])
+
+  .controller('MainCtrl', 
+
+    ['incomeSourceMap', 'savingSources', '$scope', '$log', 
+    function(incomeSourceMap, savingSources, $scope, $log) {
+
+    var strPctKey = '50'
+      , nBarIndex = 3;
+
+    $scope.incomeSources = incomeSourceMap[strPctKey][nBarIndex];
+    $scope.savingSources = savingSources;
 
     $scope.incomePlan = {
       retAge: 66, 
@@ -20,38 +30,4 @@ angular.module('app', ['app.directives'])
       $scope.incomePlan.barchartConfig = config;
     };
 
-  }]);
-
-
-angular.module('app.directives', [])
-  .directive('stackedBarchart', ['$log', function($log) {
-
-    return {
-      restrict: 'A', 
-      require: 'ngModel', 
-      // scope: {
-      //   'config': '@config'
-      // }, 
-      link: function($scope, $element, $attrs, ngModel) {
-
-        ngModel.$render = function() {
-
-          $element.html('');
-
-          var id = $attrs.id
-            , paper = Raphael(id, 550, 300)
-            , text = paper.text(50, 50, ngModel.$viewValue || '');
-
-          text.attr({
-            'text-anchor': 'start', 
-            'font-size': 16, 
-            'font-weight': 'bold', 
-            'fill': '#4c4c4c'
-          });
-
-          //$element.html('<div class="test">This is a test</div>');
-
-        };
-      }
-    };
   }]);
