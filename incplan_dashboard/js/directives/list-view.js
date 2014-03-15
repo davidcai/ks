@@ -27,8 +27,7 @@ angular.module('app')
         '</ol>',
 
       link: function(scope, element, attrs) {
-        $log.log(scope.list);
-
+        // $log.log(scope.list);
       }
     };
     

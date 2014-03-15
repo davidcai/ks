@@ -33,14 +33,14 @@
           <div id="ctn-left" class="grid-4">
 
             <!-- Incomes list view -->
-            <list-view id="incomes-list-view" list="incomeSources"></list-view>
+            <div list-view id="incomes-list-view" list="incomeSources"></div>
 
             <!-- Savings list view -->
-            <list-view id="savings-list-view" list="savingSources"></list-view>
+            <div list-view id="savings-list-view" list="savingSources"></div>
           </div>
 
           <div id="ctn-right" class="grid-8">
-            <stacked-barchart id="my-barchart" config="incomePlan.barchartConfig"></stacked-barchart>
+            <div stacked-barchart id="my-barchart" config="incomePlan.barchartConfig"></div>
           </div>
 
           <button ng-click="setBarchartConfig('Hello!')">Click me!</button>
@@ -60,16 +60,13 @@
   <script src="lib/js/angular-resource.min.js"></script>
   <script src="lib/js/angular-ui-router.min.js"></script>
   <script src="lib/js/raphael-min.js"></script>
+  
   <script src="js/app.js"></script>
   <script src="js/directives/list-view.js"></script>
   <script src="js/directives/stacked-barchart.js"></script>
   <script src="js/data/income-source-map.js"></script>
   <script src="js/data/saving-sources.js"></script>
+  <script src="js/data/stacked-barchart-config-map.js"></script>
 
-  <!--
-  <script src="js/controllers.js"></script>
-  <script src="js/filters.js"></script>
-  <script src="js/services.js"></script>
-  -->
 </body>
 </html>

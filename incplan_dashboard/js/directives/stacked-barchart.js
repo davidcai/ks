@@ -26,18 +26,14 @@ angular.module('app')
           });
         }
 
-        //updateUi();
-
         scope.$watch(
           
           function() { return scope.config; },
 
           function(newVal, oldVal) {
-            $log.log(newVal + ' : ' + oldVal);
+            // $log.log(newVal + ' : ' + oldVal);
 
-            //if (newVal !== oldVal) {
-              updateUi();
-            //}
+            updateUi();
           }
         ); // end of $watch
 
