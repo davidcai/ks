@@ -1,25 +1,31 @@
+var FE = {
+  log: function(msg) {
+    if (console && console.log) {
+      console.log(msg);
+    }
+  }
+};
+
 angular.module('app', [])
 
   .controller('MainCtrl', [
 
     'incomeSourceMap', 'savingSources', 'stackedBarchartConfigMap', 
       '$scope', '$log',
+
     function(incomeSourceMap, savingSources, stackedBarchartConfigMap, 
       $scope, $log) {
 
-    var strPctKey = '50'
-      , nBarIndex = 3;
+    $scope.pctKey = '50'
+    $scope.barIndex = 3;
 
-    $scope.incomeSources = incomeSourceMap[strPctKey][nBarIndex];
+    $scope.incomeSources = incomeSourceMap[$scope.pctKey][$scope.barIndex];
     $scope.savingSources = savingSources;
-    $scope.barchartConfig = stackedBarchartConfigMap[strPctKey];
+    $scope.barchartConfig = stackedBarchartConfigMap[$scope.pctKey];
 
-    $scope.incomePlan = {
-      barchartConfig: "This is awesome!"
-    };
 
     $scope.setBarchartConfig = function(config) {
-      $scope.incomePlan.barchartConfig = config;
+      $scope.barchartConfig = stackedBarchartConfigMap["20"];
       //$scope.incomeSources = incomeSourceMap[strPctKey][++nBarIndex];
     };
 

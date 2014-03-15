@@ -20,6 +20,7 @@ $socsec-income-color: #4e86ae;
     float: left;
     display: inline;
     overflow: hidden;
+    box-sizing: border-box;
     *zoom: 1;
 }
 .grid-row { 
@@ -156,7 +157,7 @@ ol.list-view {
       }
 
       #ctn-right {
-
+        padding-left: 40px;
       }
 
     }

@@ -11,27 +11,32 @@ angular.module('app')
 
       link: function(scope, element, attrs) {
 
+        var id = attrs.id
+          , width = parseInt(attrs.width, 10)
+          , height = parseInt(attrs.height, 10);
+
+        //
+        // Update UI
+        //
+
         function updateUi() {
+
           element.html('');
 
-          var id = attrs.id
-            , paper = Raphael(id, 550, 300)
-            , text = paper.text(50, 50, scope.config || '');
+          YUI().use('fe-stacked-barchart', function(Y) {
 
-          text.attr({
-            'text-anchor': 'start', 
-            'font-size': 16, 
-            'font-weight': 'bold', 
-            'fill': '#4c4c4c'
+            var barChart = new Y.FE.StackedBarChart(id, width, height, scope.config);
+            barChart.render();
           });
         }
 
+        
         scope.$watch(
           
           function() { return scope.config; },
 
           function(newVal, oldVal) {
-            // $log.log(newVal + ' : ' + oldVal);
+            $log.log(newVal + ' : ' + oldVal);
 
             updateUi();
           }

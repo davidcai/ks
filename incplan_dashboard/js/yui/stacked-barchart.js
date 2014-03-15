@@ -1,4 +1,4 @@
-Y.add('fe-stacked-barchart', function (Y) {
+YUI.add('fe-stacked-barchart', function (Y) {
 
   // Constructor
   function StackedBarChart(strId, nWidth, nHeight, config) {
