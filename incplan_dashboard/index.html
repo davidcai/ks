@@ -33,17 +33,32 @@
           <div id="ctn-left" class="grid-4">
 
             <!-- Incomes list view -->
-            <div list-view id="incomes-list-view" 
+            <div list-view 
+              id="incomes-list-view" 
               list="incomeSources"></div>
 
             <!-- Savings list view -->
-            <div list-view id="savings-list-view" 
+            <div list-view 
+              id="savings-list-view" 
               list="savingSources"></div>
           </div>
 
           <div id="ctn-right" class="grid-8">
-            <div stacked-barchart id="my-barchart" 
-              width="550" height="300" config="barchartConfig"></div>
+            
+            <div id="toggle-goal" ng-switch on="showGoal">
+              <a href="javascript:void(0);" 
+                ng-switch-when="false" ng-click="toggleGoal(true)">Show my goal</a>
+              <a href="javascript:void(0);" 
+                ng-switch-when="true" ng-click="toggleGoal(false)">Hide my goal</a>
+            </div>
+
+            <div stacked-barchart 
+              id="my-barchart" 
+              width="550" 
+              height="300" 
+              config="barchartConfig" 
+              bar-index="barIndex" 
+              goal-line="showGoal"></div>
           </div>
 
           <button ng-click="setBarchartConfig('Hello!')">Click me!</button>
@@ -60,7 +75,7 @@
   <!--
   <script src="lib/js/lodash.min.js"></script>
   -->
-  <script src="lib/js/angular.min.js"></script>
+  <script src="lib/js/angular.js"></script>
   <!--
   <script src="lib/js/angular-resource.min.js"></script>
   <script src="lib/js/angular-ui-router.min.js"></script>

@@ -94,13 +94,13 @@ ol.list-view li {
     float: left;
     overflow: hidden;
     clear: left;
-    color: #999999;
+    color: #7f7f7f;
     font-size: 0.95em; }
   ol.list-view li .right-subtitle {
     float: right;
     overflow: hidden;
     clear: right;
-    color: #999999;
+    color: #7f7f7f;
     font-size: 0.95em; }
   ol.list-view li.header {
     border-bottom: 1px solid #d8d8d8;
@@ -131,3 +131,10 @@ ol.list-view.savings li .note {
         background-color: #f2f2f2; }
       #ctn-main .panel-rcs .left-vs-right #ctn-right {
         padding-left: 40px; }
+        #ctn-main .panel-rcs .left-vs-right #ctn-right #toggle-goal {
+          text-align: right;
+          line-height: 3;
+          padding-right: 1em; }
+          #ctn-main .panel-rcs .left-vs-right #ctn-right #toggle-goal A {
+            text-decoration: none;
+            color: #7f7f7f; }

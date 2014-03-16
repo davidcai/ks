@@ -5,7 +5,9 @@
 
 $pnl-bg-color: #f2f2f2;
 $pnl-border-color: darken($pnl-bg-color, 10%);
-$txt-light-color: #999;
+$txt-color: #4c4c4c;
+$txt-light-color: lighten($txt-color, 20%);
+$txt-dark-color: darken($txt-color, 10%);
 $savings-income-color: #93db93;
 $work-income-color: #999;
 $other-income-color: #00c0ee;
@@ -158,6 +160,17 @@ ol.list-view {
 
       #ctn-right {
         padding-left: 40px;
+
+        #toggle-goal {
+          text-align: right;
+          line-height: 3;
+          padding-right: 1em;
+
+          A {
+            text-decoration: none;
+            color: $txt-light-color;
+          }
+        }
       }
 
     }
