@@ -156,19 +156,48 @@ ol.list-view {
 
       #ctn-left {
         background-color: $pnl-bg-color;
+        min-height: 520px;
       }
 
       #ctn-right {
-        padding-left: 40px;
+        padding: 0 20px 0 40px;
 
         #toggle-goal {
           text-align: right;
           line-height: 3;
-          padding-right: 1em;
 
           A {
             text-decoration: none;
             color: $txt-light-color;
+          }
+        }
+
+        #pct-slider {
+
+          text-align: center;
+          line-height: 1.5;
+
+          em {
+            font-style: normal;
+            font-weight: bold;
+            font-size: 1.25em;
+          }
+
+          #reserve-amount {
+
+            margin: 0.3em 0 0.5em 0;
+
+            em {
+              display: block;
+            }
+          }
+
+          input[type="range"] {
+            width: 100%;
+          }
+
+          #remaining-amount {
+            margin: 0.3em 0 0 0;
           }
         }
       }

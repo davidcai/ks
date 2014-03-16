@@ -20,10 +20,11 @@ angular.module('app')
           , fnUnwatchGoalLine
           , fnUnwatchBarIndex;
         
+        // Update UI whenever config is re-assigned or initialized.
         scope.$watch(
           function() { return scope.config; },
           function(newVal, oldVal) {
-            $log.log(newVal + ' : ' + oldVal);
+            $log.log('config: ' + newVal + ' to ' + oldVal);
 
             updateUi();
           }
@@ -35,9 +36,20 @@ angular.module('app')
 
         function updateUi() {
 
+          $log.log('updateUi');
+
+          // Destroy previously constructed bar chart.
           if (barChart) {
             barChart.destroy();
             barChart = null;
+          }
+
+          // Stop obsolete listeners
+          if (fnUnwatchGoalLine) {
+            fnUnwatchGoalLine();
+          }
+          if (fnUnwatchBarIndex) {
+            fnUnwatchBarIndex();
           }
 
           element.html('');
@@ -47,6 +59,14 @@ angular.module('app')
 
             barChart = new Y.FE.StackedBarChart(id, width, height, scope.config);
             barChart.on('rendered', onRendered);
+
+            // Update barIndex when user selects a bar.
+            barChart.on('barClick', function(e) {
+              safeApply(scope, function() {
+                scope.barIndex = e.barIndex;
+              })
+            });
+
             barChart.render();
           });
         }
@@ -54,14 +74,11 @@ angular.module('app')
 
         function onRendered() {
 
-          // Goal line
+          $log.log('onRendered');
 
-          if (fnUnwatchGoalLine) {
-            fnUnwatchGoalLine();
-          }
-
+          // Toggal goal line when goalLine changes.
           fnUnwatchGoalLine = scope.$watch('goalLine', function(newVal, oldVal) {
-            $log.log(newVal + ' : ' + oldVal);
+            $log.log('goalLine: ' + oldVal + ' to ' + newVal);
 
             if (scope.goalLine) {
               barChart.showHorizontalLine(0);
@@ -71,14 +88,9 @@ angular.module('app')
             }
           });
 
-          // Bar index
-
-          if (fnUnwatchBarIndex) {
-            fnUnwatchBarIndex();
-          }
-
+          // Show bubble when barIndex changes.
           fnUnwatchBarIndex = scope.$watch('barIndex', function(newVal, oldVal) {
-            $log.log(newVal + ' : ' + oldVal);
+            $log.log('barIndex: ' + oldVal + ' to ' + newVal);
 
             barChart.showBubble(scope.barIndex);
           });

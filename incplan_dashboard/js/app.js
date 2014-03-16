@@ -1,10 +1,11 @@
 // FE.log shim
 var FE = {
-  log: function(msg) {
-    if (console && console.log) {
-      console.log(msg);
-    }
-  }
+  log: angular.noop
+  // function(msg) {
+  //   if (console && console.log) {
+  //     console.log(msg);
+  //   }
+  // }
 };
 
 
@@ -34,6 +35,8 @@ angular.module('app', [])
     'incomeSourceMap', 
     'savingSources', 
     'stackedBarchartConfigMap', 
+    'reserveAmounts', 
+    'remainingAmounts', 
     '$scope', 
     '$log',
 
@@ -41,26 +44,33 @@ angular.module('app', [])
       incomeSourceMap, 
       savingSources, 
       stackedBarchartConfigMap, 
+      reserveAmounts, 
+      remainingAmounts, 
       $scope, 
       $log) {
 
       $scope.pctKey = '50'
       $scope.barIndex = 3;
 
-      $scope.incomeSources = incomeSourceMap[$scope.pctKey][$scope.barIndex];
+      $scope.incomeSourceMap = incomeSourceMap;
       $scope.savingSources = savingSources;
-      $scope.barchartConfig = stackedBarchartConfigMap[$scope.pctKey];
+      $scope.stackedBarchartConfigMap = stackedBarchartConfigMap;
+      $scope.reserveAmounts = reserveAmounts;
+      $scope.remainingAmounts = remainingAmounts;
 
+      // Goal line
       $scope.showGoal = false;
       $scope.toggleGoal = function(show) {
         $scope.showGoal = show;
-      }
-
-      $scope.setBarchartConfig = function(config) {
-        $scope.barchartConfig = stackedBarchartConfigMap["20"];
-        //$scope.incomeSources = incomeSourceMap[strPctKey][++nBarIndex];
       };
 
-      // $log.log($scope.barchartConfig);
+      // Workaround to cope with range input's onchange quirks.
+      $scope.newPctKey = $scope.pctKey;
+      $scope.onPctMouseup = function() {
+        // Change only when the mouse is up.
+        if ($scope.newPctKey != $scope.pctKey) {
+          $scope.pctKey = $scope.newPctKey;
+        }
+      };
 
     }]);
