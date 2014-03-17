@@ -88,7 +88,7 @@ angular.module('app', ['ui.bootstrap'])
 
             $scope.cancel = function() {
               $modalInstance.dismiss();
-            }
+            };
           }]
         });
 
