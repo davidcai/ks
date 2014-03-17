@@ -63,9 +63,6 @@ angular.module('app', ['ui.bootstrap'])
 
       // Goal line
       $scope.showGoal = false;
-      $scope.toggleGoal = function(show) {
-        $scope.showGoal = show;
-      };
 
       // Workaround to cope with range input's onchange quirks.
       $scope.newPctKey = $scope.pctKey;

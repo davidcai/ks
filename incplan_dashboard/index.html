@@ -25,39 +25,40 @@
 
   <div id="ctn-main">
 
-    <h1>Your income plan</h1>
+    <h1>Income Plan</h1>
 
     <div class="panel-rcs">
 
       <div class="left-vs-right">
+
+        <div class="grid-row">
+
+          <!-- =========================================== -->
+          <!-- Social Security strategy                    -->
+          <!-- =========================================== -->
+          <div id="ctn-soc-sec-strategy">
+            <h3>Your Social Security strategy</h3>
+
+            <p id="ctn-desc">
+              You're leaving money on the table! 
+              See how much by seeing our recommendation.
+            </p>
+
+            <div id="ctn-strategies">
+
+              <div class="btn-group btn-group-lg">
+                <button class="btn btn-default" ng-model="socSecStrategy" btn-radio="'mySelection'">My selection</button>
+                <button class="btn btn-default" ng-model="socSecStrategy" btn-radio="'recommended'">Recommended</button>
+              </div>
+
+            </div> <!-- end of #ctn-strategies -->
+
+          </div>
+        </div>
+
         <div class="grid-row">
 
           <div id="ctn-left" class="grid-4">
-
-            <!-- =========================================== -->
-            <!-- Social Security strategy                    -->
-            <!-- =========================================== -->
-            <div id="ctn-soc-sec-strategy">
-              <h3>Your Social Security strategy</h3>
-              <p>
-                You're leaving money on the table! <br>
-                See how much by seeing our recommendation.
-              </p>
-              <ol class="plain">
-                <li>
-                  <input type="radio" id="rdo-my-selection" ng-model="socSecStrategy" value="mySelection">
-                  <label for="rdo-my-selection" >My selection</label>
-                </li>
-                <li>
-                  <input type="radio" id="rdo-recommended" ng-model="socSecStrategy" value="recommended">
-                  <label for="rdo-recommended" >Recommended</label>
-                </li>
-              </ol>
-              <p>
-                Can't do this? <a href="javascript:void(0);" ng-click="edit()">edit</a>
-              </p>
-            </div>
-
             <!-- =========================================== -->
             <!-- Incomes list view                           -->
             <!-- =========================================== -->
@@ -71,13 +72,15 @@
 
 
           <div id="ctn-right" class="grid-8">
-            
-            <!-- =========================================== -->
-            <!-- Goal line toggle                            -->
-            <!-- =========================================== -->
-            <div id="toggle-goal" ng-switch on="showGoal">
-              <button class="btn btn-default" ng-switch-when="false" ng-click="toggleGoal(true)">Show my goal</button>
-              <button class="btn btn-default" ng-switch-when="true" ng-click="toggleGoal(false)">Hide my goal</button>
+
+            <div class="btn-toolbar">
+
+              <button class="btn btn-default" ng-show="!showGoal" ng-click="showGoal = !showGoal">Show my goal</button>
+
+              <button class="btn btn-default" ng-show="showGoal" ng-click="showGoal = !showGoal">Hide my goal</button>
+
+              <button class="btn btn-default" ng-click="edit()">Edit Social Security start age</button>
+
             </div>
 
             <!-- =========================================== -->
@@ -121,7 +124,7 @@
   <!-- =========================================== -->
   <script type="text/ng-template" id="edit.html">
     <div class="modal-header">
-      <h1>Edit my stuff</h1>
+      <h1>Edit Social Security start age</h1>
     </div>
     <div class="modal-body">
       Body goes here
