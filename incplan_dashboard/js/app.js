@@ -9,7 +9,7 @@ var FE = {
 };
 
 
-angular.module('app', [])
+angular.module('app', ['ui.bootstrap'])
 
   // safeApply (https://coderwall.com/p/ngisma)
   .factory('safeApply', ['$rootScope', function($rootScope) {
@@ -38,6 +38,7 @@ angular.module('app', [])
     'reserveAmounts', 
     'remainingAmounts', 
     '$scope', 
+    '$modal', 
     '$log',
 
     function(
@@ -47,8 +48,10 @@ angular.module('app', [])
       reserveAmounts, 
       remainingAmounts, 
       $scope, 
+      $modal, 
       $log) {
 
+      $scope.socSecStrategy = 'mySelection';
       $scope.pctKey = '50'
       $scope.barIndex = 3;
 
@@ -72,5 +75,34 @@ angular.module('app', [])
           $scope.pctKey = $scope.newPctKey;
         }
       };
+
+      // Open edit modal dialog
+      $scope.edit = function() {
+
+        var modalInstance = $modal.open({
+          
+          templateUrl: 'edit.html', 
+
+          controller: ['$scope', '$modalInstance', function($scope, $modalInstance) {
+
+            $scope.save = function() {
+              $modalInstance.close();
+            };
+
+            $scope.cancel = function() {
+              $modalInstance.dismiss();
+            }
+          }]
+        });
+
+        modalInstance.result.then(
+          function() {
+            $log.log('Saved');
+          }, 
+          function() {
+            $log.log('Cancelled');
+          }
+        );
+      }; // end of $scope.edit
 
     }]);

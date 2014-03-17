@@ -16,8 +16,10 @@
     </script>
   <![endif]-->
   <link rel="stylesheet" type="text/css" href="lib/css/normalize.css" />
+  <link rel="stylesheet" type="text/css" href="lib/css/bootstrap.min.css" />
   <link rel="stylesheet" type="text/css" href="css/app.css" />
 </head>
+
 
 <body ng-controller="MainCtrl" ng-cloak>
 
@@ -32,23 +34,61 @@
 
           <div id="ctn-left" class="grid-4">
 
-            <!-- Incomes list view -->
+            <!-- =========================================== -->
+            <!-- Social Security strategy                    -->
+            <!-- =========================================== -->
+            <div id="ctn-soc-sec-strategy">
+              <h3>Your Social Security strategy</h3>
+              <p>
+                You're leaving money on the table! <br>
+                See how much by seeing our recommendation.
+              </p>
+              <ol class="plain">
+                <li>
+                  <input type="radio" id="rdo-my-selection" ng-model="socSecStrategy" value="mySelection">
+                  <label for="rdo-my-selection" >My selection</label>
+                </li>
+                <li>
+                  <input type="radio" id="rdo-recommended" ng-model="socSecStrategy" value="recommended">
+                  <label for="rdo-recommended" >Recommended</label>
+                </li>
+              </ol>
+              <p>
+                Can't do this? <a href="javascript:void(0);" ng-click="edit()">edit</a>
+              </p>
+            </div>
+
+            <!-- =========================================== -->
+            <!-- Incomes list view                           -->
+            <!-- =========================================== -->
             <div list-view id="incomes-list-view" list="incomeSourceMap[pctKey][barIndex]"></div>
 
-            <!-- Savings list view -->
+            <!-- =========================================== -->
+            <!-- Savings list view                           -->
+            <!-- =========================================== -->
             <div list-view id="savings-list-view" list="savingSources"></div>
           </div>
 
+
           <div id="ctn-right" class="grid-8">
             
+            <!-- =========================================== -->
+            <!-- Goal line toggle                            -->
+            <!-- =========================================== -->
             <div id="toggle-goal" ng-switch on="showGoal">
-              <a href="javascript:void(0);" ng-switch-when="false" ng-click="toggleGoal(true)">Show my goal</a>
-              <a href="javascript:void(0);" ng-switch-when="true" ng-click="toggleGoal(false)">Hide my goal</a>
+              <button class="btn btn-default" ng-switch-when="false" ng-click="toggleGoal(true)">Show my goal</button>
+              <button class="btn btn-default" ng-switch-when="true" ng-click="toggleGoal(false)">Hide my goal</button>
             </div>
 
+            <!-- =========================================== -->
+            <!-- Stacked barchart                            -->
+            <!-- =========================================== -->
             <div stacked-barchart id="my-barchart" width="550" height="300"
               config="stackedBarchartConfigMap[pctKey]" bar-index="barIndex" goal-line="showGoal"></div>
 
+            <!-- =========================================== -->
+            <!-- Bridge slider                               -->
+            <!-- =========================================== -->
             <div id="pct-slider">
               <div id="reserve-amount">
                 Savings used for your retirement income:
@@ -75,12 +115,27 @@
 
   </div>
 
-  <script src="http://yui.yahooapis.com/3.15.0/build/yui/yui-min.js"></script>
 
-  <!--
-  <script src="lib/js/lodash.min.js"></script>
-  -->
+  <!-- =========================================== -->
+  <!-- Edit dialog box                             -->
+  <!-- =========================================== -->
+  <script type="text/ng-template" id="edit.html">
+    <div class="modal-header">
+      <h1>Edit my stuff</h1>
+    </div>
+    <div class="modal-body">
+      Body goes here
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" ng-click="save()">Save</button>
+      <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+    </div>
+  </script>
+
+
+  <script src="http://yui.yahooapis.com/3.15.0/build/yui/yui-min.js"></script>
   <script src="lib/js/angular.js"></script>
+  <script src="lib/js/ui-bootstrap-tpls-0.10.0.min.js"></script>
   <!--
   <script src="lib/js/angular-resource.min.js"></script>
   <script src="lib/js/angular-ui-router.min.js"></script>

@@ -12,6 +12,8 @@ $savings-income-color: #93db93;
 $work-income-color: #999;
 $other-income-color: #00c0ee;
 $socsec-income-color: #4e86ae;
+$modal-header-bg-color: #428bca;
+$modal-header-color: #fff;
 
 
 /*******************************************************************************************
@@ -48,6 +50,22 @@ body {
   margin: 0;
   width: 100%;
   height: 100%;
+}
+
+h1, 
+h2, 
+h3 {
+  font-style: normal;
+  font-weight: bold;
+}
+h1 {
+  font-size: 1.5em;
+}
+h2 {
+  font-size: 1.35em;
+}
+h3 {
+  font-size: 1.2em;
 }
 
 ol, 
@@ -128,10 +146,26 @@ ol.list-view {
         font-size: 1.45em;
       }
     }
-  }
 
-  &.savings li .note {
-    @include float(right);
+  }
+}
+
+.modal-dialog {
+
+  .modal-content {
+
+    overflow: hidden;
+
+    .modal-header {
+
+      background-color: $modal-header-bg-color;
+      color: $modal-header-color;
+
+      h1 {
+        margin: 10px 0;
+        line-height: 1;
+      }
+    }
   }
 }
 
@@ -155,8 +189,34 @@ ol.list-view {
       border-radius: 7px;
 
       #ctn-left {
+
         background-color: $pnl-bg-color;
         min-height: 520px;
+
+        #ctn-soc-sec-strategy {
+
+          padding: 0 1em 1em;
+          margin-bottom: 1em;
+          border-bottom: 1px solid $pnl-border-color;
+
+          p {
+            line-height: 1.2;
+          }
+
+          ol {
+
+            margin-bottom: 1em;
+
+            li {
+              line-height: 1.5;
+            }
+          }
+        }
+
+        #savings-list-view {
+          border-top: 1px solid $pnl-border-color;
+          padding-top: 1em;
+        }
       }
 
       #ctn-right {
@@ -164,12 +224,7 @@ ol.list-view {
 
         #toggle-goal {
           text-align: right;
-          line-height: 3;
-
-          A {
-            text-decoration: none;
-            color: $txt-light-color;
-          }
+          margin-top: 1em;
         }
 
         #pct-slider {
