@@ -73,7 +73,7 @@ angular.module('app', ['ui.bootstrap'])
         // Reset the flag to false when the response returns.
         $timeout(function() {
           $scope.loadingStrategy = false;            
-        }, 700);
+        }, Math.random() * (1500 - 700) + 700);
       }
 
       // Track socSecStrategy changes

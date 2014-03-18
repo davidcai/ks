@@ -32,12 +32,12 @@ angular.module('app')
           $log.log('scope.when: ' + oldVal + ' to ' + newVal);
 
           if (scope.when === true) {
-            parent.children().addClass(hideCls);
-            element.removeClass(hideCls);
+            // parent.children().addClass(hideCls);
+            // element.removeClass(hideCls);
             element.css('display', 'block');
           }
           else {
-            parent.children().removeClass(hideCls);
+            // parent.children().removeClass(hideCls);
             element.css('display', 'none');
           }
         });
