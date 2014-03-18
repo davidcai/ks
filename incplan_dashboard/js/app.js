@@ -39,6 +39,7 @@ angular.module('app', ['ui.bootstrap'])
     'remainingAmounts', 
     '$scope', 
     '$modal', 
+    '$timeout', 
     '$log',
 
     function(
@@ -49,11 +50,14 @@ angular.module('app', ['ui.bootstrap'])
       remainingAmounts, 
       $scope, 
       $modal, 
+      $timeout, 
       $log) {
 
       $scope.socSecStrategy = 'mySelection';
+      $scope.loadingStrategy = false;
       $scope.pctKey = '50'
       $scope.barIndex = 3;
+      $scope.showGoal = false;
 
       $scope.incomeSourceMap = incomeSourceMap;
       $scope.savingSources = savingSources;
@@ -61,8 +65,24 @@ angular.module('app', ['ui.bootstrap'])
       $scope.reserveAmounts = reserveAmounts;
       $scope.remainingAmounts = remainingAmounts;
 
-      // Goal line
-      $scope.showGoal = false;
+      function loadStrategy() {
+        $scope.loadingStrategy = true;
+
+        // Fake AJAX request. 
+        // Reset the flag to false when the response returns.
+        $timeout(function() {
+          $scope.loadingStrategy = false;            
+        }, 500);
+      }
+
+      // Track socSecStrategy changes
+      $scope.$watch('socSecStrategy', function(newVal, oldVal) {
+        $log.log('$scope.socSecStrategy: ' + oldVal + ' to ' + newVal);
+
+        if (newVal != oldVal) {
+          loadStrategy();
+        }
+      });
 
       // Workaround to cope with range input's onchange quirks.
       $scope.newPctKey = $scope.pctKey;
@@ -95,6 +115,7 @@ angular.module('app', ['ui.bootstrap'])
         modalInstance.result.then(
           function() {
             $log.log('Saved');
+            loadStrategy();
           }, 
           function() {
             $log.log('Cancelled');

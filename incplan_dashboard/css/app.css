@@ -61,6 +61,21 @@ h3 {
   font-style: normal;
   font-weight: bold; }
 
+.wait-state-container .wait-state {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0; }
+  .wait-state-container .wait-state .wait-state-content {
+    width: 100%;
+    height: 100%;
+    text-align: center; }
+.wait-state-container .wait-state-hidden {
+  visibility: hidden; }
+.wait-state-container.wait-state-container-relative {
+  position: relative; }
+
 ol,
 ul,
 li {
@@ -139,7 +154,8 @@ ol.list-view li {
     #ctn-main .panel-rcs .left-vs-right {
       background-color: #fff;
       border: 1px solid #d7d7d7;
-      border-radius: 7px; }
+      border-radius: 7px;
+      /* end of #ctn-right */ }
       #ctn-main .panel-rcs .left-vs-right #ctn-soc-sec-strategy {
         padding: 30px 20px 20px;
         border-bottom: 1px solid #d8d8d8;
@@ -181,6 +197,11 @@ ol.list-view li {
             #ctn-main .panel-rcs .left-vs-right #ctn-right #pct-slider #reserve-amount em {
               display: block; }
           #ctn-main .panel-rcs .left-vs-right #ctn-right #pct-slider input[type="range"] {
+            display: inline-block;
             width: 100%; }
           #ctn-main .panel-rcs .left-vs-right #ctn-right #pct-slider #remaining-amount {
             margin: 0.3em 0 0 0; }
+      #ctn-main .panel-rcs .left-vs-right #ctn-wait h3 {
+        font-size: 17px;
+        font-weight: normal;
+        margin: 200px 0 0 0; }
