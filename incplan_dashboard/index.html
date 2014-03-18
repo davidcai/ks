@@ -79,7 +79,7 @@
 
               <button class="btn btn-default" ng-show="showGoal" ng-click="showGoal = !showGoal">Hide my goal</button>
 
-              <button class="btn btn-default" ng-click="edit()">Edit Social Security start age</button>
+              <button class="btn btn-default" ng-click="edit()">Edit Social Security benefit start age</button>
 
             </div>
 
@@ -133,11 +133,32 @@
   <!-- =========================================== -->
   <script type="text/ng-template" id="edit.html">
     <div class="modal-header">
-      <h1>Edit Social Security start age</h1>
+      <h1>Social Security benefit start age</h1>
     </div>
-    <div class="modal-body">
-      Body goes here
+
+    <div id="ctn-socsec-start-ages" class="modal-body">
+      <div class="row">
+        <div class="col-md-4">
+          Your start age: <output name="ageOutput1" for="age1">{{ ages[0] }}</output>
+        </div>
+        <div class="col-md-8">
+          <input type="range" name="age1" min="64" max="70" step="1" ng-model="ages[0]" ng-mouseup="onAge1Mouseup()">
+        </div>
+      </div>
+
+      <br>
+
+      <div class="row">
+        <div class="col-md-4">
+          Jane's start age: <output name="ageOutput2" for="age2">{{ ages[1] }}</output>
+        </div>
+        <div class="col-md-8">
+          <input type="range" name="age2" min="64" max="70" step="1" ng-model="ages[1]" ng-mouseup="onAge2Mouseup()">
+        </div>
+      </div>
+
     </div>
+    
     <div class="modal-footer">
       <button class="btn btn-primary" ng-click="save()">Save</button>
       <button class="btn btn-default" ng-click="cancel()">Cancel</button>

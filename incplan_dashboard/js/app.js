@@ -58,6 +58,7 @@ angular.module('app', ['ui.bootstrap'])
       $scope.pctKey = '50'
       $scope.barIndex = 3;
       $scope.showGoal = false;
+      $scope.startAges = [64, 65];
 
       $scope.incomeSourceMap = incomeSourceMap;
       $scope.savingSources = savingSources;
@@ -72,7 +73,7 @@ angular.module('app', ['ui.bootstrap'])
         // Reset the flag to false when the response returns.
         $timeout(function() {
           $scope.loadingStrategy = false;            
-        }, 500);
+        }, 700);
       }
 
       // Track socSecStrategy changes
@@ -93,6 +94,9 @@ angular.module('app', ['ui.bootstrap'])
         }
       };
 
+      // $scope.newStartAge1 = $scope.startAge1;
+      // $scope.newStartAge2 = $scope.startAge2;
+
       // Open edit modal dialog
       $scope.edit = function() {
 
@@ -100,21 +104,33 @@ angular.module('app', ['ui.bootstrap'])
           
           templateUrl: 'edit.html', 
 
-          controller: ['$scope', '$modalInstance', function($scope, $modalInstance) {
+          controller: ['$scope', '$modalInstance', 'ages', function($scope, $modalInstance, ages) {
+
+            $scope.ages = ages;
 
             $scope.save = function() {
-              $modalInstance.close();
+              $modalInstance.close($scope.ages);
             };
 
             $scope.cancel = function() {
               $modalInstance.dismiss();
             };
-          }]
+          }], 
+
+          resolve: {
+            ages: function() {
+              return [$scope.startAges[0], $scope.startAges[1]];
+            }
+          }
         });
 
         modalInstance.result.then(
-          function() {
+          function(ages) {
             $log.log('Saved');
+            
+            // Pass the changes ages back to scope
+            $scope.startAges = [parseInt(ages[0], 10), parseInt(ages[1], 10)];
+
             loadStrategy();
           }, 
           function() {
