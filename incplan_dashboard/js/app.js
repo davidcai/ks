@@ -94,9 +94,6 @@ angular.module('app', ['ui.bootstrap'])
         }
       };
 
-      // $scope.newStartAge1 = $scope.startAge1;
-      // $scope.newStartAge2 = $scope.startAge2;
-
       // Open edit modal dialog
       $scope.edit = function() {
 
@@ -128,7 +125,7 @@ angular.module('app', ['ui.bootstrap'])
           function(ages) {
             $log.log('Saved');
             
-            // Pass the changes ages back to scope
+            // Pass the changed ages back to scope
             $scope.startAges = [parseInt(ages[0], 10), parseInt(ages[1], 10)];
 
             loadStrategy();
