@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Study Case 1 - Box Model</title>
+
+  <style type="text/css">
+  #my-box {
+    background-color: #ccc;
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    border: 5px solid blue;
+    margin: 10px;
+  }
+  </style>
+
+</head>
+
+<body>
+
+  <h2>Study Case 1 - Box Model</h2>
+
+  <div id="my-box">My box</div>
+
+
+
+
+
+
+  <h4>CSS styles:</h4>
+  <pre>
+  #my-box {
+    background-color: #ccc;
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    border: 5px solid blue;
+    margin: 10px;
+  }
+  </pre>
+
+  <h4>W3 standard:</h4>
+  <pre>
+  box width = width + 2 * (padding + border) 
+            = 100 + 2 * (10 + 5) 
+            = 130
+  </pre>
+
+  <h4>IE:</h4>
+  <pre>
+  box width = width 
+            = 100
+  </pre>
+
+</body>
+</html>
