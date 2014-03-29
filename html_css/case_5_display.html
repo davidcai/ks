@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Display</title>
+
+  <style type="text/css">
+  /* <span> by default are inline elements. */
+  span {
+    width: 300px; /* Will not work */
+    height: 200px; /* Will not work */
+    border: 1px solid red;
+
+    /*display: block;*/
+  }
+
+  /* <div> by default are block elements. */
+  div {
+    width: 300px;
+    height: 200px;
+    border: 1px solid red;
+
+    /*display: inline;*/
+  }
+
+  /* <img> by default are inline-block element */
+  img {
+    width: 100px;
+
+    /*display: block;*/
+  }
+  </style>
+
+</head>
+
+
+
+<body>
+
+  <h2>Inline</h2>
+
+  <span>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+  </span>
+
+
+
+  <h2>Block</h2>
+
+  <div>
+    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+  </div>
+
+
+
+  <h2>Inline-block</h2>
+
+  Chelsea <img src="http://www.chelseafc.com/javaImages/12/ec/0,,10268~3206162,00.jpg"> Footbal Club
+
+</body>
+</html>
