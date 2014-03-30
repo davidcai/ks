@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Margin vs. Padding</title>
+
+  <style type="text/css">
+  .boxes {
+    float: left;
+    margin-right: 50px;
+    background-color: #ccc;
+  }
+
+  .box {
+    background-color: yellow;
+    border: 2px solid blue;
+    width: 200px;
+  }
+
+  #boxes-with-margins .box {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  #boxes-with-paddings .box {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  </style>
+
+</head>
+
+
+
+<body>
+
+  <div id="boxes-with-margins" class="boxes">
+    <h4>Margin</h4>
+
+    <div class="box">My box 1</div>
+    <div class="box">My box 2</div>
+  </div>
+
+
+
+  <div id="boxes-with-paddings" class="boxes">
+    <h4>Padding</h4>
+
+    <div class="box">My box 1</div>
+    <div class="box">My box 2</div> 
+  </div>
+
+</body>
+</html>
