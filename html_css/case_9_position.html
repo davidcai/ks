@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Position</title>
+
+  <style type="text/css">
+
+    div {
+      font-size: 20px;
+      text-align: center;
+    }
+
+
+    #relative-box {
+      /*position: relative;*/
+
+      left: 100px; /* Push the box to right by 100px. */
+      top: 50px; /* Pus down the box by 50px */
+
+      border: 1px solid blue;
+      width: 400px;
+      height: 230px;
+    }
+
+
+    #absolute-box {
+      /* 
+        Absolutely positioned based on the immediate ancestor 
+        whose position property is either relative or absolute.
+      */
+      position: absolute; 
+
+      left: 20px;
+      top: 40px;
+      right: 50px;
+      /* width: 200px; */
+      height: 100px;
+      /* bottom: 0; */
+
+      background-color: yellow;
+    }
+
+
+    #fixed-box {
+      position: fixed; /* Re-size the height of the browser to see the "fixed" effect. */
+
+      width: 200px;
+      height: 100px;
+
+      bottom: 0;
+      right: 50px;
+
+      background-color: red;
+    }
+
+  </style>
+
+</head>
+
+
+
+<body>
+
+
+  <div id="relative-box">
+    position: relative;
+
+    <div id="absolute-box">position: absolute;</div>
+  </div>
+
+
+  <div id="fixed-box">
+    position: fixed;
+  </div>
+
+
+</body>
+</html>
