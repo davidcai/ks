@@ -7,28 +7,34 @@
 
   <style type="text/css">
 
-    .boxes {
-      float: left;
-      margin-right: 50px;
-      background-color: #ccc;
+    /*******************************************************************************************
+     * 12-Column Grid (copied from skin-shared.css which is included in every JSP pages)
+     *******************************************************************************************/
+    .grid-1, .grid-2, .grid-3, .grid-4, .grid-one-third, .grid-5, .grid-6, .grid-half,
+    .grid-7, .grid-8, .grid-two-thirds, .grid-9, .grid-10, .grid-11, .grid-12 {
+        float: left;
+        display: inline;
+        overflow: hidden;
+        *zoom: 1;
+        *margin-left: -1px; /* Fix IE7 bug */
     }
+    .grid-row {
+      clear: both;
+      overflow: hidden;
+    }
+    .grid-1 { width: 8%; }
+    .grid-2 { width: 16%; }
+    .grid-3 { width: 25%; }
+    .grid-4, .grid-one-third { width: 33%; }
+    .grid-5 { width: 41%; }
+    .grid-6, .grid-half { width: 50%; }
+    .grid-7 { width: 58%; }
+    .grid-8, .grid-two-thirds { width: 66%; }
+    .grid-9 { width: 75%; }
+    .grid-10 { width: 83%; }
+    .grid-11 { width: 91%; }
+    .grid-12 { width: 100%; }
 
-    .box {
-      background-color: yellow;
-      border: 2px solid blue;
-      width: 200px;
-    }
-
-    #boxes-with-margins .box {
-      margin-top: 20px;
-      margin-bottom: 20px;
-    }
-
-    #boxes-with-paddings .box {
-      padding-top: 20px;
-      padding-bottom: 20px;
-    }
-  
   </style>
 
 </head>
@@ -37,20 +43,50 @@
 
 <body>
 
-  <div id="boxes-with-margins" class="boxes">
-    <h4>Margin</h4>
+  <h2>12-column Grid</h2>
 
-    <div class="box">My box 1</div>
-    <div class="box">My box 2</div>
+  <h4>Half half</h4>
+  <div class="grid-row">
+    <div class="grid-half">grid-half</div>
+    <div class="grid-half">grid-half</div>
   </div>
 
+  <h4>One third and two thirds</h4>
+  <div class="grid-row">
+    <div class="grid-one-third">grid-one-third</div>
+    <div class="grid-two-thirds">grid-two-thirds</div>
+  </div>
 
+  <h4>4 evenly splitted</h4>
+  <div class="grid-row">
+    <div class="grid-3">grid-3</div>
+    <div class="grid-3">grid-3</div>
+    <div class="grid-3">grid-3</div>
+    <div class="grid-3">grid-3</div>
+  </div>
 
-  <div id="boxes-with-paddings" class="boxes">
-    <h4>Padding</h4>
+  <h4>Various width</h4>
+  <div class="grid-row">
+    <div class="grid-1">grid-1</div>
+    <div class="grid-2">grid-2</div>
+    <div class="grid-4">grid-4</div>
+    <div class="grid-5">grid-5</div>
+  </div>
 
-    <div class="box">My box 1</div>
-    <div class="box">My box 2</div> 
+  <h4>Nested grid</h4>
+  <div class="grid-row">
+    <div class="grid-half">grid-half</div>
+    <div class="grid-half">
+      <div class="grid-one-third">grid-one-third</div>
+      <div class="grid-one-third">grid-one-third</div>
+      <div class="grid-one-third">
+        <div class="grid-row">grid-row</div>
+        <div class="grid-row">
+          <div class="grid-6">grid-6</div>
+          <div class="grid-6">grid-6</div>
+        </div>
+      </div>
+    </div>
   </div>
 
 </body>
