@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Sprite</title>
+
+  <style type="text/css">
+
+    #home {
+      background: transparent url("http://www.w3schools.com/css/img_navsprites_hover.gif") no-repeat;
+
+      width: 43px;
+      height: 44px;
+    }
+
+    #home:hover {
+      background-position: 0 -45px; /* Push the sprite image up by 45px */
+
+      /* width and height will inherit from #home */
+    }
+
+
+    #prev {
+      background: transparent url("http://www.w3schools.com/css/img_navsprites_hover.gif") no-repeat -47px 0; /* Shift the sprite image 47px to left */
+
+      width: 43px;
+      height: 44px;
+    }
+
+    #prev:hover {
+      background-position: -47px -45px;
+    }
+
+
+    #next {
+      background: transparent url("http://www.w3schools.com/css/img_navsprites_hover.gif") no-repeat -94px 0;
+
+      width: 43px;
+      height: 44px;
+    }
+
+    #next:hover {
+      background-position: -94px -45px;
+    }
+
+
+    div {
+      margin-bottom: 20px;
+    }
+  </style>
+
+</head>
+
+
+
+<body>
+
+
+  <h2>Sprite</h2>
+
+  <div id="home"></div>
+  <div id="prev"></div>
+  <div id="next"></div>
+
+
+</body>
+</html>
