@@ -22,12 +22,7 @@
 
 <body ng-controller="MainCtrl" ng-cloak>
 
-  <ol>
-    <li ng-repeat="item in items">
-      <input type="checkbox" id="item{{$index}}" ng-model="item.completed">
-      <label for="item{{$index}}" ng-class="{ 'completed': item.completed }">{{ item.text }}</label>
-    </li>
-  </ol>
+  <ol item-list items="items"></ol>
 
   <input type="text" ng-model="newItem.text">
   <button ng-click="add()">Add</button>
@@ -38,6 +33,20 @@
 
   <script>
     var app = angular.module('app', []);
+
+    app.directive('itemList', function() {
+      return {
+        restrict: 'AE',
+        scope: {
+          items: '='
+        },
+        template:
+          '<li ng-repeat="item in items">' +
+            '<input type="checkbox" id="item{{$index}}" ng-model="item.completed">' +
+            '<label for="item{{$index}}" ng-class="{ \'completed\': item.completed }">{{ item.text }}</label>' +
+          '</li>'
+      };
+    }); // end of directive itemList
 
     app.controller('MainCtrl', function($scope) {
 
@@ -52,7 +61,7 @@
         $scope.newItem = {};
       };
 
-    }); // end of controller
+    }); // end of controller MainCtrl
   </script>
 
 </body>
