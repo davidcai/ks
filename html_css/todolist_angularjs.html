@@ -1,0 +1,58 @@
+<!doctype html>
+<html xmlns:ng="http://angularjs.org" id="ng-app" ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>Todo list</title>
+  <style>
+    ol {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1em 0;
+    }
+    .completed {
+      text-decoration: line-through;
+      color: silver;
+    }
+    [ng-cloak] {
+      display: none !important;
+    }
+  </style>
+</head>
+
+
+<body ng-controller="MainCtrl" ng-cloak>
+
+  <ol>
+    <li ng-repeat="item in items">
+      <input type="checkbox" id="item{{$index}}" ng-model="item.completed">
+      <label for="item{{$index}}" ng-class="{ 'completed': item.completed }">{{ item.text }}</label>
+    </li>
+  </ol>
+
+  <input type="text" ng-model="newItem.text">
+  <button ng-click="add()">Add</button>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.5/angular.js"></script>
+
+
+  <script>
+    var app = angular.module('app', []);
+    app.controller('MainCtrl', function($scope) {
+
+      $scope.items = [];
+      $scope.newItem = {};
+
+      $scope.add = function() {
+        $scope.items.push({
+          text: $scope.newItem.text,
+          completed: false
+        });
+        $scope.newItem = {};
+      };
+
+    }); // end of controller
+  </script>
+
+</body>
+</html>

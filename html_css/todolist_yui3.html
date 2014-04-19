@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Todo list</title>
+  <style>
+    ol {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1em 0;
+    }
+    .completed {
+      text-decoration: line-through;
+      color: silver;
+    }
+  </style>
+</head>
+
+
+<body>
+
+  <ol id="item-list"></ol>
+
+  <input type="text" id="new-item-text">
+  <button id="add-item-button">Add</button>
+
+
+  <script src="http://yui.yahooapis.com/3.16.0/build/yui/yui-min.js"></script>
+
+
+  <script>
+    YUI().use('node', 'event', 'substitute', function(Y) {
+
+      var LI_TEMPLATE =
+        '<li>' +
+          '<input type="checkbox" id="item{index}">' +
+          '<label for="item{index}">{text}</label>' +
+        '</li>';
+
+      var items = [];
+
+      var ndItemList = Y.one('#item-list')
+        , ndNewItemText = Y.one('#new-item-text')
+        , ndAddItemButton = Y.one('#add-item-button');
+
+
+      function add(e) {
+
+        var newItem = {
+          'text': ndNewItemText.get('value'),
+          'completed': false
+        };
+
+        items.push(newItem);
+
+        var ndItem = ndItemList.appendChild(Y.substitute(LI_TEMPLATE, {
+          'index': items.length - 1,
+          'text': newItem.text
+        }));
+
+        var ndCheckBox = ndItem.one('input[type="checkbox"]');
+        ndCheckBox.setData('item', newItem);
+        ndCheckBox.on('click', toggleCheck);
+
+        ndNewItemText.set('value', '');
+      }
+
+      ndAddItemButton.on('click', add);
+
+
+      function toggleCheck(e) {
+
+        var item = this.getData('item');
+        item.completed = !item.completed;
+
+        if (item.completed === true) {
+          this.siblings('label').addClass('completed');
+        }
+        else {
+          this.siblings('label').removeClass('completed');
+        }
+      }
+
+    }); // end of YUI()
+  </script>
+
+</body>
+</html>
