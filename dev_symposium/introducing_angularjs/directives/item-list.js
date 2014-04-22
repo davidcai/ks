@@ -4,10 +4,12 @@ angular.module('app')
     return {
       restrict: 'AE',
       scope: {
-        items: '='
+        items: '=',
+        filterBy: '=',
+        orderBy: '='
       },
       template:
-        '<li ng-repeat="item in items">' +
+        '<li ng-repeat="item in items | filter: { text: filterBy } | orderBy: orderBy">' +
           '<input type="checkbox" id="item{{$index}}" ng-model="item.completed">' +
           '<label for="item{{$index}}" ng-class="{ \'completed\': item.completed }">{{ item.text }}</label>' +
         '</li>'

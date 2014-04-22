@@ -1,0 +1,5 @@
+<ul class="books">
+  <li ng-repeat="book in books | orderBy: title">
+    <a href="#/books/{{book.id}}">{{ book.title }}</a>
+  </li>
+</ul>
