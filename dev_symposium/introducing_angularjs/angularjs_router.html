@@ -2,15 +2,13 @@
 <html xmlns:ng="http://angularjs.org" id="ng-app" ng-app="app">
 <head>
   <meta charset="utf-8">
-  <title>Todo list</title>
+  <title>Book collection</title>
   <style>
-    ul {
-      list-style: none;
-      padding: 0;
-    }
     .book-image {
       height: 160px;
       width: 160px;
+      margin-right: 1em;
+      float: left;
     }
     [ng-cloak] {
       display: none !important;
@@ -20,6 +18,8 @@
 
 
 <body ng-controller="MainCtrl" ng-cloak>
+
+  <h2>My book collection</h2>
 
   <div ng-view></div>
 
@@ -49,26 +49,57 @@
       }]) // end of config
 
 
-      .controller('MainCtrl', ['$scope', function($scope) {
+      .controller('MainCtrl', ['$scope', '$log', function($scope, $log) {
+
+        $log.log('In MainCtrl');
 
         $scope.books = [
-          { title: "Allegiant (Divergent Series)", author: "Roth, Veronica",
-            imageUrl: "images/allegiant.jpg" },
 
-          { title: "The Goldfinch", author: "Tartt, Donna",
-            imageUrl: "images/the_goldfinch.jpg" },
+          { id: 'allegiant',
+            title: "Allegiant (Divergent Series)",
+            author: "Roth, Veronica" },
 
-          { title: "The Day the Crayons Quit", author: "Daywalt, Drew and Jeffers, Oliver",
-            imageUrl: "images/the_day_the_crayons_quit.jpg" },
+          { id: 'the_goldfinch',
+            title: "The Goldfinch",
+            author: "Tartt, Donna" },
 
-          { title: "Doctor Sleep", author: "King, Stephen",
-            imageUrl: "images/doctor_sleep.jpg" },
+          { id: 'the_day_the_crayons_quit',
+            title: "The Day the Crayons Quit",
+            author: "Daywalt, Drew and Jeffers, Oliver" },
 
-          { title: "The Ocean at the End of the Lane", author: "Gaiman, Neil",
-            imageUrl: "images/the_ocean_at_the_end_of_the_lane.jpg" }
+          { id: 'doctor_sleep',
+            title: "Doctor Sleep",
+            author: "King, Stephen" },
+
+          { id: 'the_ocean_at_the_end_of_the_lane',
+            title: "The Ocean at the End of the Lane",
+            author: "Gaiman, Neil" }
         ];
 
-      }]); // end of controller
+      }]) // end of MainCtrl
+
+
+      .controller('BookListCtrl', ['$scope', '$log', function($scope, $log) {
+
+        $log.log('In BookListCtrl');
+
+      }]) // end of BookListCtrl
+
+
+      .controller('BookDetailCtrl', ['$scope', '$log', '$routeParams', function($scope, $log, $routeParams) {
+
+        $log.log('In BookDetailCtrl');
+
+        var bookId = $routeParams.bookId;
+
+        angular.forEach($scope.books, function(book) {
+          if (book.id === bookId) {
+            $scope.book = book;
+          }
+        });
+
+      }]); // end of BookDetailCtrl
+
   </script>
 
 </body>
