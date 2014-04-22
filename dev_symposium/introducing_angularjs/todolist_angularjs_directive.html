@@ -22,12 +22,7 @@
 
 <body ng-controller="MainCtrl" ng-cloak>
 
-  <ol>
-    <li ng-repeat="item in items">
-      <input type="checkbox" id="item{{$index}}" ng-model="item.completed">
-      <label for="item{{$index}}" ng-class="{ 'completed': item.completed }">{{ item.text }}</label>
-    </li>
-  </ol>
+  <ol item-list items="items"></ol>
 
   <input type="text" ng-model="newItem.text">
   <button ng-click="add()">Add</button>
@@ -37,23 +32,24 @@
 
 
   <script>
-    var app = angular.module('app', []);
+    angular.module('app', [])
+      .controller('MainCtrl', function($scope) {
 
-    app.controller('MainCtrl', function($scope) {
-
-      $scope.items = [];
-      $scope.newItem = {};
-
-      $scope.add = function() {
-        $scope.items.push({
-          text: $scope.newItem.text,
-          completed: false
-        });
+        $scope.items = [];
         $scope.newItem = {};
-      };
 
-    }); // end of controller
+        $scope.add = function() {
+          $scope.items.push({
+            text: $scope.newItem.text,
+            completed: false
+          });
+          $scope.newItem = {};
+        };
+
+      }); // end of controller MainCtrl
   </script>
+
+  <script src="directives/item-list.js"></script>
 
 </body>
 </html>
