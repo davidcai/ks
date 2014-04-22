@@ -1,0 +1,16 @@
+{
+  "name": "introducing_angularjs",
+  "version": "0.0.0",
+  "description": "Introducing AngularJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "David Cai",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.0.0",
+    "morgan": "^1.0.0",
+    "body-parser": "^1.0.2"
+  }
+}
